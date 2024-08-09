@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Multa extends Model
 {
     use HasFactory;
+
+    protected $table = 'dtsrs';
+
+    protected $fillable = [
+        'nome_dtsr',
+        'telefone',
+        'email',
+        'municipio_id'
+    ];
 }

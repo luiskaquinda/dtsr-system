@@ -19,9 +19,6 @@ return new class extends Migration
             $table->foreignId('dtsr_id')
                 ->constrained()
                 ->cascadeOnUpdate();
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

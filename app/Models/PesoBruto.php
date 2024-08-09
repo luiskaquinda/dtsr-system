@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class PesoBruto extends Model
 {
     use HasFactory;
+
+    protected $table = 'pesos_bruto';
+
+    protected $fillable = [
+        'a_frente',
+        'ao_meio',
+        'a_retaguarda'
+    ];
 }

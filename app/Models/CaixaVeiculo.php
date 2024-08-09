@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class CaixaVeiculo extends Model
 {
     use HasFactory;
+
+    protected $table = 'caixas_veiculos';
+
+    protected $fillable = [
+        'distancia_entre_eixos',
+        'altura',
+        'tipo_caixa'
+    ];
 }

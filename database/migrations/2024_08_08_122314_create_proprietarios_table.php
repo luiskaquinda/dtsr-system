@@ -34,9 +34,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('cartas_conducao')
                 ->cascadeOnUpdate();
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }
