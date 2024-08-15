@@ -15,4 +15,28 @@ class Municipio extends Model
         'municipio',
         'provincia_id'
     ];
+
+    public function dtsr() {
+        return $this->hasOne(
+            Dtsr::class,
+            'municipio_id',
+            'id'
+        );
+    }
+
+    public function provincia() {
+        return $this->belongsTo(
+            Provincia::class,
+            'provincia_id',
+            'id'
+        );
+    }
+
+    public function residencias() {
+        return $this->hasMany(
+            Residencia::class,
+            'municipio_id',
+            'id'
+        );
+    }
 }

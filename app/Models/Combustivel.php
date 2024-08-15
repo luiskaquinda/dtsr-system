@@ -14,4 +14,12 @@ class Combustivel extends Model
     protected $fillable = [
         'combustivel'
     ];
+
+    public function veiculo() {
+        return $this->hasMany(
+            Veiculo::class,
+            'combustivel_id',
+            'id'
+        );
+    }
 }

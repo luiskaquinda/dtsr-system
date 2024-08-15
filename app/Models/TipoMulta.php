@@ -12,4 +12,12 @@ class TipoMulta extends Model
     protected $fillable = [
         'tipo'
     ];
+
+    public function multa() {
+        return $this->hasMany(
+            Multa::class,
+            'tipo_multa_id',
+            'id'
+        );
+    }
 }

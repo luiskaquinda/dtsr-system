@@ -16,4 +16,12 @@ class CaixaVeiculo extends Model
         'altura',
         'tipo_caixa'
     ];
+
+    public function veiculo() {
+        return $this->hasOne(
+            Veiculo::class, 
+            'caixa_id', 
+            'id'
+        );
+    }
 }

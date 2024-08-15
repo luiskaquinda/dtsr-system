@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('multas', function (Blueprint $table) {
             $table->id();
-            $table->string('importancia')->comment('
+            $table->string('importancia_pagar')->comment('
             Vai armazenar o valor a pagar ou a importância a pagar em UCF');
             $table->string('infracao_artigo');
             $table->string('documento_apreendido')

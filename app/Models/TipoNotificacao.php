@@ -12,4 +12,12 @@ class TipoNotificacao extends Model
     protected $fillable = [
         'tipo'
     ];
+
+    public function notificacao() {
+        return $this->hasMany(
+            Notificacao::class,
+            'tipo_notificacao_id',
+            'id'
+        );
+    }
 }

@@ -43,4 +43,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // public function agente() {
+    //     return $this->hasOne(
+    //         Agente::class, 
+    //         'user_id', 
+    //         'id'
+    //     );
+    // }
+
+    // public function proprietario() {
+    //     return $this->hasOne(
+    //         Proprietario::class, 
+    //         'user_id', 
+    //         'id'
+    //     );
+    // }
 }

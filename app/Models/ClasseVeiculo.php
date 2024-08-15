@@ -14,4 +14,12 @@ class ClasseVeiculo extends Model
     protected $fillable = [
         'classe'
     ];
+
+    public function veiculo() {
+        return $this->hasMany(
+            Veiculo::class, 
+            'classe_id', 
+            'id'
+        );
+    }
 }

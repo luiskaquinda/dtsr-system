@@ -17,4 +17,28 @@ class PedidoMatricula extends Model
         'tipo_pedido_id',
         'veiculo_id'
     ];
+
+    public function documentos() {
+        return $this->hasMany(
+            Documento::class,
+            'pedido_matricula_id',
+            'id'
+        );
+    }
+
+    public function tipo_pedido() {
+        return $this->belongsTo(
+            TipoPedido::class,
+            'tipo_pedido_id',
+            'id'
+        );
+    }
+
+    public function veiculo() {
+        return $this->belongsTo(
+            Veiculo::class,
+            'veiculo_id',
+            'id'
+        );
+    }
 }

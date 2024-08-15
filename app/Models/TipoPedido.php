@@ -12,4 +12,12 @@ class TipoPedido extends Model
     protected $fillable = [
         'tipo'
     ];
+
+    public function pedido_matricula() {
+        return $this->hasMany(
+            PedidoMatricula::class,
+            'tipo_pedido_id',
+            'id'
+        );
+    }
 }

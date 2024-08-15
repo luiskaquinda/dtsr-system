@@ -12,4 +12,12 @@ class Servico extends Model
     protected $fillable = [
         'servico'
     ];
+
+    public function veiculos() {
+        return $this->hasMany(
+            Veiculo::class,
+            'servico_id',
+            'id'
+        );
+    }
 }

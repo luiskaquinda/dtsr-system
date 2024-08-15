@@ -31,4 +31,68 @@ class Veiculo extends Model
         'servico_id',
         'proprietario_id'
     ];
+
+    public function caixa_veiculo() {
+        return $this->belongsTo(
+            CaixaVeiculo::class, 'caixa_id', 
+            'id'
+        );
+    }
+
+    public function classe() {
+        return $this->belongsTo(
+            ClasseVeiculo::class,
+            'classe_id',
+            'id'
+        );
+    }
+
+    public function combustivel() {
+        return $this->belongsTo(
+            Veiculo::class,
+            'combustivel_id',
+            'id'
+        );
+    }
+
+    public function notificacoes() {
+        return $this->belongsToMany(
+            Notificacao::class,
+            'veiculos_notificacoes',
+            'veiculo_id',
+            'notificacao_id'
+        );
+    }
+
+    public function pedido_matricula() {
+        return $this->hasOne(
+            PedidoMatricula::class,
+            'veiculo_id',
+            'id'
+        );
+    }
+
+    public function pesos_bruto() {
+        return $this->belongsTo(
+            PesoBruto::class,
+            'peso_id',
+            'id'
+        );
+    }
+
+    public function proprietario() {
+        return $this->belongsTo(
+            Proprietario::class,
+            'proprietario_id',
+            'id'
+        );
+    }
+
+    public function servico() {
+        return $this->belongsTo(
+            Servico::class,
+            'servico_id',
+            'id'
+        );
+    }
 }

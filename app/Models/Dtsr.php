@@ -17,4 +17,20 @@ class Dtsr extends Model
         'email',
         'municipio_id'
     ];
+
+    public function agente() {
+        return $this->hasMany(
+            Agente::class, 
+            'dtsr_id', 
+            'id'
+        );
+    }
+
+    public function municipio() {
+        return $this->belongsTo(
+            Municipio::class,
+            'municipio_id',
+            'id'
+        );
+    }
 }

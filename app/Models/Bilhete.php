@@ -16,4 +16,12 @@ class Bilhete extends Model
         'data_emissao',
         'data_validade'
     ];
+
+    public function proprietario() {
+        return $this->hasOne(
+            Proprietario::class, 
+            'bilhete_id', 
+            'id'
+        );
+    }
 }

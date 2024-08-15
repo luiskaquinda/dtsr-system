@@ -16,4 +16,12 @@ class CartaConducao extends Model
         'data_emissao',
         'data_validade'
     ];
+
+    public function proprietario() {
+        return $this->hasOne(
+            Proprietario::class, 
+            'carta_conducao_id', 
+            'id'
+        );
+    }
 }

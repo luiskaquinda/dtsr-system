@@ -16,4 +16,12 @@ class PesoBruto extends Model
         'ao_meio',
         'a_retaguarda'
     ];
+
+    public function veiculo() {
+        return $this->hasOne(
+            Veiculo::class,
+            'peso_id',
+            'id'
+        );
+    }
 }

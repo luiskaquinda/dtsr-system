@@ -14,4 +14,21 @@ class Residencia extends Model
         'bairro',
         'municipio_id'
     ];
+
+
+    public function proprietario() {
+        return $this->hasOne(
+            Proprietario::class,
+            'residencia_id',
+            'id'
+        );
+    }
+
+    public function municipio() {
+        return $this->belongsTo(
+            Municipio::class,
+            'municipio_id',
+            'id'
+        );
+    }
 }
