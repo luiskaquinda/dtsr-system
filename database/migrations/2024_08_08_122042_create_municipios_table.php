@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
             $table->string('municipio');
-            $table->foreign('provincia_id')
-                ->constrained()
-                ->cascadeOnUpdate();
+            $table->foreignId('provincia_id')
+                ->references('id')
+                ->on('provincias')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

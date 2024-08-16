@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreignId('residencia_id')
                 ->constrained()
                 ->cascadeOnUpdate();
-            $table->foreign('carta_conducao_id')
+            $table->foreignId('carta_conducao_id')
                 ->references('id')
                 ->on('cartas_conducao')
                 ->cascadeOnUpdate();

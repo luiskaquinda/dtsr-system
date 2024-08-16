@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('agentes', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->strng('patente');
+            $table->string('patente');
             $table->string('numero');
             $table->foreignId('dtsr_id')
                 ->constrained()
