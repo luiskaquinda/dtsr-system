@@ -1,51 +1,3 @@
-{{-- <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout> --}}
-
 @extends('admin.auth.layout.app')
 @section('title', 'Login')
 
@@ -53,6 +5,33 @@
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <!--begin::Authentication - Sign-in -->
         <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+            <!--begin::Aside-->
+            <div class="d-flex flex-column flex-lg-row-auto bg-primary w-xl-600px positon-xl-relative">
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
+                    <!--begin::Header-->
+                    <div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
+                        <!--begin::Logo-->
+                        {{-- <a href="#" class="py-2 py-lg-20">
+                            <img alt="Logo" src="{{ asset('admin/media/logos/default.svg') }}" class="h-40px h-lg-50px" />
+                        </a> --}}
+                        <!--end::Logo-->
+                        <!--begin::Title-->
+                        <h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">DTSR-System</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        {{-- <p class="d-none d-lg-block fw-semibold fs-2 text-white">Plan your blog post by choosing a topic creating
+                        <br />an outline and checking facts</p> --}}
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Illustration-->
+                    <div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({{ asset('admin/media/illustrations/sketchy-1/17.png') }})"></div>
+                    <!--end::Illustration-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--begin::Aside-->
             <!--begin::Body-->
             <div class="d-flex flex-column flex-lg-row-fluid py-10">
                 <!--begin::Content-->
@@ -60,15 +39,14 @@
                     <!--begin::Wrapper-->
                     <div class="w-lg-500px p-10 p-lg-15 mx-auto">
                         <!--begin::Form-->
-                        <form class="form w-100" method="POST" action="{{ route('login') }}">
-
-                            @method('POST')
-                            @csrf
-
+                        <form class="form w-100" id="kt_sign_in_form" method="POST" action="{{ route('login') }}"
+                        >
+                        @method('POST')
+                        @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-10">
                                 <!--begin::Title-->
-                                <h1 class="text-dark mb-3">Bem Vindo ao DTSR-System</h1>
+                                <h1 class="text-dark mb-3">Login</h1>
                                 <!--end::Title-->
                                 <!--begin::Link-->
                                     {{-- <div class="text-gray-400 fw-semibold fs-4">New Here?
@@ -89,7 +67,8 @@
                                 name="email" 
                                 autocomplete="off"
                                 id="email"
-                                type="email"  
+                                type="email" 
+                                :value="old('email')" 
                                 required 
                                 autofocus 
                                 autocomplete="username"
@@ -105,37 +84,40 @@
                                     <label class="form-label fw-bold text-dark fs-6 mb-0">Senha</label>
                                     <!--end::Label-->
                                     <!--begin::Link-->
-
-                                    @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="link-primary fs-6 fw-bold">Esqueceu a palavra passe?</a>
-                                    @endif
+                                    <a href="#" class="link-primary fs-6 fw-bold">Esqueceu a palavra passe?</a>
                                     <!--end::Link-->
                                 </div>
                                 <!--end::Wrapper-->
                                 <!--begin::Input-->
-                                <input class="form-control form-control-lg form-control-solid" 
-                                autocomplete="off" 
-                                id="password"
-                                type="password"
-                                name="password"
-                                required 
-                                autocomplete="current-password"
-                                />
+                                <input class="form-control form-control-lg form-control-solid" type="password" name="password" autocomplete="off" />
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
                             <!--begin::Actions-->
                             <div class="text-center">
                                 <!--begin::Submit button-->
-                                <button type="submit" class="btn btn-lg btn-primary w-100 mb-5">
+                                <button type="submit" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
                                     <span class="indicator-label">Entrar</span>
-                                    {{-- <span class="indicator-progress">
-                                        Por favor aguarde...
-                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                    </span> --}}
+                                    <span class="indicator-progress">Por favor aguarde...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 </button>
                                 <!--end::Submit button-->
                                 <!--begin::Separator-->
+                                {{-- <div class="text-center text-muted text-uppercase fw-bold mb-5">or</div> --}}
+                                <!--end::Separator-->
+                                <!--begin::Google link-->
+                                {{-- <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
+                                <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-20px me-3" />Continue with Google</a> --}}
+                                <!--end::Google link-->
+                                <!--begin::Google link-->
+                                {{-- <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
+                                <img alt="Logo" src="assets/media/svg/brand-logos/facebook-4.svg" class="h-20px me-3" />Continue with Facebook</a> --}}
+                                <!--end::Google link-->
+                                <!--begin::Google link-->
+                                {{-- <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100">
+                                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-20px me-3" />
+                                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-20px me-3" />Continue with Apple</a> --}}
+                                <!--end::Google link-->
                             </div>
                             <!--end::Actions-->
                         </form>
@@ -165,5 +147,3 @@
 @section('custom_js_pre')
 
 @endsection
-
-

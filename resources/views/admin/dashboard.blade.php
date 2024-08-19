@@ -35,31 +35,31 @@
         data-kt-app-header-primary-enabled="true" data-kt-app-header-secondary-enabled="true" data-kt-app-toolbar-enabled="true" class="app-default"
     >
 		<!--begin::Theme mode setup on page load-->
-		<script>
-            var defaultThemeMode = "light"; 
-            var themeMode; 
-        
-            if ( document.documentElement ) { 
-                if ( document.documentElement.hasAttribute("data-bs-theme-mode")) 
-                { 
-                    themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); 
-                } else 
-                { 
-                    
-                    if ( localStorage.getItem("data-bs-theme") !== null ) 
-                    { 
-                        themeMode = localStorage.getItem("data-bs-theme"); 
-                    } else { themeMode = defaultThemeMode; } 
+			<script>
+				var defaultThemeMode = "light"; 
+				var themeMode; 
+			
+				if ( document.documentElement ) { 
+					if ( document.documentElement.hasAttribute("data-bs-theme-mode")) 
+					{ 
+						themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); 
+					} else 
+					{ 
+						
+						if ( localStorage.getItem("data-bs-theme") !== null ) 
+						{ 
+							themeMode = localStorage.getItem("data-bs-theme"); 
+						} else { themeMode = defaultThemeMode; } 
 
-                } if (themeMode === "system") 
-                { 
-                    themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; 
-                } 
-                
-                document.documentElement.setAttribute("data-bs-theme", themeMode); 
-            }
-        
-        </script>
+					} if (themeMode === "system") 
+					{ 
+						themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; 
+					} 
+					
+					document.documentElement.setAttribute("data-bs-theme", themeMode); 
+				}
+			
+			</script>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::App-->
 		<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -954,7 +954,7 @@
 										<!--end::Menu item-->
 										<!--begin::Menu item-->
 										<div class="menu-item px-5">
-											<a href="../dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Sign Out</a>
+											<a href="{{ route('logout') }}" class="menu-link px-5">Sign Out</a>
 										</div>
 										<!--end::Menu item-->
 									</div>
