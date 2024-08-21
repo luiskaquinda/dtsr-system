@@ -3169,6 +3169,7 @@ textarea.form-control-lg {
   box-shadow: var(--bs-btn-box-shadow);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;
@@ -52347,4 +52348,16 @@ body {
   color: var(--bs-text-muted);
 }
 
+/* 
+ Custom Style from @Luís Kaquinda
+*/
+
+.custom-search {
+  display: flex !important;
+  column-gap: 10px;
+}
+
+.custom-form-group button {
+  border: none;
+}
 /*# sourceMappingURL=style.bundle.css.map*/
