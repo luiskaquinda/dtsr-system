@@ -9,7 +9,7 @@
                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                     <!--begin:Menu link-->
                     <span class="menu-link">
-                        <span class="menu-title">Dashboard</span>
+                        <span class="menu-title">Veiculos</span>
                         <span class="menu-arrow d-lg-none"></span>
                     </span>
                     <!--end:Menu link-->
@@ -29,11 +29,11 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('veiculo.index') }}">
+                            <a class="menu-link" href="{{ route('dashboard') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Viaturas</span>
+                                <span class="menu-title">Matriculas</span>
                             </a>
                             <!--end:Menu link-->
                         </div>

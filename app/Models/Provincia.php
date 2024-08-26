@@ -10,7 +10,7 @@ class Provincia extends Model
     use HasFactory;
     protected $table = 'provincias';
     protected $fillable = [
-        'provincia',
+        'nome_provincia',
     ];
 
     public function municipios() {

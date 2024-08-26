@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
-            $table->string('municipio');
+            $table->string('nome_municipio');
             $table->foreignId('provincia_id')
                 ->references('id')
                 ->on('provincias')

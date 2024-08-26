@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\VeiculoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/owner', function () {
-    return view('vehicleowner.home');
-});
 
 Route::get('/teste', function () {
     return view('admin.auth.register');
@@ -29,6 +27,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('/admin/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(
+    function() {
+        Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index');
+        Route::get('/veiculo/add', [VeiculoController::class, 'create'])->name('veiculo.create');
+    }
+);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

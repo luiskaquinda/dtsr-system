@@ -2,7 +2,7 @@
 <html lang="en">
 	<!--begin::Head-->
 	<head><base href=""/>
-		<title>@yield('title', 'Dashboard')</title>
+		<title>@yield('title', 'Veiculo')</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		{{-- <link rel="shortcut icon" href="assets/media/logos/favicon.ico" /> --}}
@@ -59,11 +59,11 @@
 				<!--begin::Header-->
 				<div id="kt_app_header" class="app-header">
 					<!--begin::Header primary-->
-					@include('admin.partials.header-primary')
+					@include('admin.veiculo.partials.header-primary')
 					<!--end::Header primary-->
 	
 					<!--begin::Header secondary-->
-					@include('admin.partials.header-secondary')
+					@include('admin.veiculo.partials.header-secondary')
 					<!--end::Header secondary-->
 				</div>
 				<!--end::Header-->
@@ -131,7 +131,7 @@
 							<!--end::Content wrapper-->
 				
 							<!--begin::Footer-->
-							@include('admin.partials.footer')
+							@include('admin.veiculo.partials.footer')
 							<!--end::Footer-->
 						</div>
 						<!--end:::Main-->
@@ -166,7 +166,9 @@
 		<script src="{{ asset('admin/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
+		<script src="{{ asset('admin/js/custom/apps/ecommerce/catalog/products.js') }}"></script>
 		<script src="{{ asset('admin/js/widgets.bundle.js') }}"></script>
+
 		<script src="{{ asset('admin/js/custom/apps/chat/chat.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/type.js') }}"></script>
