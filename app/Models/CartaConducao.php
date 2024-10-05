@@ -12,9 +12,9 @@ class CartaConducao extends Model
     protected $table = 'cartas_conducao';
 
     protected $fillable = [
-        'numero',
-        'data_emissao',
-        'data_validade'
+        'numero_carta_conducao',
+        'data_emissao_carta_conducao',
+        'data_validade_carta_conducao'
     ];
 
     public function proprietario() {

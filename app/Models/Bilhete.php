@@ -12,9 +12,9 @@ class Bilhete extends Model
     protected $table = 'bilhetes';
 
     protected $fillable = [
-        'numero',
-        'data_emissao',
-        'data_validade'
+        'numero_bilhete',
+        'data_emissao_bilhete',
+        'data_validade_bilhete'
     ];
 
     public function proprietario() {

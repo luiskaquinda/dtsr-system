@@ -13,6 +13,7 @@ class Documento extends Model
 
     protected $fillable = [
         'url',
+        'tipo_documento',
         'pedido_matricula_id',
         'multa_id',
         'notificacao_id'

@@ -14,17 +14,25 @@ return new class extends Migration
         Schema::create('documentos', function (Blueprint $table) {
             $table->id();
             $table->string('url');
+            $table->string('tipo_documento');
             $table->foreignId('pedido_matricula_id')
+                ->nullable()        
                 ->constrained('pedidos_matriculas')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->foreignId('multa_id')
+                ->nullable()
                 ->constrained('multas')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->foreignId('notificacao_id')
+                ->nullable()
                 ->constrained('notificacoes')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**

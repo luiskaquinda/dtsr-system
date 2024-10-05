@@ -22,28 +22,30 @@ return new class extends Migration
             $table->string('medidas_pneumaticas');
             $table->integer('lugares');
             $table->decimal('tara', 10, 2);
-            $table->decimal('pais_origem');
-            $table->string('matricula');
-            $table->date('ano_fabrico');
-            $table->date('primeiro_registro');
+            $table->string('pais_origem');
+            $table->string('matricula')
+                ->nullable();
+            $table->string('ano_fabrico');
+            $table->date('primeiro_registro')
+                ->nullable();
             $table->foreignId('combustivel_id')
-                ->constrained('combustiveis')
-                ->cascadeOnUpdate();
+                ->constrained('combustiveis');
             $table->foreignId('classe_id')
-                ->constrained('classes_veiculos')
-                ->cascadeOnUpdate();
+                ->constrained('classes_veiculos');
             $table->foreignId('caixa_id')
                 ->constrained('caixas_veiculos')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->foreignId('peso_id')
                 ->constrained('pesos_bruto')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->foreignId('servico_id')
-                ->constrained('servicos')
-                ->cascadeOnUpdate();
+                ->constrained('servicos');
             $table->foreignId('proprietario_id')
                 ->constrained('proprietarios')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

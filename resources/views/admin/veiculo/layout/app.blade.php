@@ -86,7 +86,7 @@
 											<!--begin::Page title-->
 											<div class="page-title d-flex flex-column gap-3 me-3">
 												<!--begin::Title-->
-												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Dashboard</h1>
+												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Home</h1>
 												<!--end::Title-->
 												<!--begin::Breadcrumb-->
 												<ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -180,6 +180,57 @@
 		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/complete.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/main.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/users-search.js')}}"></script>
+
+		<script>
+			$("#kt_daterangepicker_1").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+			$("#kt_daterangepicker_2").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					drops: 'up',
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+			$("#kt_daterangepicker_3").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					drops: 'up',
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+			$("#kt_daterangepicker_4").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					drops: 'up',
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+			$("#kt_daterangepicker_5").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					drops: 'up',
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+			$("#kt_daterangepicker_6").daterangepicker({
+					singleDatePicker: true,
+					showDropdowns: true,
+					minYear: 1975,
+					drops: 'up',
+					maxYear: parseInt(moment().format("YYYY"),12)
+				}
+			);
+		</script>
+
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

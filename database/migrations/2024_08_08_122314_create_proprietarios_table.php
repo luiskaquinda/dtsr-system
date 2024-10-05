@@ -26,14 +26,17 @@ return new class extends Migration
             $table->string('email');
             $table->foreignId('bilhete_id')
                 ->constrained()
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->foreignId('residencia_id')
                 ->constrained()
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->foreignId('carta_conducao_id')
                 ->references('id')
                 ->on('cartas_conducao')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }

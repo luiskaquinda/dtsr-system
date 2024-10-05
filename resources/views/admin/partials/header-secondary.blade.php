@@ -33,7 +33,7 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Viaturas</span>
+                                <span class="menu-title">Veiculos</span>
                             </a>
                             <!--end:Menu link-->
                         </div>

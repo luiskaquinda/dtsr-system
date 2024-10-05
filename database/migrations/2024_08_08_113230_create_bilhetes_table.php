@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('bilhetes', function (Blueprint $table) {
             $table->id();
-            $table->string('numero');
-            $table->date('data_emissao');
-            $table->date('data_validade');
+            $table->string('numero_bilhete');
+            $table->date('data_emissao_bilhete');
+            $table->date('data_validade_bilhete');
             $table->timestamps();
         });
     }
