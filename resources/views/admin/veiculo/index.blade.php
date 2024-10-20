@@ -4,11 +4,11 @@
 @section('content')
 
     <!--begin::Serviços-->
-    <div class="container-fluid">
+    {{-- <div class="container-fluid d-flex justify-content-center tipo-container">
         <!--begin::Card body-->
-            <div class="row mb-4 text-center">
+            <div class="row mb-4 text-center tipo-content align-self-center">
                 @foreach ($tipoPedidos as $tipoPedido)
-                    <a href="#" class="card w-50 col-6 py-8 mb-4 hover-elevate-up shadow-sm parent-hover">
+                    <a href="{{ route('pedido.create', ['id' => $tipoPedido->id]) }}" class="card col-6 py-8 mb-4 mx-2 hover-elevate-up shadow-sm parent-hover tipo-item">
                         <div class="card-body d-flex align-items">
                             <span class="svg-icon fs-1">
                                 {{ $tipoPedido->id }}
@@ -22,9 +22,10 @@
                 @endforeach
             </div>
         <!--end::Card body-->
-    </div>
+    </div> --}}
     <!--end::Serviços-->
 
+    <h1 class="text-black fw-semibold px-9 mt-10 mb-6">Meus Processos/Pedidos</h1>
 
     <!--begin::Listagem de Veiculos-->
     <div class="card card-flush">
@@ -47,7 +48,7 @@
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
-                    <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Pedido" data-kt-ecommerce-product-filter="status">
+                    <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Selecionar" data-kt-ecommerce-product-filter="status">
                         <option></option>
                         <option value="all">Todos</option>
                         <option value="scheduled">Processando</option>
@@ -55,7 +56,10 @@
                     <!--end::Select2-->
                 </div>
                 <!--begin::Add product-->
-                <a href="{{ route('veiculo.create') }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i></a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E</a>
+                <!--end::Add product-->
+                <!--begin::Add product-->
+                <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
                 <!--end::Add product-->
             </div>
         <!--end::Card toolbar-->
@@ -83,69 +87,71 @@
                 </thead>
                 <tbody class="fw-semibold text-gray-600">
                     @forelse($veiculos as $veiculo)
-                        <tr>
-                            <td>
-                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="1" />
-                                </div>
-                            </td>
-                            {{-- <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="ms-5">
-                                        <!--begin::Title-->
-                                        <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $veiculo->created_at }}</a>
-                                        <!--end::Title-->
+                        @if ($veiculo->proprietario->user->id == Auth::id())     
+                            <tr>
+                                <td>
+                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="checkbox" value="1" />
                                     </div>
-                                </div>
-                            </td> --}}
-                            <td class="text-start pe-0" data-order="15">
-                                <span class="fw-bold ms-3">{{ $veiculo->created_at->format('d-m-y') }}</span>
-                            </td>
-                            <td class="text-start pe-0" data-order="15">
-                                <span class="fw-bold ms-3">{{ $veiculo->marca }}</span>
-                            </td>
-                            <td class="text-start pe-0">{{ $veiculo->classe->classe }}</td>
-                            <td class="text-start pe-0" data-order="rating-4">
-                                {{ $veiculo->quadro }}
-                            </td>
-                            <td class="text-start pe-0" data-order="rating-4">
-                                {{ $veiculo->proprietario->nome_completo }}
-                            </td>
-                            <td class="text-start pe-0" data-order="Scheduled">
-                                <!--begin::Badges-->
-                                @if ($veiculo->pedido_matricula->status == "0")
-                                        <div class="badge badge-danger">Em processamento</div>
-                                @else
-                                        <div class="badge badge-success">Deferido</div>
-                                @endif
-                                <!--end::Badges-->
-                            </td>
-                            <td class="text-start">
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Acções
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">Editar</a>
+                                </td>
+                                <td class="text-start pe-0" data-order="15">
+                                    <span class="fw-bold ms-3">{{ $veiculo->created_at->format('d-m-y') }}</span>
+                                </td>
+                                <td class="text-start pe-0" data-order="15">
+                                    <span class="fw-bold ms-3">{{ $veiculo->marca }}</span>
+                                </td>
+                                <td class="text-start pe-0">{{ $veiculo->classe->classe }}</td>
+                                <td class="text-start pe-0" data-order="rating-4">
+                                    {{ $veiculo->quadro }}
+                                </td>
+                                <td class="text-start pe-0" data-order="rating-4">
+                                    {{ $veiculo->proprietario->nome_completo }}
+                                </td>
+                                <td class="text-start pe-0" data-order="Scheduled">
+                                    <!--begin::Badges-->
+                                    @if ($veiculo->pedido_matricula->status == "0")
+                                            <div class="badge badge-danger">Em Processamento</div>
+                                    @else
+                                            <div class="badge badge-success">Processado</div>
+                                    @endif
+                                    <!--end::Badges-->
+                                </td>
+                                <td class="text-start">
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Acções
+                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">Editar</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">AC</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">D</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <form method="POST" action="{{ route('veiculo.destroy', $veiculo->id) }}">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="menu-link px-3">Delete</button>
+
+                                            </form>
+                                        </div>
+                                        <!--end::Menu item-->
                                     </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-
-                                    <form method="POST" action="{{ route('veiculo.destroy', $veiculo->id) }}">
-                                        @csrf
-                                        @method('delete')
-
-                                        <button type="submit" class="menu-link px-3">Delete</button>
-
-                                    </form>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu-->
-                            </td>
-                        </tr>
+                                    <!--end::Menu-->
+                                </td>
+                            </tr>
+                        @endif
                     @empty
                         <tr>
                             <td>

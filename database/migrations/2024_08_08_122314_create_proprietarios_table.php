@@ -37,6 +37,10 @@ return new class extends Migration
                 ->on('cartas_conducao')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

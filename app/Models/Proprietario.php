@@ -19,16 +19,16 @@ class Proprietario extends Model
         'bilhete_id',
         'residencia_id',
         'carta_conducao_id',
-        //'user_id'
+        'user_id'
     ];
 
-    // public function user() {
-    //     return $this->belongsTo(
-    //         User::class,
-    //         'user_id',
-    //         'id'
-    //     );
-    // }
+    public function user() {
+        return $this->belongsTo(
+            User::class,
+            'user_id',
+            'id'
+        );
+    }
 
     public function bilhete() {
         return $this->belongsTo(

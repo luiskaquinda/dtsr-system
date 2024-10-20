@@ -24,6 +24,7 @@ use App\Models\{
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class VeiculoController extends Controller
 {
@@ -33,10 +34,11 @@ class VeiculoController extends Controller
     public function index()
     {
         //
+        $proprietarios = Proprietario::all();
         $veiculos = Veiculo::with(['classe', 'proprietario'])->get();
         $tipoPedidos = TipoPedido::all();
 
-        return view('admin.veiculo.index', compact('veiculos', 'tipoPedidos'));
+        return view('admin.veiculo.index', compact('veiculos', 'tipoPedidos', 'proprietarios'));
     }
 
     /**
@@ -104,7 +106,8 @@ class VeiculoController extends Controller
                 'email' => $request->email,
                 'bilhete_id' => $bilhete->id,
                 'residencia_id' => $residencia->id,
-                'carta_conducao_id' => $carta_conducao->id
+                'carta_conducao_id' => $carta_conducao->id,
+                'user_id' => Auth::id()
             ]);
 
             // Veiculo

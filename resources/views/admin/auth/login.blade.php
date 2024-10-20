@@ -41,8 +41,8 @@
                         <!--begin::Form-->
                         <form class="form w-100" id="kt_sign_in_form" method="POST" action="{{ route('login') }}"
                         >
-                        @method('POST')
-                        @csrf
+                            @method('POST')
+                            @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-10">
                                 <!--begin::Title-->

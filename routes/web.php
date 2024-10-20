@@ -21,10 +21,6 @@ use App\Http\Controllers\{
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', function () {
     return view('/admin/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -33,12 +29,36 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(
     function() {
+
+        // [Listar] Pedidos
+
         Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedido.index');
-        Route::get('/veiculo/add', [VeiculoController::class, 'create'])->name('veiculo.create');
-        Route::post('/veiculo/store', [VeiculoController::class, 'store'])->name('veiculo.store');
-        Route::get('/veiculo/{id}/edit', [VeiculoController::class, 'edit'])->name('veiculo.edit');
-        Route::put('/veiculo/{id}', [VeiculoController::class, 'update'])->name('veiculo.update');
-        Route::delete('/veiculo/{id}', [VeiculoController::class, 'destroy'])->name('veiculo.destroy');
+
+        // [Mostrar ou Ler] Pedido
+
+        Route::get('/pedido/{id}', [PedidoController::class, 'show'])->name('pedido.show');
+
+        // [Criar] Pedido de Matricula e Emissão(?)
+
+        Route::get('/pedido/create/{tipoPedido}', [PedidoController::class, 'createMatriculaEmissao'])->name('pedido.create');
+        Route::post('/pedido/store', [PedidoController::class, 'storeMatriculaEmissao'])->name('pedido.store');
+
+
+        // [Criar] Alteração de Caracteristicas e Duplicados
+
+        
+        Route::post('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'storeAlteracaoCaracteristicasDuplicados'])->name('pedido.acd.store');
+        Route::get('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'createAlteracaoCaracteristicasDuplicados'])->name('pedido.acd.create');
+
+        // [Editar] Pedido
+        
+        Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->name('pedido.edit');
+        Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->name('pedido.update');
+
+        // [Deletar] Pedido
+
+        Route::delete('/pedido/{id}', [PedidoController::class, 'destroy'])->name('pedido.destroy');
+
     }
 );
 
@@ -46,6 +66,9 @@ Route::middleware('auth')->group(
 
 Route::middleware('auth')->group(
     function() {
+
+        // Pedido de Matrícula (Primeira Vez)
+
         Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index');
         Route::get('/veiculo/add', [VeiculoController::class, 'create'])->name('veiculo.create');
         Route::post('/veiculo/store', [VeiculoController::class, 'store'])->name('veiculo.store');

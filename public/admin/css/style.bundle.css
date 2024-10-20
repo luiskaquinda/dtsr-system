@@ -52361,3 +52361,35 @@ body {
   border: none;
 }
 /*# sourceMappingURL=style.bundle.css.map*/
+
+/* My CSS Style */
+
+.tipo-container .tipo-content {
+  width: 100%;
+}
+
+.tipo-container .tipo-content .tipo-item {
+  width: 45%;
+}
+
+.person-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.person-button-container a {
+  width: auto;
+  margin: 2px;
+}
+
+.delete-form button {
+  border: none;
+  background-color: #d1111f;
+  color: #fff !important;
+}
+
+.delete-form button:hover {
+  border: none !important;
+  background-color: #c93237 !important;
+  color: #fff !important;
+}

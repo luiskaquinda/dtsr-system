@@ -19,16 +19,16 @@ class Agente extends Model
         'patente',
         'numero',
         'dtsr_id',
-        // 'user_id'
+        'user_id'
     ];
 
-    // public function user() {
-    //     return $this->belongsTo(
-    //         User::class, 
-    //         'user_id', 
-    //         'id'
-    //     );
-    // }
+    public function user() {
+        return $this->belongsTo(
+            User::class, 
+            'user_id', 
+            'id'
+        );
+    }
 
     public function dtsr() {
         return $this->belongsTo(

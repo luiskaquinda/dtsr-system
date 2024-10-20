@@ -25,5 +25,21 @@ class UsersSeeder extends Seeder
                 'password' => Hash::make('admin'),
             ]
         );
+
+        User::create(
+            [
+                'name' => 'guest',
+                'email' => 'guest@dtsr.ao',
+                'password' => Hash::make('guest'),
+            ]
+        );
+
+        User::create(
+            [
+                'name' => 'agente',
+                'email' => 'agente@dtsr.ao',
+                'password' => Hash::make('agente'),
+            ]
+        );
     }
 }

@@ -12,6 +12,11 @@ class AgenteController extends Controller
     public function index()
     {
         //
+
+        $veiculos = Veiculo::with(['classe', 'proprietario'])->get();
+        $tipoPedidos = TipoPedido::all();
+
+        return view('admin.pedidos.index', compact('veiculos', 'tipoPedidos'));
     }
 
     /**

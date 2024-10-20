@@ -44,19 +44,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // public function agente() {
-    //     return $this->hasOne(
-    //         Agente::class, 
-    //         'user_id', 
-    //         'id'
-    //     );
-    // }
+    public function agente() {
+        return $this->hasOne(
+            Agente::class, 
+            'user_id', 
+            'id'
+        );
+    }
 
-    // public function proprietario() {
-    //     return $this->hasOne(
-    //         Proprietario::class, 
-    //         'user_id', 
-    //         'id'
-    //     );
-    // }
+    public function proprietario() {
+        return $this->hasOne(
+            Proprietario::class, 
+            'user_id', 
+            'id'
+        );
+    }
 }

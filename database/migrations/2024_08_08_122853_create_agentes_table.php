@@ -19,6 +19,10 @@ return new class extends Migration
             $table->foreignId('dtsr_id')
                 ->constrained()
                 ->cascadeOnUpdate();
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }
