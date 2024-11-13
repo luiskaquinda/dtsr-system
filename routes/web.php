@@ -10,6 +10,10 @@ use App\Http\Controllers\{
     PedidoController
 };
 
+use App\Models\{
+    User
+};
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +24,16 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get(
+    'acl', function() {
+
+        $users = User::all();
+        return view('acl', [
+            'users' => $users
+        ]);
+    }
+);
 
 Route::get('/', function () {
     return view('/admin/dashboard');
