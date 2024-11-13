@@ -25,6 +25,19 @@ Route::get('/', function () {
     return view('/admin/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+// ACL
+
+Route::middleware('auth')->group(
+    function() {
+
+        // [Listar] Pedidos
+
+        // Route::get('/users/auth', [PedidoController::class, 'index'])->name('pedido.index');
+
+    }
+);
+
 // Pedidos
 
 Route::middleware('auth')->group(
