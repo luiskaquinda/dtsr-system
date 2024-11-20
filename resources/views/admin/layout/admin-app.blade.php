@@ -178,6 +178,12 @@
 		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/complete.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/main.js') }}"></script>
 		<script src="{{ asset('admin/js/custom/utilities/modals/users-search.js')}}"></script>
+
+		<script>
+			$(document).ready(function() {
+				$('.js-example-basic-multiple').select2();
+			});
+		</script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

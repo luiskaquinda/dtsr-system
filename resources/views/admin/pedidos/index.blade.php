@@ -1,5 +1,5 @@
 @extends('admin.pedidos.layout.app')
-@section('title', 'index')
+@section('title', 'pedidos')
 
 @section('content')
 
@@ -57,7 +57,7 @@
                 </div>
                 
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E</a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
                 <!--end::Add product-->
                 <!--begin::Add product-->
                 <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>

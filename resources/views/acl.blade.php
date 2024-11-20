@@ -9,8 +9,13 @@
 <body>
     <h2>Laravel ACL</h2>
 
-    <a href="">Create User</a>
-    <a href="">Create Post</a>
+    @can('cerate_user')
+        <a href="">Create User</a>
+    @endcan
+
+    @can('create_post')
+        <a href="">Create Post</a>
+    @endcan
 
     <hr>
     
