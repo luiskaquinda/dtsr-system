@@ -422,7 +422,7 @@ class PedidoController extends Controller
                         'lugares' => $request->lugares,
                         'tara' => $request->tara,
                         'pais_origem' => $request->pais_origem,
-                        'matricula' => $request->matricula,
+                        'matricula_id' => $request->matricula,
                         'ano_fabrico' => $request->ano_fabrico,
                         'primeiro_registro' => null,
                         'combustivel_id' => $request->combustivel,
@@ -676,11 +676,12 @@ class PedidoController extends Controller
         $classes = ClasseVeiculo::all();
         $combustiveis = Combustivel::all();
         $tipoCaixas = CaixaVeiculo::all();
+        $provincias = Provincia::all();
         $pesosBruto = PesoBruto::all();
         $servicos = Servico::all();
         $documentos = Documento::where('pedido_matricula_id', $pedido->id)->get();
 
-        return view('admin.pedidos.veiculo.show', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'pesosBruto', 'servicos', 'documentos'));
+        return view('admin.pedidos.veiculo.show', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'pesosBruto', 'servicos', 'documentos', 'provincias'));
     }
 
     /**
@@ -981,6 +982,60 @@ class PedidoController extends Controller
         DB::commit();
 
         return redirect()->route('pedido.index');
+    }
+
+    // Atribuir Matricula
+
+    public function atribuirMatricula(Request $request, string $id) {
+
+        // $provincias = Provincia::all()->toArray();
+
+        // $provinciaNomes = [
+        //     'Bengo',
+        //     'Benguela',
+        //     'Bié',
+        //     'Cabinda',
+        //     'Cuando Cubango',
+        //     'Cuanza Norte',
+        //     'Cuanza Sul',
+        //     'Cunene',
+        //     'Huambo',
+        //     'Huíla',
+        //     'Luanda',
+        //     'Lunda Norte',
+        //     'Lunda Sul',
+        //     'Malanje',
+        //     'Moxico',
+        //     'Namibe',
+        //     'Uíge',
+        //     'Zaire'
+        // ];
+
+        $provincias = array(
+            'BGO' => 'Bengo',
+            'BIE' => 'Bié',
+            'BLA' => 'Benguela',
+            'CCU' => 'Cuando Cubango',
+            'CDA' => 'Cabinda',
+            'CNE' => 'Cunene',
+            'CNO' => 'Cuanza-Norte',
+            'CSU' => 'Cuanza-Sul',
+            'HBO' => 'Huambo',
+            'HLA' => 'Huíla',
+            'LDA' => 'Luanda',
+            'LNO' => 'Lunda-Norte',
+            'LSU' => 'Lunda-Sul',
+            'LTO' => 'Lobito',
+            'MCO' => 'Moxico',
+            'MJE' => 'Malanje',
+            'NBE' => 'Namibe',
+            'UGE' => 'Uíge',
+            'ZRE' => 'Zaire'
+        );
+        
+        $position = array_search($request->provincia, $provincias);
+
+        dd($request, $id, $provincias, $position);
     }
 
     /**

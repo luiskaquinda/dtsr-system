@@ -3,14 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-use App\Models\{
-    User,
-    Role
-};
-
-class UserController extends Controller
+class MatriculaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +12,6 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::all();
-
-        return view('admin.acl.users.index', compact('users'));
     }
 
     /**
@@ -29,11 +20,6 @@ class UserController extends Controller
     public function create()
     {
         //
-
-        $users = User::all();
-        $roles = Role::all();
-
-        return view('admin.acl.users.create', compact('users', 'roles'));
     }
 
     /**
@@ -58,15 +44,6 @@ class UserController extends Controller
     public function edit(string $id)
     {
         //
-
-        $user = User::findOrFail($id);
-        $roles = Role::all();
-
-        // dd($user->roles->pluck('name')->first());
-
-        // $userRole = Role::findOrFail($user->roles);
-
-        return view('admin.acl.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -75,22 +52,6 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         //
-
-        // dd($request, $id);
-
-        $user = User::findOrFail($id);
-
-        DB::beginTransaction();
-
-            $user->update([
-                'name' => $request->name
-            ]);
-
-            $user->roles()->sync($request->role);
-
-        DB::commit();
-
-        return redirect()->route('user.index')->with('sucesso', 'Usuário editado com sucesso.');
     }
 
     /**

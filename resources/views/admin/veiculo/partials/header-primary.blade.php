@@ -44,7 +44,7 @@
                             <!--begin::Username-->
                             <div class="d-flex flex-column">
                                 <div class="fw-bold d-flex align-items-center fs-5">{{ ucwords(Auth::user()->name) }}
-                                <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span></div>
+                                <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ Auth::user()->roles->pluck('name')->first() }}</span></div>
                                 <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::user()->email }}</a>
                             </div>
                             <!--end::Username-->
@@ -151,10 +151,18 @@
                     </div>
                     <!--end::Menu item-->
                     <!--begin::Menu item-->
-                    <div class="menu-item px-5 my-1">
-                        <a href="../dist/account/settings.html" class="menu-link px-5">Definições de Conta</a>
-                    </div>
                     <!--end::Menu item-->
+                    @can('edit_user')
+                        <div class="menu-item px-5 my-1">
+                            <a href="{{ route('user.index') }}" class="menu-link px-5">Usuários</a>
+                        </div>
+                        <div class="menu-item px-5 my-1">
+                            <a href="{{ route('ability.index') }}" class="menu-link px-5">Abilities</a>
+                        </div>
+                        <div class="menu-item px-5 my-1">
+                            <a href="{{ route('role.index') }}" class="menu-link px-5">Roles</a>
+                        </div>
+                    @endcan
                     <!--begin::Menu item-->
                     <form method="POST" action="{{ route('logout') }}" class="custom-form-group menu-item px-5">
                         @csrf

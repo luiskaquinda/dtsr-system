@@ -92,7 +92,7 @@
 												<ul class="breadcrumb breadcrumb-separatorless fw-semibold">
 													<!--begin::Item-->
 													<li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-														<a href="../dist/index.html" class="text-gray-500">
+														<a href="{{ route('home') }}" class="text-gray-500">
 															<i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
 														</a>
 													</li>

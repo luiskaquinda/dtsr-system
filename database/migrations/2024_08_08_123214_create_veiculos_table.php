@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('lugares');
             $table->decimal('tara', 10, 2);
             $table->string('pais_origem');
-            $table->string('matricula')
+            $table->unsignedBigInteger('matricula_id')
                 ->nullable();
             $table->string('ano_fabrico');
             $table->date('primeiro_registro')
@@ -46,6 +46,7 @@ return new class extends Migration
                 ->constrained('proprietarios')
                 ->cascadeOnUpdate()
                 ->onDelete('cascade');
+            $table->foreign('matricula_id')->references('id')->on('matriculas')->onDelete('cascade');
             $table->timestamps();
         });
     }

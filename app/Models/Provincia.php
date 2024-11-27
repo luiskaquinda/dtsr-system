@@ -10,6 +10,7 @@ class Provincia extends Model
     use HasFactory;
     protected $table = 'provincias';
     protected $fillable = [
+        'abreviacao_provincia',
         'nome_provincia',
     ];
 
@@ -20,4 +21,13 @@ class Provincia extends Model
             'id'
         );
     }
+
+    public function matriculas() {
+        return $this->hasMany(
+            Matricula::class,
+            'provincia_id',
+            'id'
+        );
+    }
+
 }

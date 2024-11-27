@@ -42,9 +42,19 @@ use App\Models\{
     // );
 
 Route::get('/', function () {
+    return view('index');
+})->name('home');
+
+Route::get('/dashboard', function () {
     return view('/admin/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Route::middleware('auth')->group(
+//     function() {
+
+//         Route::put('/users/{id}', [UserController::class, 'update'])->name('user.update');
+//     }
+// );
 
 // ACL
 
@@ -83,6 +93,14 @@ Route::middleware('auth')->group(
 
         Route::delete('/ability/{id}', [RoleAbilityController::class, 'abilityDestroy'])->name('ability.destroy');
 
+
+        // Users
+
+        Route::get('/users/create', [UserController::class, 'create'])->middleware('can:edit_permission')->name('user.create');
+
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->middleware('can:edit_permission')->name('user.edit');
+
+        Route::put('/users/{id}', [UserController::class, 'update'])->name('user.update');
     }
 );
 
@@ -93,7 +111,7 @@ Route::middleware('auth')->group(
 
         // [Listar] Pedidos
 
-        Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedido.index');
+        Route::get('/pedidos', [PedidoController::class, 'index'])->middleware('can:ver_pedidos')->name('pedido.index');
 
         // [Mostrar ou Ler] Pedido
 
@@ -117,6 +135,10 @@ Route::middleware('auth')->group(
         Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->name('pedido.edit');
         Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->name('pedido.update');
 
+        // [Criar] Matricula
+        
+        Route::put('/matricula/{id}/', [PedidoController::class, 'atribuirMatricula'])->name('matricula.update');
+
         // [Deletar] Pedido
 
         Route::delete('/pedido/{id}', [PedidoController::class, 'destroy'])->name('pedido.destroy');
@@ -131,11 +153,15 @@ Route::middleware('auth')->group(
 
         // Pedido de Matrícula (Primeira Vez)
 
-        Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index');
+        Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index')->middleware('can:ver_veiculos');
+
         Route::get('/veiculo/add', [VeiculoController::class, 'create'])->name('veiculo.create');
+
         Route::post('/veiculo/store', [VeiculoController::class, 'store'])->name('veiculo.store');
+
         Route::get('/veiculo/{id}/edit', [VeiculoController::class, 'edit'])->name('veiculo.edit');
         Route::put('/veiculo/{id}', [VeiculoController::class, 'update'])->name('veiculo.update');
+
         Route::delete('/veiculo/{id}', [VeiculoController::class, 'destroy'])->name('veiculo.destroy');
     }
 );

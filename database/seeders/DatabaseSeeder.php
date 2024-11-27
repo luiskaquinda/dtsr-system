@@ -28,7 +28,11 @@ class DatabaseSeeder extends Seeder
                 CombustiveisSeeder::class,
                 ClassesVeiculoSeeder::class,
                 TiposMultaSeeder::class,
-                TiposNotificacaoSeeder::class
+                TiposNotificacaoSeeder::class,
+                RolesSeeder::class,
+                AbilitiesSeeder::class,
+                RolesAbilitiesSeeder::class,
+                RolesUserSeeder::class
             ]
         );
     }

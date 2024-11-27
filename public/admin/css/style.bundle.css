@@ -52366,6 +52366,9 @@ body {
 
 .tipo-container .tipo-content {
   width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
 .tipo-container .tipo-content .tipo-item {

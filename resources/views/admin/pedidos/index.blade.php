@@ -140,18 +140,19 @@
                                             <a href="{{ route('pedido.acd.create', ['id' => $pedido->veiculo_id, 'tipoPedido' => 'AC']) }}" class="menu-link px-3">AC</a>
                                         </div>
                                         <!--end::Menu item-->
+
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
                                             <a href="{{ route('pedido.acd.store', ['id' => $pedido->veiculo_id, 'tipoPedido' => 'D']) }}" class="menu-link px-3">D</a>
                                         </div>
                                         <!--begin::Menu item-->
+                                        
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
                                             <a href="{{ route('pedido.edit', $pedido->id) }}" class="menu-link px-3">Editar</a>
                                         </div>
                                         <!--end::Menu item-->
 
-                                        
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
                                             <a href="{{ route('pedido.show', $pedido->veiculo_id) }}" class="menu-link px-3">Ver</a>
@@ -169,6 +170,85 @@
                                     <!--end::Menu-->
                                 </td>
                             </tr>
+
+                        @elseif ((Auth::user()->roles->pluck('name')->first() == ("agente")) || (Auth::user()->roles->pluck('name')->first() == ("admin")))
+                        
+                            <tr>
+                                <td>
+                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="checkbox" value="1" />
+                                    </div>
+                                </td>
+                                <td class="text-start pe-0" data-order="15">
+                                    <span class="fw-bold ms-3">{{ $pedido->created_at->format('d-m-y') }}</span>
+                                </td>
+                                <td class="text-start pe-0" data-order="15">
+                                    <span class="fw-bold ms-3">{{ $pedido->veiculo->marca }}</span>
+                                </td>
+                                    @if ($pedido->tipo_pedido->tipo == 'Matricula')
+                                        <td class="text-start pe-0">{{ $pedido->tipo_pedido->tipo }}</td>
+
+                                    @elseif($pedido->tipo_pedido->tipo == 'Emissao')
+                                        <td class="text-start pe-0">{{ $pedido->tipo_pedido->tipo }}</td>
+
+                                    @elseif($pedido->tipo_pedido->tipo == 'Duplicado')
+                                        <td class="text-start pe-0">{{ $pedido->tipo_pedido->tipo }}</td>
+
+                                    @else
+                                        <td class="text-start pe-0">{{ $pedido->tipo_pedido->tipo }}</td>
+
+                                    @endif
+                                <td class="text-start pe-0" data-order="rating-4">
+                                    {{ $pedido->veiculo->quadro }}
+                                </td>
+                                <td class="text-start pe-0" data-order="rating-4">
+                                    {{ $pedido->veiculo->proprietario->nome_completo }}
+                                </td>
+                                <td class="text-start pe-0" data-order="Scheduled">
+                                    <!--begin::Badges-->
+                                    @if ($pedido->status == "0")
+                                            <div class="badge badge-danger">A Processar</div>
+                                    @else
+                                            <div class="badge badge-success">Processado</div>
+                                    @endif
+                                    <!--end::Badges-->
+                                </td>
+                                <td class="text-start">
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Acções
+                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                        
+                                        @can('editar_pedido')
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a href="{{ route('pedido.edit', $pedido->id) }}" class="menu-link px-3">Editar</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                        @endcan
+
+                                        
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('pedido.show', $pedido->veiculo_id) }}" class="menu-link px-3">Ver</a>
+                                        </div>
+                                        <!--end::Menu item-->
+
+                                        @can('deletar_pedido')    
+                                            <form method="POST" action="{{ route('pedido.destroy', $pedido->id) }}" class="menu-item px-3 delete-form">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="menu-link px-3">Apagar</button>
+
+                                            </form>
+                                        @endcan
+
+                                    </div>
+                                    <!--end::Menu-->
+                                </td>
+                            </tr>
+
                         @endif
  
                     @empty

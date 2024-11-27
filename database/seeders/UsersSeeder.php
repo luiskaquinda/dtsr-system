@@ -41,5 +41,13 @@ class UsersSeeder extends Seeder
                 'password' => Hash::make('agente'),
             ]
         );
+
+        User::create(
+            [
+                'name' => 'root',
+                'email' => 'root@monarquia.code',
+                'password' => Hash::make('root'),
+            ]
+        );
     }
 }

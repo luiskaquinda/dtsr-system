@@ -35,10 +35,9 @@
                 </div>
                 
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
-                <!--end::Add product-->
-                <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
+                @can('cerate_user')
+                    <a href="#" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i></a>
+                @endcan
                 <!--end::Add product-->
             </div>
         <!--end::Card toolbar-->
@@ -96,7 +95,7 @@
 									
 									<!--begin::Menu item-->
 									<div class="menu-item px-3">
-										<a href="#" class="menu-link px-3">Editar</a>
+										<a href="{{ route('user.edit', $user->id ) }}" class="menu-link px-3">Editar</a>
 									</div>
 									<!--end::Menu item-->
 
@@ -170,6 +169,44 @@
                     @endforelse
                 </tbody>
             </table>
+
+            <!--begin::Users-->
+                {{-- <div class="mb-10">
+                    <!--begin::List-->
+                    <div class="mh-300px scroll-y me-n7 pe-7">
+                        @foreach ($users as $user)
+                            <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                <!--begin::Details-->
+                                <div class="d-flex align-items-center">
+                                    <!--begin::Avatar-->
+                                    <div class="symbol symbol-35px symbol-circle">
+                                        <span class="symbol-label bg-light-danger text-danger fw-semibold">M</span>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::Details-->
+                                    <div class="ms-5">
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">{{ $user->name }}</a>
+                                        <div class="fw-semibold text-muted">{{ $user->email }}</div>
+                                    </div>
+                                    <!--end::Details-->
+                                </div>
+                                <!--end::Details-->
+                                <!--begin::Access menu-->
+                                <div class="ms-2 w-200px">
+                                    <label for="" class="fs-6 text-gray-600 mb-2">Role</label>
+                                    <select class="form-select form-select-solid form-select-sm border border-gray-900 border-active active" data-control="select2">
+                                        <option value="1" selected="selected">Guest</option>
+                                        <option value="2">Owner</option>
+                                        <option value="3">Can Edit</option>
+                                    </select>
+                                </div>
+                                <!--end::Access menu-->
+                            </div>
+                        @endforeach
+                    </div>
+                    <!--end::List-->
+                </div> --}}
+                <!--end::Users-->
             <!--end::Table-->
         </div>
         <!--end::Card body-->

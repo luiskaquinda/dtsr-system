@@ -17,7 +17,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
     {
         //
 
-        $bengo = Provincia::create(['nome_provincia' => 'Bengo']);
+        $bengo = Provincia::create([
+            'abreviacao_provincia' => 'BGO', 
+            'nome_provincia' => 'Bengo'
+        ]);
 
         $bengo->municipios()
             ->createMany([
@@ -29,7 +32,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Pango Aluquém'],
             ]);
 
-        $benguela = Provincia::create(['nome_provincia' => 'Benguela']);
+        $benguela = Provincia::create([
+            'abreviacao_provincia' => 'BLA', 
+            'nome_provincia' => 'Benguela'
+        ]);
 
         $benguela->municipios()
             ->createMany([
@@ -45,7 +51,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Lobito'],
             ]);
 
-        $bie = Provincia::create(['nome_provincia' => 'Bié']);
+        $bie = Provincia::create([
+            'abreviacao_provincia' => 'BIE', 
+            'nome_provincia' => 'Bié'
+        ]);
 
         $bie->municipios()
             ->createMany([
@@ -60,7 +69,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Nharea'],
             ]);
 
-        $cabinda = Provincia::create(['nome_provincia' => 'Cabinda']);
+        $cabinda = Provincia::create([
+            'abreviacao_provincia' => 'CDA', 
+            'nome_provincia' => 'Cabinda'
+        ]);
 
         $cabinda->municipios()
             ->createMany([
@@ -70,7 +82,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Belize'],
             ]);
 
-        $cuandoCubango = Provincia::create(['nome_provincia' => 'Cuando Cubango']);
+        $cuandoCubango = Provincia::create([
+            'abreviacao_provincia' => 'CCU',
+            'nome_provincia' => 'Cuando Cubango'
+        ]);
 
         $cuandoCubango->municipios()
             ->createMany([
@@ -85,7 +100,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Rivungo'],
             ]);
 
-        $cuanzaNorte = Provincia::create(['nome_provincia' => 'Cuanza Norte']);
+        $cuanzaNorte = Provincia::create([
+            'abreviacao_provincia' => 'CNO',
+            'nome_provincia' => 'Cuanza Norte'
+        ]);
 
         $cuanzaNorte->municipios()
             ->createMany([
@@ -101,7 +119,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Samba Cajú'],
             ]);
 
-        $cuanzaSul = Provincia::create(['nome_provincia' => 'Cuanza Sul']);
+        $cuanzaSul = Provincia::create([
+            'abreviacao_provincia' => 'CSU',
+            'nome_provincia' => 'Cuanza Sul'
+        ]);
 
         $cuanzaSul->municipios()
             ->createMany([
@@ -119,7 +140,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Sumbe'],
             ]);
 
-        $cunene = Provincia::create(['nome_provincia' => 'Cunene']);
+        $cunene = Provincia::create([
+            'abreviacao_provincia' => 'CNE',
+            'nome_provincia' => 'Cunene'
+        ]);
 
         $cunene->municipios()
             ->createMany([
@@ -131,7 +155,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Ombadja'],
             ]);
 
-        $huambo = Provincia::create(['nome_provincia' => 'Huambo']);
+        $huambo = Provincia::create([
+            'abreviacao_provincia' => 'HBO',
+            'nome_provincia' => 'Huambo'
+        ]);
 
         $huambo->municipios()
             ->createMany([
@@ -148,7 +175,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Huambo'],
             ]);
 
-        $huila = Provincia::create(['nome_provincia' => 'Huíla']);
+        $huila = Provincia::create([
+            'abreviacao_provincia' => 'HLA',
+            'nome_provincia' => 'Huíla'
+        ]);
 
         $huila->municipios()
             ->createMany([
@@ -168,7 +198,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Quipungo'],
             ]);
 
-        $luanda = Provincia::create(['nome_provincia' => 'Luanda']);
+        $luanda = Provincia::create([
+            'abreviacao_provincia' => 'LDA',
+            'nome_provincia' => 'Luanda'
+        ]);
 
         $luanda->municipios()
             ->createMany([
@@ -183,7 +216,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Talatona'],
             ]);
 
-        $luandaNorte = Provincia::create(['nome_provincia' => 'Lunda Norte']);
+        $luandaNorte = Provincia::create([
+            'abreviacao_provincia' => 'LNO',
+            'nome_provincia' => 'Lunda Norte'
+        ]);
 
         $luandaNorte->municipios()
             ->createMany([
@@ -199,7 +235,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Xá-Muteba'],
             ]);
 
-        $lundaSul = Provincia::create(['nome_provincia' => 'Lunda Sul']);
+        $lundaSul = Provincia::create([
+            'abreviacao_provincia' => 'LSU',
+            'nome_provincia' => 'Lunda Sul'
+        ]);
 
         $lundaSul->municipios()
             ->createMany([
@@ -209,7 +248,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Saurimo'],
             ]);
 
-        $malanje = Provincia::create(['nome_provincia' => 'Malanje']);
+        $malanje = Provincia::create([
+            'abreviacao_provincia' => 'MJE',
+            'nome_provincia' => 'Malanje'
+        ]);
 
         $malanje->municipios()
             ->createMany([
@@ -229,7 +271,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Quirima'],
             ]);
 
-        $moxico = Provincia::create(['nome_provincia' => 'Moxico']);
+        $moxico = Provincia::create([
+            'abreviacao_provincia' => 'MCO',
+            'nome_provincia' => 'Moxico'
+        ]);
 
         $moxico->municipios()
             ->createMany([
@@ -244,7 +289,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Moxico'],
             ]);
 
-        $namibe = Provincia::create(['nome_provincia' => 'Namibe']);
+        $namibe = Provincia::create([
+            'abreviacao_provincia' => 'NBE',
+            'nome_provincia' => 'Namibe'
+        ]);
 
         $namibe->municipios()
             ->createMany([
@@ -255,7 +303,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Tômboa'],
             ]);
 
-        $uige = Provincia::create(['nome_provincia' => 'Uíge']);
+        $uige = Provincia::create([
+            'abreviacao_provincia' => 'UGE',
+            'nome_provincia' => 'Uíge'
+        ]);
 
         $uige->municipios()
             ->createMany([
@@ -277,7 +328,10 @@ class ProvinciasMunicipiosSeeder extends Seeder
                 ['nome_municipio' => 'Songo'],
             ]);
 
-        $zaire = Provincia::create(['nome_provincia' => 'Zaire']);
+        $zaire = Provincia::create([
+            'abreviacao_provincia' => 'ZRE',
+            'nome_provincia' => 'Zaire'
+        ]);
 
         $zaire->municipios()
             ->createMany([

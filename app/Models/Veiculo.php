@@ -21,7 +21,7 @@ class Veiculo extends Model
         'lugares',
         'tara',
         'pais_origem',
-        'matricula',
+        'matricula_id',
         'ano_fabrico',
         'primeiro_registro',
         'combustivel_id',
@@ -92,6 +92,14 @@ class Veiculo extends Model
         return $this->belongsTo(
             Servico::class,
             'servico_id',
+            'id'
+        );
+    }
+
+    public function matricula() {
+        return $this->belongsTo(
+            Matricula::class, 
+            'matricula_id', 
             'id'
         );
     }

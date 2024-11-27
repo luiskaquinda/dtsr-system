@@ -27,16 +27,46 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
                         <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('veiculo.index') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Veiculos</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
+                        @can('ver_veiculos')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ route('veiculo.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Veiculos</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        @can('ver_pedidos')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ route('pedido.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Pedidos</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        @can('ver_pedido')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ route('pedido.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Meus Pedidos</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
                         <div class="menu-item">
