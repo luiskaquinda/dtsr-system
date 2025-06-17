@@ -26,29 +26,11 @@ class AbilitiesSeeder extends Seeder
         Ability::create(['name' => 'ver_veiculos']);
         Ability::create(['name' => 'ver_pedido']);
         Ability::create(['name' => 'atribuir_matricula']);
+        Ability::create(['name' => 'atribuir_multa']);
         Ability::create(['name' => 'notificar_proprietario']);
         Ability::create(['name' => 'aprovar_pedido']);
         Ability::create(['name' => 'registar_pedido']);
         Ability::create(['name' => 'pesquisar_veiculo'] );
         
-        // Ability::create([
-        //     ['name' => 'create_post'],
-        //     ['name' => 'cerate_user'],
-        //     ['name' => 'edit_user'],
-        //     ['name' => 'delete_user'],
-        //     ['name' => 'login_page'],
-        //     ['name' => 'edit_roles'],
-        //     ['name' => 'edit_permission'],
-        //     ['name' => 'editar_pedido'],
-        //     ['name' => 'deletar_pedido'],
-        //     ['name' => 'ver_pedidos'],
-        //     ['name' => 'ver_veiculos'],
-        //     ['name' => 'ver_pedido'],
-        //     ['name' => 'atribuir_matricula'],
-        //     ['name' => 'notificar_proprietario'],
-        //     ['name' => 'aprovar_pedido'],
-        //     ['name' => 'registar_pedido'],
-        //     ['name' => 'pesquisar_veiculo'] 
-        // ]);
     }
 }

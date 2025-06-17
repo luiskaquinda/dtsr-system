@@ -9,13 +9,15 @@ class Matricula extends Model
 {
     use HasFactory;
 
-    protected $table = 'matriculass';
+    protected $table = 'matriculas';
 
     protected $fillable = [
         'provincia_id',
         'numero_serie',
         'serie',
-        'matricula'
+        'matricula',
+        'tipo_matricula',
+        'cor_matricula'
     ];
 
     public function veiculo() {

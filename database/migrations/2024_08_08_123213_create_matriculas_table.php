@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('numero_serie'); 
             $table->string('serie'); 
             $table->string('matricula', 20)->unique();
+            $table->string('tipo_matricula');
+            $table->string('cor_matricula');  
             $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
             $table->timestamps();
         });

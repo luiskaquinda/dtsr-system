@@ -20,6 +20,7 @@ class TiposNotificacaoSeeder extends Seeder
         TipoNotificacao::create(['tipo' => 'Acidente']);
         TipoNotificacao::create(['tipo' => 'Assalto']);
         TipoNotificacao::create(['tipo' => 'Roubo']);
+        TipoNotificacao::create(['tipo' => 'Multa']);
         TipoNotificacao::create(['tipo' => 'Outro']);
     }
 }

@@ -9,10 +9,10 @@ use App\Http\Controllers\{
     ProprietarioController,
     PedidoController,
     RoleAbilityController,
-    UserController
-};
-
-use App\Models\{
+    UserController,
+    MatriculaController,
+    MultaController,
+    NotificacaoController,
     User
 };
 
@@ -27,20 +27,6 @@ use App\Models\{
 |
 */
 
-    // Route::get(
-    //     'acl', 
-    //     function() {
-    
-    //         // Auth::loginUsingId(1);
-
-    //         $users = User::all();
-            
-    //         return view('acl', [
-    //             'users' => $users
-    //         ]);
-    //     }
-    // );
-
 Route::get('/', function () {
     return view('index');
 })->name('home');
@@ -49,12 +35,39 @@ Route::get('/dashboard', function () {
     return view('/admin/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(
-//     function() {
+// Multas
 
-//         Route::put('/users/{id}', [UserController::class, 'update'])->name('user.update');
-//     }
-// );
+Route::middleware('auth')->group(
+    function() {
+
+        Route::post('/multa/store/{id}/{user_id}/', [MultaController::class, 'store'])->middleware('can:atribuir_multa')->name('multa.store');
+
+    }
+);
+
+
+// Notificações
+
+Route::middleware('auth')->group(
+    function() {
+
+        Route::get('/notificacao/index/{id}', [NotificacaoController::class, 'index'])->name('notificacao.index');
+
+        Route::get('/notificacao/{id}', [NotificacaoController::class, 'show'])->name('notificacao.show');
+
+    }
+);
+
+
+// Matricula
+
+Route::middleware('auth')->group(
+    function() {
+        
+        Route::put('/matricula/{id}/', [MatriculaController::class, 'gerarMatricula'])->name('matricula.update');
+
+    }
+);
 
 // ACL
 
@@ -115,33 +128,29 @@ Route::middleware('auth')->group(
 
         // [Mostrar ou Ler] Pedido
 
-        Route::get('/pedido/{id}', [PedidoController::class, 'show'])->name('pedido.show')->middleware('can:cerate_user');
+        Route::get('/pedido/{id}', [PedidoController::class, 'show'])->middleware('can:ver_pedido')->name('pedido.show');
 
         // [Criar] Pedido de Matricula e Emissão(?)
 
-        Route::get('/pedido/create/{tipoPedido}', [PedidoController::class, 'createMatriculaEmissao'])->name('pedido.create');
+        Route::get('/pedido/create/{tipoPedido}', [PedidoController::class, 'createMatriculaEmissao'])->middleware('can:registar_pedido')->name('pedido.create');
 
-        Route::post('/pedido/store', [PedidoController::class, 'storeMatriculaEmissao'])->name('pedido.store');
+        Route::post('/pedido/store', [PedidoController::class, 'storeMatriculaEmissao'])->middleware('can:registar_pedido')->name('pedido.store');
 
 
         // [Criar] Alteração de Caracteristicas e Duplicados
 
         
-        Route::post('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'storeAlteracaoCaracteristicasDuplicados'])->name('pedido.acd.store');
-        Route::get('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'createAlteracaoCaracteristicasDuplicados'])->name('pedido.acd.create');
+        Route::post('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'storeAlteracaoCaracteristicasDuplicados'])->middleware('can:registar_pedido')->name('pedido.acd.store');
+        Route::get('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'createAlteracaoCaracteristicasDuplicados'])->middleware('can:registar_pedido')->name('pedido.acd.create');
 
         // [Editar] Pedido
         
-        Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->name('pedido.edit');
-        Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->name('pedido.update');
-
-        // [Criar] Matricula
-        
-        Route::put('/matricula/{id}/', [PedidoController::class, 'atribuirMatricula'])->name('matricula.update');
+        Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->middleware('can:editar_pedido')->name('pedido.edit');
+        Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->middleware('can:editar_pedido')->name('pedido.update');
 
         // [Deletar] Pedido
 
-        Route::delete('/pedido/{id}', [PedidoController::class, 'destroy'])->name('pedido.destroy');
+        Route::delete('/pedido/{id}', [PedidoController::class, 'destroy'])->middleware('can:deletar_pedido')->name('pedido.destroy');
 
     }
 );
@@ -153,16 +162,16 @@ Route::middleware('auth')->group(
 
         // Pedido de Matrícula (Primeira Vez)
 
-        Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index')->middleware('can:ver_veiculos');
+        Route::get('/veiculo', [VeiculoController::class, 'index'])->middleware('can:ver_veiculos')->name('veiculo.index');
 
-        Route::get('/veiculo/add', [VeiculoController::class, 'create'])->name('veiculo.create');
+        Route::get('/veiculo/add', [VeiculoController::class, 'create'])->middleware('can:registar_pedido')->name('veiculo.create');
 
-        Route::post('/veiculo/store', [VeiculoController::class, 'store'])->name('veiculo.store');
+        Route::post('/veiculo/store', [VeiculoController::class, 'store'])->middleware('can:registar_pedido')->name('veiculo.store');
 
-        Route::get('/veiculo/{id}/edit', [VeiculoController::class, 'edit'])->name('veiculo.edit');
-        Route::put('/veiculo/{id}', [VeiculoController::class, 'update'])->name('veiculo.update');
+        Route::get('/veiculo/{id}/edit', [VeiculoController::class, 'edit'])->middleware('can:editar_pedido')->name('veiculo.edit');
+        Route::put('/veiculo/{id}', [VeiculoController::class, 'update'])->middleware('can:editar_pedido')->name('veiculo.update');
 
-        Route::delete('/veiculo/{id}', [VeiculoController::class, 'destroy'])->name('veiculo.destroy');
+        Route::delete('/veiculo/{id}', [VeiculoController::class, 'destroy'])->middleware('can:deletar_pedido')->name('veiculo.destroy');
     }
 );
 

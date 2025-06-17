@@ -231,6 +231,21 @@
 			);
 		</script>
 
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const flashMessage = document.getElementById('flash-message');
+				if (flashMessage) {
+					setTimeout(() => {
+						flashMessage.classList.remove('show');
+						flashMessage.classList.add('fade');
+						setTimeout(() => {
+							flashMessage.remove();
+						}, 500);
+					}, 3000);
+				}
+			});
+		</script>
+
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

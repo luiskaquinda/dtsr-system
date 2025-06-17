@@ -226,6 +226,27 @@
                                 <input type="text" class="form-control" name="numero_carta_conducao" placeholder="Digite o número da tua carta de condução" aria-label="First name">
                             </div>
                         </div>
+
+                        <div class="col mb-0">
+                            <!--begin::Label-->
+                            <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                <span class="required">Tipo de Carta</span>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Qual o tipo de carta?">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                            </label>
+                            <!--end::Label-->
+                            <select class="form-select" name="tipo_carta_conducao"  data-control="select2" data-placeholder="Selecione o tipo de carta">
+                                <option value="Ligeiro">Ligeiro</option>
+                                <option value="Ligeiro Profissional">Ligeiro Profissional</option>
+                                <option value="Pesado">Pesado</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
         
                         <div class="row g-3 mb-4">
                             <div class="col mb-0">
@@ -750,22 +771,22 @@
 
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Bilhete de Identidade</label>
-                            <input class="form-control" type="file" id="bilhete" name="documentos[]">
+                            <input class="form-control" type="file" id="bilhete" name="documentos[bilhete]">
                         </div>
 
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Registro Inicial ou Modelo O</label>
-                            <input class="form-control" type="file" id="modelo_o" name="documentos[]">
+                            <input class="form-control" type="file" id="modelo_o" name="documentos[modelo_o]">
                         </div>
 
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Registro de Compra e Venda</label>
-                            <input class="form-control" type="file" id="compra_venda" name="documentos[]">
+                            <input class="form-control" type="file" id="compra_venda" name="documentos[compra_venda]">
                         </div>
 
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Recibo de Pagamento</label>
-                            <input class="form-control" type="file" id="recibo_pagamento" name="documentos[]">
+                            <input class="form-control" type="file" id="recibo_pagamento" name="documentos[recibo_pagamento]">
                         </div>
                     </fieldset>
 

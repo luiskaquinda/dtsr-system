@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('cartas_conducao', function (Blueprint $table) {
             $table->id();
             $table->string('numero_carta_conducao');
+            $table->string('tipo_carta_conducao');
             $table->date('data_emissao_carta_conducao');
             $table->date('data_validade_carta_conducao');
             $table->timestamps();

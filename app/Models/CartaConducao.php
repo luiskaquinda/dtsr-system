@@ -13,6 +13,7 @@ class CartaConducao extends Model
 
     protected $fillable = [
         'numero_carta_conducao',
+        'tipo_carta_conducao',
         'data_emissao_carta_conducao',
         'data_validade_carta_conducao'
     ];

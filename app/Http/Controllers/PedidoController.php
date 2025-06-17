@@ -18,7 +18,9 @@ use App\Models\{
     CaixaVeiculo,
     Veiculo,
     PedidoMatricula,
-    Documento
+    Documento,
+    TipoMulta,
+    Dtsr
 };
 
 use Carbon\Carbon;
@@ -63,6 +65,7 @@ class PedidoController extends Controller
                 $combustiveis = Combustivel::all();
                 $combustiveis = Combustivel::all();
                 $tipoCaixas = CaixaVeiculo::all();
+                $tipos_multa = TipoMulta::all();
                 $pesosBruto = PesoBruto::all();
                 $documentos = Documento::where('pedido_matricula_id', $id)->get();
                 $tipoPedido = 'Alteração de Características';
@@ -338,6 +341,8 @@ class PedidoController extends Controller
                 
             default:
                 session()->flash('error', 'Infelizmente o seu pedido não pode ser satisfeito!');
+
+                return redirect()->route('pedido.index');
         }
     }
 
@@ -349,6 +354,7 @@ class PedidoController extends Controller
 
         //
         switch ($request->tipo_pedido) {
+            
             case "Matricula":
                 
                 DB::beginTransaction();
@@ -371,6 +377,7 @@ class PedidoController extends Controller
 
                     $carta_conducao = CartaConducao::create([
                         'numero_carta_conducao' => $request->numero_carta_conducao,
+                        'tipo_carta_conducao' => $request->tipo_carta_conducao,
                         'data_emissao_carta_conducao' =>$dataEmissaoCartaConducao,
                         'data_validade_carta_conducao' =>$dataValidadeCartaConducao,
                     ]);
@@ -433,23 +440,12 @@ class PedidoController extends Controller
                         'proprietario_id' => $proprietario->id
                     ]);
 
-                    if($request->tipo_pedido == "Matricula") {
-
-                        $pedidoMatricula = PedidoMatricula::create([
-                            'status' => '0',
-                            'descricao' => 'Default',
-                            'tipo_pedido_id' => 1,
-                            'veiculo_id' => $veiculo->id
-                        ]);
-
-                    } else {
-                        $pedidoMatricula = PedidoMatricula::create([
-                            'status' => '0',
-                            'descricao' => 'Default',
-                            'tipo_pedido_id' => 2,
-                            'veiculo_id' => $veiculo->id
-                        ]);
-                    }
+                    $pedidoMatricula = PedidoMatricula::create([
+                        'status' => '0',
+                        'descricao' => 'Default',
+                        'tipo_pedido_id' => 1,
+                        'veiculo_id' => $veiculo->id
+                    ]);
 
                     if ($request->hasFile('documentos')) {
                         
@@ -478,48 +474,6 @@ class PedidoController extends Controller
                         return back()->with('error', 'O upload do arquivo falhou.');
                     }
                     
-                
-                    // if ($request->hasFile('documentos')) {
-
-                    //     $cont = 0;
-                    //     foreach ($request->file('documentos') as $key => $file) {
-
-                    //         $docNames = ['bilhete', 'modelo_o', 'compra_venda', 'recibo_pagamento'];
-
-                    //         if(($key == $docNames[$cont]) && (!empty($file))) {
-                                
-                    //             $originalName = str_replace(' ', '_', $file->getClientOriginalName());
-                    //             $userId = auth()->id();
-                    //             $fileName = $userId.$docNames[$cont].'_'.$originalName. time() . '.' . $file->getClientOriginalExtension();
-                    //             $tipoDocumento = $docNames[$cont];
-
-                    //             $cont++;
-                    //         } else {
-                                
-                    //             $cont++;
-                    //             continue;
-                    //         }
-
-                    //         if (!empty($fileName)) {
-                    //             $filePath = $file->storeAs('documentos', $fileName, 'public');
-                    //         }
-                
-                    //         // Criar um novo registro na tabela 'documentos'
-                    //         Documento::create([
-                    //             'url' => $filePath,
-                    //             'tipo_documento' => $tipoDocumento,
-                    //             'pedido_matricula_id' => $pedidoMatricula->id,
-                    //         ]);
-
-                    //     }
-                        
-                    // } else {
-
-                    //     return back()->with('error', 'O upload do arquivo falhou.');
-                    // }
-
-
-                    
                 DB::commit();
 
                 session()->flash('success', 'Pedido efectuado com sucesso');
@@ -527,6 +481,7 @@ class PedidoController extends Controller
                 return redirect()->route('pedido.index');
 
             case "Emissao":
+
                 
                 DB::beginTransaction();
 
@@ -548,6 +503,7 @@ class PedidoController extends Controller
 
                     $carta_conducao = CartaConducao::create([
                         'numero_carta_conducao' => $request->numero_carta_conducao,
+                        'tipo_carta_conducao' => $request->tipo_carta_conducao,
                         'data_emissao_carta_conducao' =>$dataEmissaoCartaConducao,
                         'data_validade_carta_conducao' =>$dataValidadeCartaConducao,
                     ]);
@@ -610,59 +566,59 @@ class PedidoController extends Controller
                         'proprietario_id' => $proprietario->id
                     ]);
 
-                    if($request->tipo_pedido == "Matricula") {
-
-                        $pedidoMatricula = PedidoMatricula::create([
-                            'status' => '0',
-                            'descricao' => 'Default',
-                            'tipo_pedido_id' => 1,
-                            'veiculo_id' => $veiculo->id
-                        ]);
-
-                    } else {
-                        $pedidoMatricula = PedidoMatricula::create([
-                            'status' => '0',
-                            'descricao' => 'Default',
-                            'tipo_pedido_id' => 2,
-                            'veiculo_id' => $veiculo->id
-                        ]);
-                    }
-                
-                    if ($request->hasFile('documentos')) {
-                        
-                        $docNames = ['bilhete', 'modelo_o', 'compra_venda', 'recibo_pagamento'];
                     
+                    $pedidoMatricula = PedidoMatricula::create([
+                        'status' => '0',
+                        'descricao' => 'Default',
+                        'tipo_pedido_id' => 2,
+                        'veiculo_id' => $veiculo->id
+                    ]);
+
+                if ($request->hasFile('documentos')) {
+
+                        $cont = 0;
                         foreach ($request->file('documentos') as $key => $file) {
-                            // Verifique se o arquivo foi realmente enviado
-                            if (!empty($file)) {
+        
+                            $docNames = ['bilhete', 'modelo_o', 'compra_venda', 'recibo_pagamento'];
+        
+                            if($key == $cont) {
                                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                                 $userId = auth()->id();
-                                $fileName = $userId.$key.'_'.$originalName. time() . '.' . $file->getClientOriginalExtension();
-                                $tipoDocumento = $key; // O $key é o nome do documento (ex: 'bilhete')
-                    
-                                // Salve o arquivo no diretório 'documentos' público
-                                $filePath = $file->storeAs('documentos', $fileName, 'public');
-                    
-                                // Criar um novo registro na tabela 'documentos'
-                                Documento::create([
-                                    'url' => $filePath,
-                                    'tipo_documento' => $tipoDocumento,
-                                    'pedido_matricula_id' => $pedidoMatricula->id,
-                                ]);
+                                $fileName = $userId.$docNames[$cont].'_'.$originalName. time() . '.' . $file->getClientOriginalExtension();
+                                $tipoDocumento = $docNames[$cont];
+        
+                                $cont++;
                             }
+        
+                            $filePath = $file->storeAs('documentos', $fileName, 'public');
+                
+                            // Criar um novo registro na tabela 'documentos'
+                            Documento::create([
+                                'url' => $filePath,
+                                'tipo_documento' => $tipoDocumento,
+                                'pedido_matricula_id' => $pedidoMatricula->id,
+                            ]);
+        
                         }
+                        
                     } else {
+        
                         return back()->with('error', 'O upload do arquivo falhou.');
                     }
                     
                 DB::commit();
+
+                dd($veiculo);
 
                 session()->flash('success', 'Pedido efectuado com sucesso');
 
                 return redirect()->route('pedido.index');
                     
             default:
+
                 session()->flash('error', 'Infelizmente o seu pedido não pode ser satisfeito!');
+
+                return redirect()->route('pedido.index');
         }
     }
 
@@ -679,9 +635,11 @@ class PedidoController extends Controller
         $provincias = Provincia::all();
         $pesosBruto = PesoBruto::all();
         $servicos = Servico::all();
+        $tipos_multa = TipoMulta::all();
+        $dtsrs = Dtsr::all();
         $documentos = Documento::where('pedido_matricula_id', $pedido->id)->get();
 
-        return view('admin.pedidos.veiculo.show', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'pesosBruto', 'servicos', 'documentos', 'provincias'));
+        return view('admin.pedidos.veiculo.show', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'pesosBruto', 'servicos', 'documentos', 'provincias', 'tipos_multa', 'dtsrs'));
     }
 
     /**
@@ -740,6 +698,7 @@ class PedidoController extends Controller
 
             $carta_conducao->update([
                 'numero_carta_conducao' => $request->numero_carta_conducao,
+                'tipo_carta_conducao' => $request->tipo_carta_conducao,
                 'data_emissao_carta_conducao' =>$dataEmissaoCartaConducao,
                 'data_validade_carta_conducao' =>$dataValidadeCartaConducao,
             ]);

@@ -63,10 +63,10 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="../dist/apps/projects/list.html" class="menu-link px-5">
+                            <a href="{{ route('notificacao.index', ['id' => Auth::user()]) }}" class="menu-link px-5">
                                 <span class="menu-text">Notificações</span>
                                 <span class="menu-badge">
-                                    <span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
+                                    <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ $quantidadeNotificacoes }}</span>
                                 </span>
                             </a>
                         </div>

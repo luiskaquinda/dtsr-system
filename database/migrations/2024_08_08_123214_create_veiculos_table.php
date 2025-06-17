@@ -24,6 +24,8 @@ return new class extends Migration
             $table->decimal('tara', 10, 2);
             $table->string('pais_origem');
             $table->unsignedBigInteger('matricula_id')
+                ->cascadeOnUpdate()
+                ->onDelete('cascade')
                 ->nullable();
             $table->string('ano_fabrico');
             $table->date('primeiro_registro')

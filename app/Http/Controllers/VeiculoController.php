@@ -63,7 +63,7 @@ class VeiculoController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request, $request->documentos);
+        dd($request, $request->documentos);
 
         DB::beginTransaction();
 
@@ -85,6 +85,7 @@ class VeiculoController extends Controller
 
             $carta_conducao = CartaConducao::create([
                 'numero_carta_conducao' => $request->numero_carta_conducao,
+                'tipo_carta_conducao' => $request->tipo_carta_conducao,
                 'data_emissao_carta_conducao' =>$dataEmissaoCartaConducao,
                 'data_validade_carta_conducao' =>$dataValidadeCartaConducao,
             ]);
@@ -263,6 +264,7 @@ class VeiculoController extends Controller
 
             $carta_conducao->update([
                 'numero_carta_conducao' => $request->numero_carta_conducao,
+                'tipo_carta_conducao' => $request->tipo_carta_conducao,
                 'data_emissao_carta_conducao' =>$dataEmissaoCartaConducao,
                 'data_validade_carta_conducao' =>$dataValidadeCartaConducao,
             ]);

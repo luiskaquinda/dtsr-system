@@ -9,7 +9,7 @@ class Multa extends Model
 {
     use HasFactory;
 
-    protected $table = 'multa';
+    protected $table = 'multas';
 
     protected $fillable = [
         'importancia_pagar',
