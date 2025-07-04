@@ -72,5 +72,21 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('quantidadeNotificacoes', $quantidadeNotificacoes);
         });
+
+        View::composer('notificoes.furtos_acidentes_roubos.partials.header-primary', function ($view) {
+            $user = Auth::user();
+            $quantidadeNotificacoes = 0;
+
+            if ($user && $user->proprietario) {
+            // Filtrar notificações apenas para os veículos associados ao proprietário do usuário autenticado
+                $quantidadeNotificacoes = Notificacao::whereHas('veiculos', function ($query) use ($user) {
+                        $query->whereHas('proprietario', function ($subQuery) use ($user) {
+                            $subQuery->where('user_id', $user->id);
+                        });
+                })->count();
+            }
+
+            $view->with('quantidadeNotificacoes', $quantidadeNotificacoes);
+        });
     }
 }

@@ -1,5 +1,5 @@
 @extends('admin.pedidos.layout.app')
-@section('title', 'pedidos')
+@section('title', 'Notificações')
 
 @section('content')
 
@@ -34,13 +34,6 @@
                     </select>
                     <!--end::Select2-->
                 </div>
-                
-                <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
-                <!--end::Add product-->
-                <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
-                <!--end::Add product-->
             </div>
         </div>
         <!--end::Card header-->
@@ -101,14 +94,10 @@
                                 <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Editar</a>
-                                    </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">
+                                        <a href="{{ route('notificacao.show', $notificacao->id) }}" class="menu-link px-3">
                                             Ver
                                         </a>
                                     </div>
@@ -122,7 +111,7 @@
                                             {{-- <button type="submit" class="menu-link px-3">Delete</button> --}}
 
                                             <a class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_stacked_1">
-                                                Ver
+                                                Apagar
                                             </a>
 
                                         </form>

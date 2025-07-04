@@ -17,10 +17,13 @@ class NotificacaoController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(string $id)
     {
         //
+
         $notificacoes = $this->obterNotificacoesDoUsuario($id);
+
         $tipos_notificacao = TipoNotificacao::all();
 
         // dd($proprietario, $id, $notificacoes);
@@ -28,13 +31,12 @@ class NotificacaoController extends Controller
         return view('notificoes.index', compact('notificacoes', 'tipos_notificacao'));
     }
 
+    public function alertas() {
+        
+        return view('notificoes.furtos_acidentes_roubos.index');
+    }
+
     public function obterNotificacoesDoUsuario($id) {
-        // Obtenha o usuário com suas notificações de veículos
-        // $notificacoes = User::where('id', $id)
-        //     ->with('proprietario.veiculo.notificacoes')
-        //     ->get()
-        //     ->pluck('proprietario.veiculo.*.notificacoes')
-        //     ->flatten();
 
         $notificacoes = Notificacao::whereHas('veiculos', function ($query) use ($id) {
             $query->whereHas('proprietario', function ($query) use ($id) {
@@ -72,6 +74,8 @@ class NotificacaoController extends Controller
         $proprietario = Proprietario::findOrFail($user->id);
         $veiculos = Veiculo::where('proprietario_id', $proprietario->id)->get();
 
+        dd($veiculos);
+
         // Criar um array para armazenar os IDs das notificações para cada veículo
         $notificacoesPorVeiculo = [];
 
@@ -81,47 +85,7 @@ class NotificacaoController extends Controller
             $notificacoesPorVeiculo[$veiculo->id] = $notificacoesIds;
         }
 
-        // dd($notificacoesPorVeiculo, $veiculos, $user->proprietario->veiculo);
-
-
-        // $user = User::findOrFail($id);
-        // $propietario = Proprietario::findOrFail($user->id);
-        // $veiculos = Veiculo::where('propietario_id', $propietario->id)->get();
-        // $notificacoes = Notificacao::all();
-
-        // foreach($veiculos as $veiculo) {
-        //     $idVeiculo = $veiculo->id;
-        //     foreach($notificacoes as $notificacao) {
-
-        //     }
-        // }
-
-        // $user = User::find($id);
-        // $proprietario = $user->proprietario;
-
-        // // Passo 2: Recuperar os veículos do proprietário
-        // $veiculos = $proprietario->veiculos;
-
-        // // Passo 3: Buscar o veículo que tem a notificação
-        // $veiculoComNotificacao = $veiculos->filter(function($veiculo) {
-        //     return $veiculo->notificacoes->isNotEmpty();  // Verifica se o veículo tem notificações
-        // })->first();
-
-        // dd($veiculoComNotificacao);
-
-        // // Busca as notificações do usuário via relacionamentos
-        // $notificacoes = $user->proprietario()
-        //     ->with('veiculos.notificacoes') // Carrega notificações relacionadas a veículos
-        //     ->get()
-        //     ->pluck('veiculos') // Obtém a coleção de veículos
-        //     ->flatten()
-        //     ->pluck('notificacoes') // Obtém as notificações dos veículos
-        //     ->flatten();
-
-        // Conta as notificações
-        // $quantidadeNotificacoes = $notificacoes->count();
-
-        // dd($notificacoes, $quantidadeNotificacoes);
+        dd($notificacoesPorVeiculo);
 
         return view('notificoes.show');
     }

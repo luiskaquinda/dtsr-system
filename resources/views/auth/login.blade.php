@@ -1,51 +1,3 @@
-{{-- <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout> --}}
-
 @extends('admin.auth.layout.app')
 @section('title', 'Login')
 
@@ -60,6 +12,42 @@
                     <!--begin::Wrapper-->
                     <div class="w-lg-500px p-10 p-lg-15 mx-auto">
                         <!--begin::Form-->
+
+                        <!--begin::Alert-->
+                        @if($errors->any())
+                            <div class="alert alert-dismissible bg-light-danger border border-danger d-flex flex-column flex-sm-row p-5 mb-10">
+                                <!--begin::Icon-->
+                                <i class="ki-duotone ki-information-3 fs-2hx text-danger me-4 mb-5 mb-sm-0">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                                <!--end::Icon-->
+
+                                <!--begin::Wrapper-->
+                                <div class="d-flex flex-column pe-0 pe-sm-10">
+                                    <!--begin::Title-->
+                                    <h5 class="mb-1">Atenção!</h5>
+                                    <!--end::Title-->
+                                    @foreach($errors->all() as $error)
+                                        <!--begin::Content-->
+                                        <span>{{ $error }}</span>
+                                        <!--end::Content--> 
+                                        <br>
+                                    @endforeach
+                                </div>
+                                <!--end::Wrapper-->
+
+                                <!--begin::Close-->
+                                <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                    <i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+                                </button>
+                                <!--end::Close-->
+                            </div>
+                        @endif
+                        
+                        <!--end::Alert-->
+
                         <form class="form w-100" method="POST" action="{{ route('login') }}">
 
                             @method('POST')
@@ -69,11 +57,6 @@
                             <div class="text-center mb-10">
                                 <!--begin::Title-->
                                 <h1 class="text-dark mb-3">Bem Vindo ao DTSR-System</h1>
-                                <!--end::Title-->
-                                <!--begin::Link-->
-                                    {{-- <div class="text-gray-400 fw-semibold fs-4">New Here?
-                                    <a href="../dist/authentication/sign-up/basic.html" class="link-primary fw-bold">Create an Account</a></div> --}}
-                                <!--end::Link-->
                             </div>
                             <!--begin::Heading-->
                             <!--begin::Input group-->

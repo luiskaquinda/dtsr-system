@@ -48,13 +48,27 @@ Route::middleware('auth')->group(
 
 // Notificações
 
+// Route::get('/', function () {
+//     return view('index');
+// })->name('notificacao.home');
+
+Route::get('/notificar/detalhes', function() {
+    return view('notificoes.furtos_acidentes_roubos.details');
+});
+
+
+
+
 Route::middleware('auth')->group(
     function() {
 
-        Route::get('/notificacao/index/{id}', [NotificacaoController::class, 'index'])->name('notificacao.index');
+        Route::get('/notificacao/index/{id}/', [NotificacaoController::class, 'index'])->name('notificacao.index');
 
         Route::get('/notificacao/{id}', [NotificacaoController::class, 'show'])->name('notificacao.show');
 
+        Route::get('/notificacao/create', [NotificacaoController::class, 'create'])->name('notificacao.create');
+
+        Route::get('/alertas', [NotificacaoController::class, 'alertas'])->name('notificacao.alertas.index');
     }
 );
 
@@ -62,10 +76,8 @@ Route::middleware('auth')->group(
 // Matricula
 
 Route::middleware('auth')->group(
-    function() {
-        
+    function() {   
         Route::put('/matricula/{id}/', [MatriculaController::class, 'gerarMatricula'])->name('matricula.update');
-
     }
 );
 

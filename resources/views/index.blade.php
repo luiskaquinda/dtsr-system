@@ -28,7 +28,7 @@
                             </span>
                         </div>
                     </a>
-                    <a href="{{ route('pedido.index') }}" class="card col-4 py-8 mb-4 mx-2 hover-elevate-up shadow-sm parent-hover tipo-item">
+                    <a href="{{ route('notificacao.alertas.index') }}" class="card col-4 py-8 mb-4 mx-2 hover-elevate-up shadow-sm parent-hover tipo-item">
                         <div class="card-body d-flex align-items">
                             <span class="svg-icon fs-1">
                                 3
