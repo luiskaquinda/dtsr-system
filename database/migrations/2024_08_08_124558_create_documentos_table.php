@@ -25,11 +25,6 @@ return new class extends Migration
                 ->constrained('multas')
                 ->cascadeOnUpdate()
                 ->onDelete('cascade');
-            $table->foreignId('notificacao_id')
-                ->nullable()
-                ->constrained('notificacoes')
-                ->cascadeOnUpdate()
-                ->onDelete('cascade');
             $table->timestamps();
         });
 

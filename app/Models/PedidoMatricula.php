@@ -12,6 +12,7 @@ class PedidoMatricula extends Model
     protected $table = 'pedidos_matriculas';
 
     protected $fillable = [
+        'codigopedido',
         'status',
         'descricao',
         'tipo_pedido_id',

@@ -577,6 +577,7 @@ class PedidoController extends Controller
                 if ($request->hasFile('documentos')) {
 
                         $cont = 0;
+                        
                         foreach ($request->file('documentos') as $key => $file) {
         
                             $docNames = ['bilhete', 'modelo_o', 'compra_venda', 'recibo_pagamento'];

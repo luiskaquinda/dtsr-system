@@ -60,6 +60,14 @@ class User extends Authenticatable
         );
     }
 
+    public function alertas() {
+        return $this->hasMany(
+            Alerta::class,
+            'user_id',
+            'id'
+        );
+    }
+
     public function roles() {
         return $this->belongsToMany(Role::class);
     }

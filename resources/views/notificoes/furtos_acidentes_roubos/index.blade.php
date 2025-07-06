@@ -17,6 +17,7 @@
                         <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
                             <!--begin::Toolbar wrapper-->
                             <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+
                                 <!--begin::Page title-->
                                 <div class="page-title d-flex flex-column gap-3 me-3">
                                     <!--begin::Title-->
@@ -168,9 +169,10 @@
                                 <div class="m-0">
                                     <!--begin::Select-->
                                     <select name="status" data-control="select2" data-hide-search="true" class="form-select form-select-sm bg-body border-body fw-bold w-125px">
-                                        <option value="Active" selected="selected">Furtos</option>
-                                        <option value="Approved">Acidentes</option>
-                                        <option value="Declined">Outros</option>
+                                        <option value="Active" selected="selected">Todos</option>
+                                        @foreach ($tipos_notificacao as $tipo)
+                                        <option value="{{ $tipo->id }}">{{ $tipo->tipo }}</option>
+                                        @endforeach
                                     </select>
                                     <!--end::Select-->
                                 </div>
@@ -183,240 +185,75 @@
                         <!--begin::Row-->
                         <div class="row g-6 g-xl-9">
                             <!--begin::Col-->
-                            <div class="col-md-6 col-xl-4">
-                                <!--begin::Card-->
-                                <a href="#" class="card border-hover-primary">
-                                    <!--begin::Card header-->
-                                    <div class="card-header border-0 pt-9">
-                                        <!--begin::Card Title-->
-                                        <div class="card-title m-0">
-                                            <!--begin::Avatar-->
-                                            <div class="w-100 bg-light">
-                                                <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3" />
+                            @foreach ($alertas as $alerta)
+                                <div class="col-md-6 col-xl-4">
+                                    <!--begin::Card-->
+                                    <div class="card position-relative" href="{{ route('alertas.show', $alerta->id) }}" class="card border-hover-primary">
+                                        <!--begin::Card header-->
+                                        <div class="card-header border-0 pt-9">
+                                            <!--begin::Card Title-->
+                                            <div class="card-title m-0">
+                                                
+                                                
+                                                <!--begin::Avatar-->
+                                                <div class="w-100 h-100 bg-light text-center">
+                                                    @if($alerta->imagem)
+                                                    {{-- <div class=" w-100 symbol symbol-200px">
+                                                        <div
+                                                          class="symbol-label"
+                                                          style="background-image: url('{{ asset('storage/' . $alerta->imagem) }}')"
+                                                        ></div>
+                                                    </div> --}}
+                                                        <img
+                                                            src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                            class="img-fluid rounded"
+                                                            alt="Imagem do alerta"
+                                                        >
+                                                    @else
+                                                        <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
+                                                    @endif
+                                                </div>
+                                                <!--end::Avatar-->
                                             </div>
-                                            <!--end::Avatar-->
+                                            <!--end::Car Title-->
+                                            <!--begin::Card toolbar-->
+                                            <div class="card-toolbar w-100">
+                                                <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In Progress</span>
+                                            </div>
+                                            <!--end::Card toolbar-->
                                         </div>
-                                        <!--end::Car Title-->
-                                        <!--begin::Card toolbar-->
-                                        <div class="card-toolbar">
-                                            <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In Progress</span>
+                                        <!--end:: Card header-->
+                                        <!--begin:: Card body-->
+                                        <div class="card-body p-9">
+                                            <!--begin::Name-->
+                                            <div class="fs-3 fw-bold text-dark">{{ $alerta->titulo }}</div>
+                                            <!--end::Name-->
+                                            <!--begin::Description-->
+                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">{{ $alerta->descricao }}</p>
+                                            <!--end::Description-->
+                                            <!--begin::Info-->
+                                            <div class="d-flex flex-wrap mb-5">
+                                                <!--begin::Due-->
+                                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
+                                                    <div class="fs-6 text-gray-800 fw-bold">{{ $alerta->data_ocorrido }}</div>
+                                                    <div class="fw-semibold text-gray-400">Criado em: {{ $alerta->created_at }}</div>
+                                                </div>
+                                                <!--end::Due-->
+
+                                                <a href="#" class="btn btn-dark  stretched-link">Ver mais</a>
+                                            </div>
+                                            <!--end::Info-->
                                         </div>
-                                        <!--end::Card toolbar-->
+                                        <!--end:: Card body-->
                                     </div>
-                                    <!--end:: Card header-->
-                                    <!--begin:: Card body-->
-                                    <div class="card-body p-9">
-                                        <!--begin::Name-->
-                                        <div class="fs-3 fw-bold text-dark">Acidente de Viação na Routunda do Cavaco</div>
-                                        <!--end::Name-->
-                                        <!--begin::Description-->
-                                        <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">A viatura vinha do lado inferior...</p>
-                                        <!--end::Description-->
-                                        <!--begin::Info-->
-                                        <div class="d-flex flex-wrap mb-5">
-                                            <!--begin::Due-->
-                                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                <div class="fs-6 text-gray-800 fw-bold">Fev 21, 2023</div>
-                                                <div class="fw-semibold text-gray-400">12h30</div>
-                                            </div>
-                                            <!--end::Due-->
-                                        </div>
-                                        <!--end::Info-->
-                                        <!--begin::Users-->
-                                        <div class="symbol-group symbol-hover">
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Emma Smith">
-                                                <img alt="Pic" src="assets/media/avatars/300-6.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Rudy Stone">
-                                                <img alt="Pic" src="assets/media/avatars/300-1.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Susan Redwood">
-                                                <span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                            </div>
-                                            <!--begin::User-->
-                                        </div>
-                                        <!--end::Users-->
-                                    </div>
-                                    <!--end:: Card body-->
-                                </a>
-                                <!--end::Card-->
-                            </div>
+                                    <!--end::Card-->
+                                </div>
+                            @endforeach
                             <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-md-6 col-xl-4">
-                                <!--begin::Card-->
-                                <a href="#" class="card border-hover-primary">
-                                    <!--begin::Card header-->
-                                    <div class="card-header border-0 pt-9">
-                                        <!--begin::Card Title-->
-                                        <div class="card-title m-0">
-                                            <!--begin::Avatar-->
-                                            <div class="w-100 bg-light">
-                                                <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3" />
-                                            </div>
-                                            <!--end::Avatar-->
-                                        </div>
-                                        <!--end::Car Title-->
-                                        <!--begin::Card toolbar-->
-                                        <div class="card-toolbar">
-                                            <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In Progress</span>
-                                        </div>
-                                        <!--end::Card toolbar-->
-                                    </div>
-                                    <!--end:: Card header-->
-                                    <!--begin:: Card body-->
-                                    <div class="card-body p-9">
-                                        <!--begin::Name-->
-                                        <div class="fs-3 fw-bold text-dark">Acidente de Viação na Routunda do Cavaco</div>
-                                        <!--end::Name-->
-                                        <!--begin::Description-->
-                                        <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">A viatura vinha do lado inferior...</p>
-                                        <!--end::Description-->
-                                        <!--begin::Info-->
-                                        <div class="d-flex flex-wrap mb-5">
-                                            <!--begin::Due-->
-                                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                <div class="fs-6 text-gray-800 fw-bold">Fev 21, 2023</div>
-                                                <div class="fw-semibold text-gray-400">12h30</div>
-                                            </div>
-                                            <!--end::Due-->
-                                        </div>
-                                        <!--end::Info-->
-                                        <!--begin::Users-->
-                                        <div class="symbol-group symbol-hover">
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Emma Smith">
-                                                <img alt="Pic" src="assets/media/avatars/300-6.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Rudy Stone">
-                                                <img alt="Pic" src="assets/media/avatars/300-1.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Susan Redwood">
-                                                <span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                            </div>
-                                            <!--begin::User-->
-                                        </div>
-                                        <!--end::Users-->
-                                    </div>
-                                    <!--end:: Card body-->
-                                </a>
-                                <!--end::Card-->
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-md-6 col-xl-4">
-                                <!--begin::Card-->
-                                <a href="#" class="card border-hover-primary">
-                                    <!--begin::Card header-->
-                                    <div class="card-header border-0 pt-9">
-                                        <!--begin::Card Title-->
-                                        <div class="card-title m-0">
-                                            <!--begin::Avatar-->
-                                            <div class="w-100 bg-light">
-                                                <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3" />
-                                            </div>
-                                            <!--end::Avatar-->
-                                        </div>
-                                        <!--end::Car Title-->
-                                        <!--begin::Card toolbar-->
-                                        <div class="card-toolbar">
-                                            <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In Progress</span>
-                                        </div>
-                                        <!--end::Card toolbar-->
-                                    </div>
-                                    <!--end:: Card header-->
-                                    <!--begin:: Card body-->
-                                    <div class="card-body p-9">
-                                        <!--begin::Name-->
-                                        <div class="fs-3 fw-bold text-dark">Acidente de Viação na Routunda do Cavaco</div>
-                                        <!--end::Name-->
-                                        <!--begin::Description-->
-                                        <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">A viatura vinha do lado inferior...</p>
-                                        <!--end::Description-->
-                                        <!--begin::Info-->
-                                        <div class="d-flex flex-wrap mb-5">
-                                            <!--begin::Due-->
-                                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                <div class="fs-6 text-gray-800 fw-bold">Fev 21, 2023</div>
-                                                <div class="fw-semibold text-gray-400">12h30</div>
-                                            </div>
-                                            <!--end::Due-->
-                                        </div>
-                                        <!--end::Info-->
-                                        <!--begin::Users-->
-                                        <div class="symbol-group symbol-hover">
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Emma Smith">
-                                                <img alt="Pic" src="assets/media/avatars/300-6.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Rudy Stone">
-                                                <img alt="Pic" src="assets/media/avatars/300-1.jpg" />
-                                            </div>
-                                            <!--begin::User-->
-                                            <!--begin::User-->
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Susan Redwood">
-                                                <span class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                            </div>
-                                            <!--begin::User-->
-                                        </div>
-                                        <!--end::Users-->
-                                    </div>
-                                    <!--end:: Card body-->
-                                </a>
-                                <!--end::Card-->
-                            </div>
-                            <!--end::Col-->
+
+                            {{ $alertas->links() }}
                         </div>
                         <!--end::Row-->
-
-                        <!--begin::Pagination-->
-                        <div class="d-flex flex-stack flex-wrap pt-10">
-                            <div class="fs-6 fw-semibold text-gray-700">Showing 1 to 10 of 50 entries</div>
-                            <!--begin::Pages-->
-                            <ul class="pagination">
-                                <li class="page-item previous">
-                                    <a href="#" class="page-link">
-                                        <i class="previous"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">3</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">4</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">5</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">6</a>
-                                </li>
-                                <li class="page-item next">
-                                    <a href="#" class="page-link">
-                                        <i class="next"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--end::Pages-->
-                        </div>
-                        <!--end::Pagination-->
                     </div>
                     <!--end::Content-->
                 </div>
@@ -429,4 +266,80 @@
     <!--end::Wrapper-->
 
     @include('notificoes.furtos_acidentes_roubos.create')
+    
 @endsection
+@push('anonimo')
+    <script>
+        // Captura os elementos
+        const toggle = document.getElementById('anonima');
+        const nomeContainer = document.getElementById('nomeContainer');
+    
+        // Função que mostra ou esconde o input
+        function atualizaVisibilidade() {
+            // Se estiver marcado (anônimo), esconda o campo de nome
+            if (toggle.checked) {
+                nomeContainer.style.display = 'none';
+            } else {
+                nomeContainer.style.display = 'block';
+            }
+        }
+    
+        // Atacha o listener ao change do checkbox
+        toggle.addEventListener('change', atualizaVisibilidade);
+    
+        // Inicializa o estado ao carregar a página
+        atualizaVisibilidade();
+    </script>
+    
+    {{-- Toaster de susseco --}}
+    <script>
+        @if(session('success'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('success') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>
+
+    {{-- Toaster de erro --}}
+    <script>
+        @if(session('error'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('error') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>
+@endpush

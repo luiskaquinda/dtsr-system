@@ -55,6 +55,8 @@
 		    <script src="{{ asset('/admin/js/custom/authentication/sign-in/general.js') }}"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
+
+		@stack('validacao')
 	</body>
 	<!--end::Body-->
 </html>

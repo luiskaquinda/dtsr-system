@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notificacao;
 
+use Illuminate\Pagination\Paginator;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+        Paginator::useBootstrapFive();
 
         View::composer('admin.partials.header-primary', function ($view) {
             $user = Auth::user();

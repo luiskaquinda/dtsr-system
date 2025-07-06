@@ -36,7 +36,7 @@ class NotificacaoController extends Controller
         return view('notificoes.furtos_acidentes_roubos.index');
     }
 
-    public function obterNotificacoesDoUsuario($id) {
+    public function obterNotificacoesParaOUsuario($id) {
 
         $notificacoes = Notificacao::whereHas('veiculos', function ($query) use ($id) {
             $query->whereHas('proprietario', function ($query) use ($id) {

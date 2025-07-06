@@ -13,6 +13,7 @@ use App\Http\Controllers\{
     MatriculaController,
     MultaController,
     NotificacaoController,
+    AlertaController,
     User
 };
 
@@ -68,7 +69,11 @@ Route::middleware('auth')->group(
 
         Route::get('/notificacao/create', [NotificacaoController::class, 'create'])->name('notificacao.create');
 
-        Route::get('/alertas', [NotificacaoController::class, 'alertas'])->name('notificacao.alertas.index');
+        Route::get('/alertas', [AlertaController::class, 'index'])->name('notificacao.alertas.index');
+
+        Route::post('/alertas/store', [AlertaController::class, 'store'])->name('notificacao.alertas.store');
+
+        Route::get('/alertas/{id}', [AlertaController::class, 'show'])->name('alertas.show');
     }
 );
 

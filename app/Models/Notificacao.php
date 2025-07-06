@@ -12,10 +12,7 @@ class Notificacao extends Model
     protected $table = 'notificacoes';
 
     protected $fillable = [
-        'nome_notificando',
-        'anonima',
         'descricao',
-        'tipo_notificacao_id'
     ];
 
     public function documento() {

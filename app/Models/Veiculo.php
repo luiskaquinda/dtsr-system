@@ -80,6 +80,14 @@ class Veiculo extends Model
         );
     }
 
+    public function multa() {
+        return $this->hasMany(
+            Multa::class,
+            'veiculo_id',
+            'id'
+        );
+    }
+
     public function proprietario() {
         return $this->belongsTo(
             Proprietario::class,

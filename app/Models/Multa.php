@@ -13,10 +13,13 @@ class Multa extends Model
 
     protected $fillable = [
         'importancia_pagar',
+        'codigomulta',
         'infracao_artigo',
+        'descricao',
         'documento_apreendido',
         'tipo_multa_id',
         'agente_id',
+        'veiculo_id',
         'proprietario_id'
     ];
 
@@ -36,10 +39,10 @@ class Multa extends Model
         );
     }
 
-    public function tipo_multa() {
+    public function veiculo() {
         return $this->belongsTo(
-            TipoMulta::class,
-            'tipo_multa_id',
+            Veiculo::class,
+            'veiculo_id',
             'id'
         );
     }

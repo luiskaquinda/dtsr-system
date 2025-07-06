@@ -165,6 +165,8 @@
 			@endif
 		</script>
 		<!--end::Custom Javascript-->
+
+		@stack('anonimo')
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->

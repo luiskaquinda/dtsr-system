@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pedidos_matriculas', function (Blueprint $table) {
             $table->id();
+            $table->string('codigopedido')->unique();
             $table->string('status')
                 ->comment('Vai armazenar o status do pedido, se foi aceite ou não');
             $table->text('descricao');
