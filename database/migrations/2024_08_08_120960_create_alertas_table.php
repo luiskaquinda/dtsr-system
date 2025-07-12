@@ -15,12 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->date('data_ocorrido');
+            $table->time('hora_ocorrido');
             $table->string('codigoalerta')->unique();
             $table->boolean('anonima')->nullable();
             $table->string('nome_denuciante')->nullable();
             $table->text('descricao');
             $table->string('imagem')
                 ->nullable();
+            $table->unsignedBigInteger('municipio_id');
+            $table->foreign('municipio_id')
+                ->references('id')
+                ->on('municipios')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->unsignedBigInteger('tipo_alerta_id');
             $table->foreign('tipo_alerta_id')
                 ->references('id')
@@ -33,6 +40,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->string('status')->default('aberto');
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ use App\Http\Controllers\{
     MultaController,
     NotificacaoController,
     AlertaController,
-    User
+    User,
+    ConfirmacaoController
 };
 
 /*
@@ -74,8 +75,20 @@ Route::middleware('auth')->group(
         Route::post('/alertas/store', [AlertaController::class, 'store'])->name('notificacao.alertas.store');
 
         Route::get('/alertas/{id}', [AlertaController::class, 'show'])->name('alertas.show');
+    
+        Route::get('/tiposdealerta/{id}', [AlertaController::class, 'alertaportipo'])->name('alertas.tipo');
+
+        Route::get('/alertas/list/{id}', [AlertaController::class, 'list'])->name('alertas.list');
     }
 );
+
+Route::middleware('auth')->group(function () {
+    // Criar confirmação
+    Route::post('confirmacoes/store/{id}', [ConfirmacaoController::class, 'store'])->name('confirmacao.store');
+    
+    // Remover confirmação
+    Route::delete('confirmacoes/delete/{id}', [ConfirmacaoController::class, 'destroy'])->name('confirmacao.destroy');
+});
 
 
 // Matricula

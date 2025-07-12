@@ -58,16 +58,24 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="../dist/account/overview.html" class="menu-link px-5">My Profile</a>
+                            <a href="../dist/account/overview.html" class="menu-link px-5">Meu Perfil</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="{{ route('notificacao.index', ['id' => Auth::user()]) }}" class="menu-link px-5">
-                                <span class="menu-text">Minhas Notificações</span>
+                                <span class="menu-text">Notificações</span>
                                 <span class="menu-badge">
                                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ $quantidadeNotificacoes }}</span>
                                 </span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-5">
+                            <a href="{{ route('alertas.list', ['id' => Auth::user()]) }}" class="menu-link px-5">
+                                <span class="menu-text">Minhas Alertas</span>
                             </a>
                         </div>
                         <!--end::Menu item-->

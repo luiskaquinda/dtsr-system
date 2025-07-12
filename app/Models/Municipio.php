@@ -39,4 +39,12 @@ class Municipio extends Model
             'id'
         );
     }
+
+    public function alertas() {
+        return $this->hasMany(
+            Alerta::class,
+            'municipio_id',
+            'id'
+        );
+    }
 }

@@ -68,6 +68,22 @@ class User extends Authenticatable
         );
     }
 
+    public function confirmacoes() {
+        return $this->hasMany(
+            User::class,
+            'user_id',
+            'id'
+        );
+    }
+
+    public function alertasConfirmados()
+    {
+        return $this->belongsToMany(
+            Alerta::class,
+            'confirmacoes'
+        )->withTimestamps();
+    }
+
     public function roles() {
         return $this->belongsToMany(Role::class);
     }

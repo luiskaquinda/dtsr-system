@@ -47,14 +47,18 @@
                                     <div class="mb-13">
                                         <!--begin::Title-->
                                         <div class="mb-9">
-                                            <h3 class="fs-2qx fw-bold text-dark">Acidente na Rodovia Luanda Benguela</h3>
-                                            <span class="fs-5 fw-semibold text-gray-400">Publicado por: Anonimo</span>
+                                            <h3 class="fs-2qx fw-bold text-dark">{{ $alerta->titulo }}</h3>
+                                            @if (($alerta->anonima == 1) || ($alerta->anonima !== 0))
+                                                <span class="fs-5 fw-semibold text-gray-400">Publicado por: Anonimo</span>
+                                            @else
+                                                <span class="fs-5 fw-semibold text-gray-400">Publicado por: {{ $alerta->nome_denuciante }}</span>
+                                            @endif
                                         </div>
                                         <!--end::Title-->
                                         <!--begin::Wrapper-->
                                         <div class="mb-11">
                                             <!--begin::Image-->
-                                            <img class="card-rounded min-h-325px w-100" src="{{ asset('admin/media/stock/1600x800/img-3.jpg') }}" alt="">
+                                            <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/' . $alerta->imagem) }}" alt="">
                                             <!--end::Image-->
                                         </div>
                                         <!--end::Wrapper-->
@@ -99,73 +103,30 @@
                                 <div class="card card-flush bg-body mb-9">
                                     <!--begin::Card header-->
                                     <div class="card-header">
-                                        <h4 class="card-title fw-bold text-gray-800 fs-2">Publicações recentes</h4>
+                                        <h4 class="card-title fw-bold text-gray-800 fs-2">Alertas recentes</h4>
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
                                     <div class="card-body pt-2">
-                                        <!--begin::Item-->
-                                        <div class="d-flex align-items-center mb-7">
-                                            <!--begin::Symbol-->
-                                            <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                <div class="symbol-label" style="background-image: url('assets/media/stock/600x400/img-79.jpg')"></div>
+                                        @foreach ($alertas as $alerta_item)
+                                            <!--begin::Item-->
+                                            <div class="d-flex align-items-center mb-7">
+                                                <!--begin::Symbol-->
+                                                <div class="symbol symbol-60px symbol-2by3 me-4">
+                                                    <div class="symbol-label" style="background-image: url({{ asset('storage/' . $alerta_item->imagem)}})"></div>
+                                                </div>
+                                                <!--end::Symbol-->
+                                                <!--begin::Title-->
+                                                <div class="m-0">
+                                                    <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $alerta_item->titulo }}</a>
+                                                    <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">{{ $alerta_item->descricao }}...</span>
+                                                </div>
+                                                <!--end::Title-->
                                             </div>
-                                            <!--end::Symbol-->
-                                            <!--begin::Title-->
-                                            <div class="m-0">
-                                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">Roubos constantes no bairro da camunda</a>
-                                                <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">Há um mês se tem registrado roubos constantes no bairro da camunda...</span>
-                                            </div>
-                                            <!--end::Title-->
-                                        </div>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <div class="d-flex align-items-center mb-7">
-                                            <!--begin::Symbol-->
-                                            <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                <div class="symbol-label" style="background-image: url('assets/media/stock/600x400/img-19.jpg')"></div>
-                                            </div>
-                                            <!--end::Symbol-->
-                                            <!--begin::Title-->
-                                            <div class="m-0">
-                                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">Acidentes na via Lobito Benguela</a>
-                                                <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">Vários acidentes registrados no ultimo mês na provincia de Benguela...</span>
-                                            </div>
-                                            <!--end::Title-->
-                                        </div>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <div class="d-flex align-items-center mb-7">
-                                            <!--begin::Symbol-->
-                                            <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                <div class="symbol-label" style="background-image: url('assets/media/stock/600x400/img-72.jpg')"></div>
-                                            </div>
-                                            <!--end::Symbol-->
-                                            <!--begin::Title-->
-                                            <div class="m-0">
-                                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">Furto no estacionamento do Kero</a>
-                                                <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">Foi-me furtado uma viatura no parque do Kero as...</span>
-                                            </div>
-                                            <!--end::Title-->
-                                        </div>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <div class="d-flex align-items-center">
-                                            <!--begin::Symbol-->
-                                            <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                <div class="symbol-label" style="background-image: url('assets/media/stock/600x400/img-50.jpg')"></div>
-                                            </div>
-                                            <!--end::Symbol-->
-                                            <!--begin::Title-->
-                                            <div class="m-0">
-                                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">Assalto a Mão Armadada</a>
-                                                <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">Assaltaram-me os bens...</span>
-                                            </div>
-                                            <!--end::Title-->
-                                        </div>
-                                        <!--end::Item-->
+                                            <!--end::Item-->
+                                        @endforeach
                                         <!--begin::Link-->
-                                        <a href="../dist/pages/blog/home.html" class="text-primary opacity-75-hover pt-8 fs-6 fw-semibold d-block">Ler mais</a>
+                                        <a href="{{ route('notificacao.alertas.index') }}" class="text-primary opacity-75-hover pt-8 fs-6 fw-semibold d-block">Ler mais</a>
                                         <!--end::Link-->
                                     </div>
                                     <!--end::Card body-->
@@ -184,7 +145,7 @@
                                         <div class="mb-6">
                                             <!--begin::Link-->
                                             <a href="#" class="mb-6">
-                                                <img src="assets/media/svg/brand-logos/facebook-4.svg" class="h-20px me-2" alt="" />
+                                                <img src="{{ asset('admin/media/svg/brand-logos/facebook-4.svg') }}" class="h-20px me-2" alt="" />
                                                 <span class="text-gray-700 text-hover-primary fs-5 mb-6">Facebook</span>
                                             </a>
                                             <!--end::Link-->
@@ -194,7 +155,7 @@
                                         <div class="mb-6">
                                             <!--begin::Link-->
                                             <a href="#" class="mb-6">
-                                                <img src="assets/media/svg/brand-logos/github.svg" class="h-20px me-2" alt="" />
+                                                <img src="{{ asset('admin/media/svg/brand-logos/github.svg') }}" class="h-20px me-2" alt="" />
                                                 <span class="text-gray-700 text-hover-primary fs-5 mb-6">Github</span>
                                             </a>
                                             <!--end::Link-->
@@ -204,7 +165,7 @@
                                         <div class="mb-6">
                                             <!--begin::Link-->
                                             <a href="#" class="mb-6">
-                                                <img src="assets/media/svg/brand-logos/twitter.svg" class="h-20px me-2" alt="" />
+                                                <img src="{{ asset('admin/media/svg/brand-logos/twitter.svg') }}" class="h-20px me-2" alt="" />
                                                 <span class="text-gray-700 text-hover-primary fs-5 mb-6">Twitter</span>
                                             </a>
                                             <!--end::Link-->
@@ -214,7 +175,7 @@
                                         <div class="mb-6">
                                             <!--begin::Link-->
                                             <a href="#" class="mb-6">
-                                                <img src="assets/media/svg/brand-logos/dribbble-icon-1.svg" class="h-20px me-2" alt="" />
+                                                <img src="{{ asset('admin/media/svg/brand-logos/dribbble-icon-1.svg') }}" class="h-20px me-2" alt="" />
                                                 <span class="text-gray-700 text-hover-primary fs-5 mb-6">Dribbble</span>
                                             </a>
                                             <!--end::Link-->
@@ -224,7 +185,7 @@
                                         <div class="">
                                             <!--begin::Link-->
                                             <a href="#" class="mb-6">
-                                                <img src="assets/media/svg/brand-logos/instagram-2016.svg" class="h-20px me-2" alt="" />
+                                                <img src="{{ asset('admin/media/svg/brand-logos/instagram-2016.svg') }}" class="h-20px me-2" alt="" />
                                                 <span class="text-gray-700 text-hover-primary fs-5 mb-6">Instagram</span>
                                             </a>
                                             <!--end::Link-->

@@ -15,19 +15,35 @@ class Alerta extends Model
     protected $fillable = [
         'titulo',
         'data_ocorrido',
+        'hora_ocorrido',
         'codigoalerta',
         'anonima',
         'nome_denuciante',
         'descricao',
         'imagem',
+        'municipio_id',
         'tipo_alerta_id',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
-    public function tipo_notificacao() {
+    protected $casts = [
+        'data_ocorrido'    => 'date',      // só data
+        'hora_ocorrido'    => 'datetime:H:i', // só hora
+    ];
+
+    public function tipos_notificacoes() {
         return $this->belongsTo(
             TipoNotificacao::class,
             'tipo_notificacao_id',
+            'id'
+        );
+    }
+
+    public function municipio() {
+        return $this->belongsTo(
+            Municipio::class,
+            'municipio_id',
             'id'
         );
     }
@@ -40,6 +56,35 @@ class Alerta extends Model
         );
     }
 
+    public function confirmacoes() {
+        return $this->hasMany(
+            Confirmacao::class,
+            'alerta_id',
+            'id'
+        );
+    }
+
+    public function usuariosQueConfirmaram()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'confirmacoes'
+        )->withTimestamps();
+    }
+
+    // Helper para contar confirmações
+    public function confirmacoesCount(): int
+    {
+        return $this->confirmacoes()->count();
+    }
+
+    public function isConfirmedBy(\App\Models\User $user): bool
+    {
+        // Usa o relacionamento muitos‑para‑muitos
+        return $this->usuariosQueConfirmaram()
+                    ->where('user_id', $user->id)
+                    ->exists();
+    }
 
     public static function gerarCodigoAlerta(): string
     {
@@ -66,5 +111,7 @@ class Alerta extends Model
 
         return "{$userId}{$date}{$proximoSeq}";
     }
+
+
 
 }

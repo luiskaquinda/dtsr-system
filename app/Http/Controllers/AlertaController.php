@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\{
     Alerta,
-    TipoNotificacao
+    TipoNotificacao,
+    Municipio
 };
 use Illuminate\Http\Request;
 use Str;
@@ -19,12 +20,17 @@ class AlertaController extends Controller
     public function index()
     {
         //
-        
-        $alertas = Alerta::orderBy('created_at', 'desc')
-        ->paginate(3);
-        $tipos_notificacao = TipoNotificacao::all();
+        $user = auth()->user();
 
-        return view('notificoes.furtos_acidentes_roubos.index', compact('alertas', 'tipos_notificacao'));
+        // Carrega todos os alertas + relacionamento de quem confirmou
+        $alertas = Alerta::with(['usuariosQueConfirmaram', 'tipos_notificacoes'])
+                        ->latest()
+                        ->paginate(3);
+
+        $tipos_notificacao = TipoNotificacao::all();
+        $municipios = Municipio::all();
+
+        return view('notificoes.furtos_acidentes_roubos.index', compact('alertas', 'tipos_notificacao', 'municipios', 'user'));
     }
 
     /**
@@ -47,7 +53,9 @@ class AlertaController extends Controller
             'anonimo'           => 'nullable|boolean',
             'nome_denuciante'   => 'nullable|string|max:100',
             'titulo'            => 'required|string|max:255',
+            'municipio_id'      => 'required|string|max:100',
             'data_ocorrido'     => 'required|date|date_format:Y-m-d',
+            'hora_ocorrido'     => 'required|date_format:H:i',
             'tipo_alerta'       => 'required|in:1,2,3,4,6',
             'descricao'         => 'required|string',
             'imagem'            => 'nullable|image|max:2048',
@@ -67,12 +75,14 @@ class AlertaController extends Controller
                 'anonima'           => $request->boolean('anonima') ?? 0,
                 'titulo'            => $data['titulo'],
                 'data_ocorrido'     => $data['data_ocorrido'],
+                'hora_ocorrido'     => $data['hora_ocorrido'],
                 'codigoalerta'      => Alerta::gerarCodigoAlerta(),
                 'nome_denuciante'   => (($data['nome_denuciante'] !== "") || ($data['nome_denuciante'] !== null)) ? $data['nome_denuciante'] : null,
 
                 'descricao'         => $data['descricao'],
                 'imagem'            => $path,
 
+                'municipio_id'      => $data['municipio_id'],
                 'tipo_alerta_id'    => $data['tipo_alerta'],
                 'user_id'           => Auth::id() ?? null,
             ]);
@@ -87,16 +97,22 @@ class AlertaController extends Controller
     
             return redirect()
                 ->route('notificacao.alertas.index')
-                ->with('error', 'Desculpe, ocorreu um erro ao salvar o alerta. Tente novamente mais tarde.');
+                ->with('error', 'Desculpe, ocorreu um erro ao salvar o alerta. Tente novamente!');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Alerta $alerta)
+    public function show($id)
     {
         //
+        $alerta = Alerta::where('id', $id)->first();
+        $alertas = Alerta::all();
+        $tipos_notificacao = TipoNotificacao::all();
+        $municipios = Municipio::all();
+
+        return view('notificoes.furtos_acidentes_roubos.details', compact('alerta', 'alertas', 'municipios', 'tipos_notificacao'));
     }
 
     /**
@@ -105,6 +121,37 @@ class AlertaController extends Controller
     public function edit(Alerta $alerta)
     {
         //
+    }
+
+    public function alertaportipo($id) {
+        $tipos_notificacao = TipoNotificacao::all();
+        $municipios = Municipio::all();
+
+        $user = auth()->user();
+        
+        $alertas = Alerta::with('usuariosQueConfirmaram', 'tipos_notificacoes', 'municipio')
+                     ->where('tipo_alerta_id', $id)
+                     ->orderBy('created_at', 'desc')
+                     ->paginate(3);
+
+        $tipoAtual = TipoNotificacao::findOrFail($id);
+
+        // dd( $alertas->tipo_notificac->tipo );
+
+        return view(
+            'notificoes.furtos_acidentes_roubos.alertascategoria',
+            compact('alertas', 'tipos_notificacao', 'tipoAtual', 'municipios', 'user')
+        );
+    }
+
+
+    public function list($id) {
+        $alertas = Alerta::all()
+                 ->where('user_id', $id);
+
+        $tipos_alerta = TipoNotificacao::all();
+
+        return view('notificoes.furtos_acidentes_roubos.list', compact('alertas', 'tipos_alerta'));
     }
 
     /**

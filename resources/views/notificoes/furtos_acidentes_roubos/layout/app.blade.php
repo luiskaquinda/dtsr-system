@@ -97,6 +97,17 @@
 		<!--end::App-->
 	
 		<!--begin::Javascript-->
+
+		{{-- Form Validator --}}
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<!-- Bootstrap 5 JS -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+		
+			<!-- FormValidation core + plugin Bootstrap 5 -->
+			<script src="https://cdn.jsdelivr.net/npm/formvalidation@1.10.0/dist/js/FormValidation.full.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/formvalidation@1.10.0/dist/js/plugins/Bootstrap5.min.js"></script>
+		{{-- End Form Validator  --}}
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="{{ asset('admin/plugins/global/plugins.bundle.js') }}"></script>

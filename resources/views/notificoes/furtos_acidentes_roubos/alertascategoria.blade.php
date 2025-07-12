@@ -1,5 +1,5 @@
 @extends('notificoes.furtos_acidentes_roubos.layout.app')
-@section('title', 'Sentinel - Benguela')
+@section('title', 'Categorias')
 
 @section('content')
 
@@ -65,14 +65,6 @@
                         <!--end::Toolbar container-->
                     </div>
                     <!--end::Toolbar-->
-
-                    {{-- Mensagens de erro genérico --}}
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
                     <!--begin::Content-->
                     <div id="kt_app_content" class="app-content pb-0">
                         
@@ -177,9 +169,13 @@
                                 <div class="m-0">
                                     <!--begin::Select-->
                                     <select name="status" data-control="select2" data-hide-search="true" class="form-select form-select-sm bg-body border-body fw-bold w-125px" onchange="if (this.value) window.location = this.value">
-                                        <option value="Active" selected="selected">Todos</option>
+                                        
+                                        <option value="{{ route('notificacao.alertas.index') }}">
+                                            Todos
+                                        </option>
+
                                         @foreach ($tipos_notificacao as $tipo)
-                                            <option value="{{ route('alertas.tipo', $tipo->id) }}">
+                                            <option value="{{ route('alertas.tipo', $tipo->id) }}" selected>
                                                 {{ $tipo->tipo }}
                                             </option>
                                         @endforeach
@@ -195,7 +191,7 @@
                         <!--begin::Row-->
                         <div class="row g-6 g-xl-9">
                             <!--begin::Col-->
-                            @forelse ($alertas as $alerta)
+                                @forelse ($alertas as $alerta)
                                     <div class="col-md-6 col-xl-4">
                                         <!--begin::Card-->
                                         <div class="card position-relative" class="card border-hover-primary">
@@ -208,13 +204,6 @@
                                                     <!--begin::Avatar-->
                                                     <div class="w-100 h-100 bg-light text-center">
                                                         @if($alerta->imagem)
-                                                        {{-- <div class=" w-100 symbol symbol-200px">
-                                                            <div
-                                                            class="symbol-label"
-                                                            style="background-image: url('{{ asset('storage/' . $alerta->imagem) }}')"
-                                                            ></div>
-                                                        </div> --}}
-
                                                             <div class="symbol symbol-200px">
                                                                 <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
                                                                     <img
@@ -233,7 +222,7 @@
                                                 <!--end::Car Title-->
                                                 <!--begin::Card toolbar-->
                                                 <div class="card-toolbar w-100">
-                                                    <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">Assalto</span>
+                                                    <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">{{ $alerta->tipos_notificacoes?->tipo ?? 'Undefined' }}</span>
                                                 </div>
                                                 <!--end::Card toolbar-->
                                             </div>
@@ -291,29 +280,28 @@
                                         </div>
                                         <!--end::Card-->
                                     </div>
-                            @empty
-                                <!--begin::Alert-->
-                                    <div class="alert alert-dismissible bg-light-danger d-flex flex-column flex-sm-row p-5 mb-10">
-                                        <!--begin::Icon-->
-                                        <i class="ki-duotone ki-notification-bing fs-2hx text-danger me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
-                                        <!--end::Icon-->
+                                @empty
+                                    <!--begin::Alert-->
+                                        <div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-notification-bing fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                            <!--end::Icon-->
 
-                                        <!--begin::Wrapper-->
-                                        <div class="d-flex flex-column pe-0 pe-sm-10">
-                                            <!--begin::Title-->
-                                            <h4 class="fw-semibold">Alerta!</h4>
-                                            <!--end::Title-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-column pe-0 pe-sm-10">
+                                                <!--begin::Title-->
+                                                <h4 class="fw-semibold">Alerta!</h4>
+                                                <!--end::Title-->
 
-                                            <!--begin::Content-->
-                                            <span>Felizmente sem alertas.</span>
-                                            <!--end::Content-->
+                                                <!--begin::Content-->
+                                                <span>Felizmente sem alertas deste tipo.</span>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
                                         </div>
-                                        <!--end::Wrapper-->
-                                    </div>
-                                <!--end::Alert-->
-                            @endforelse
+                                    <!--end::Alert-->
+                                @endforelse
                             <!--end::Col-->
-                            
                             {{ $alertas->links() }}
                         </div>
                         <!--end::Row-->
@@ -329,49 +317,9 @@
     <!--end::Wrapper-->
 
     @include('notificoes.furtos_acidentes_roubos.create')
-    @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            // use o ID do <div class="modal">, não do <form>
-            var myModal = new bootstrap.Modal(
-                document.getElementById('kt_modal_scrollable_2')
-            );
-            myModal.show();
-            });
-        </script>
-    @endif
     
 @endsection
 @push('anonimo')
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        $('#kt_modal_scrollable_2').on('shown.bs.modal', function () {
-            $('#selectTipoAlertaModal')   // <<< este id deve existir no <select>
-            .select2({
-                placeholder: 'Selecione um tipo de alerta...',
-                allowClear:  true,
-                minimumResultsForSearch: 0,   // 0 = sempre mostrar a caixa de busca
-                dropdownParent: $('#kt_modal_scrollable_2')
-            });
-        });
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        $('#kt_modal_scrollable_2').on('shown.bs.modal', function () {
-            $('#selectMunicipio')   // <<< este id deve existir no <select>
-            .select2({
-                placeholder: 'Selecione o municipio...',
-                allowClear:  true,
-                minimumResultsForSearch: 0,   // 0 = sempre mostrar a caixa de busca
-                dropdownParent: $('#kt_modal_scrollable_2')
-            });
-        });
-        });
-    </script>
-
     <script>
         // Captura os elementos
         const toggle = document.getElementById('anonima');
@@ -445,147 +393,4 @@
             // toastr.success("Logado", "Login efetuado com sucesso!");
         @endif
     </script>
-
-    {{-- Validação na criação do alert --}}
-
-    {{-- <script>
-
-        // Define form element
-        document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById('alerta');
-
-        modal.addEventListener('shown.bs.modal', function () {
-            // Se já existir uma instância anterior, destrua-a:
-            if (modal.fv) {
-            modal.fv.dispose();
-            }
-
-            // Cria nova instância de validação
-            modal.fv = FormValidation.formValidation(
-            document.getElementById('formCreateAlerta'),
-            {
-                fields: {
-                    'titulo': {
-                        validators: {
-                        notEmpty: {
-                            message: 'O título é obrigatório entendeu!'
-                        },
-                        stringLength: {
-                            max: 255,
-                            message: 'Máximo de 255 caracteres'
-                        }
-                        }
-                    },
-                    'data_ocorrido': {
-                        validators: {
-                        notEmpty: { message: 'A data é obrigatória' },
-                        date: {
-                            format: 'YYYY-MM-DD',
-                            message: 'Use o formato YYYY-MM-DD'
-                        }
-                        }
-                    },
-                    'tipo_alerta': {
-                        validators: {
-                        notEmpty: { message: 'Selecione um tipo de alerta' }
-                        }
-                    },
-
-                    // adicione regras para os demais campos…
-                },
-
-                plugins: {
-
-                    
-                    trigger: new FormValidation.plugins.Trigger(),
-                    trigger: new FormValidation.plugins.Trigger({
-                        // aqui você mapeia campos → eventos
-                        event: {
-                        // para o campo “titulo”, dispare também em `input`
-                            titulo: ['input', 'blur']
-                        }
-                    }),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: '.fv-row',
-                        eleInvalidClass: '',
-                        eleValidClass: ''
-                    }),
-
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // opcional: impedir dupla submissão
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                },
-            }
-            );
-        });
-        });
-
-    </script> --}}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          // Ajuste: pegue o modal pelo ID da DIV, não do form
-          var modal = document.getElementById('kt_modal_scrollable_2');
-        
-          modal.addEventListener('shown.bs.modal', function () {
-            // Se já existir uma instância anterior, destrua-a
-            if (modal.fv) {
-              modal.fv.dispose();
-            }
-        
-            // Ajuste: use o ID “formCreateAlerta” que deve existir no seu <form>
-            modal.fv = FormValidation.formValidation(
-              document.getElementById('formCreateAlerta'),
-              {
-                fields: {
-                  titulo: {
-                    validators: {
-                      notEmpty: {
-                        message: 'O título é obrigatório entendeu!'
-                      },
-                      stringLength: {
-                        max: 255,
-                        message: 'Máximo de 255 caracteres'
-                      }
-                    }
-                  },
-                  data_ocorrido: {
-                    validators: {
-                      notEmpty: { message: 'A data é obrigatória' },
-                      date: {
-                        format: 'YYYY-MM-DD',
-                        message: 'Use o formato YYYY-MM-DD'
-                      }
-                    }
-                  },
-                  tipo_alerta: {
-                    validators: {
-                      notEmpty: { message: 'Selecione um tipo de alerta' }
-                    }
-                  }
-                  // … outros campos
-                },
-                plugins: {
-                  // Declara o Trigger apenas uma vez, com os eventos que deseja
-                  trigger: new FormValidation.plugins.Trigger({
-                    event: {
-                      titulo:        ['input', 'blur'],   // valida ao digitar e ao sair
-                      data_ocorrido: ['change', 'blur'],  // datepicker → change
-                      tipo_alerta:   ['change']           // select → change
-                    }
-                  }),
-                  bootstrap: new FormValidation.plugins.Bootstrap5({
-                    rowSelector: '.fv-row',
-                    eleInvalidClass: '',
-                    eleValidClass: ''
-                  }),
-                  submitButton: new FormValidation.plugins.SubmitButton(),
-                  defaultSubmit: new FormValidation.plugins.DefaultSubmit()
-                }
-              }
-            );
-          });
-        });
-    </script>
-        
 @endpush
