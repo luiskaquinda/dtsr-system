@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class TipoMulta extends Model
+{
+    use HasFactory;
+    protected $table = 'tipos_multa';
+    protected $fillable = [
+        'tipo'
+    ];
+
+    public function multa() {
+        return $this->hasMany(
+            Multa::class,
+            'tipo_multa_id',
+            'id'
+        );
+    }
+}
