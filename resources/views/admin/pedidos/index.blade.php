@@ -3,28 +3,6 @@
 
 @section('content')
 
-    {{-- <!--begin::Serviços-->
-    <div class="container-fluid d-flex justify-content-center tipo-container">
-        <!--begin::Card body-->
-            <div class="row mb-4 text-center tipo-content align-self-center">
-                @foreach ($tipoPedidos as $tipoPedido)
-                    <a href="{{ route('pedido.create', ['id' => $tipoPedido->id]) }}" class="card col-6 py-8 mb-4 mx-2 hover-elevate-up shadow-sm parent-hover tipo-item">
-                        <div class="card-body d-flex align-items">
-                            <span class="svg-icon fs-1">
-                                {{ $tipoPedido->id }}
-                            </span>
-
-                            <span class="ms-3 text-gray-700 parent-hover-primary fs-6 fw-bold">
-                                {{ $tipoPedido->tipo }}
-                            </span>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        <!--end::Card body-->
-    </div>
-    <!--end::Serviços--> --}}
-
     <h1 class="text-black fw-semibold px-9 mt-10 mb-6">Lista de Pedidos</h1>
 
     <!--begin::Listagem de Veiculos-->
@@ -57,10 +35,10 @@
                 </div>
                 
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "Emissao"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
                 <!--end::Add product-->
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "Matricula"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
                 <!--end::Add product-->
             </div>
         <!--end::Card toolbar-->

@@ -6,6 +6,17 @@
         @csrf
         @method('PUT')
 
+        {{-- erros gerais --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $erro)
+                        <li> {{ $erro }} </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row p-4">
             <div data-kt-stepper-element="content">
                 <!--begin::Wrapper-->
@@ -35,9 +46,12 @@
                             </label>
                             <!--end::Label-->
 
-                            <input type="text" id="nome_completo" name="nome_completo" class="form-control" placeholder="First name" aria-label="First name"
+                            <input type="text" id="nome_completo" name="nome_completo" class="form-control @error('nome_completo') is-invalid @enderror" placeholder="First name" aria-label="First name"
                             value="{{ $veiculo->proprietario->nome_completo ?? old('nome_completo') }}"
                             >
+                            @error('nome_completo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -225,6 +239,43 @@
                                 value="{{ $veiculo->proprietario->carta_conducao->numero_carta_conducao ?? old('numero_carta_conducao') }}"
                                 >
                             </div>
+                        </div>
+
+                        <div class="col mb-0">
+                            <!--begin::Label-->
+                            <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                <span class="required">Tipo de Carta</span>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Qual o tipo de carta?">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                            </label>
+                            <!--end::Label-->
+                            {{-- <select class="form-select" name="tipo_carta_conducao"  data-control="select2" data-placeholder="Selecione o tipo de carta">
+                                <option value=""></option>
+                                <option value="{{ isset($veiculo->proprietario->carta_conducao->tipo_carta_conducao)  ? 'selected' : 'Ligeiro'}}">Ligeiro</option>
+                                <option value="{{ isset($veiculo->proprietario->carta_conducao->tipo_carta_conducao)  ? 'selected' : 'Ligeiro Profissional'}}">Ligeiro Profissional</option>
+                                <option value="{{ isset($veiculo->proprietario->carta_conducao->tipo_carta_conducao)  ? 'selected' : 'Pesado'}}">Pesado</option>
+                                <option value="{{ isset($veiculo->proprietario->carta_conducao->tipo_carta_conducao)  ? 'selected' :  'Outro'}}">Outro</option>
+                            </select> --}}
+
+                            @php
+                                $tipoAtual = old(
+                                    'tipo_carta_conducao',
+                                    optional($veiculo->proprietario->carta_conducao)->tipo_carta_conducao
+                                );
+                            @endphp
+
+                            <select name="tipo_carta_conducao" class="form-select" data-control="select2">
+                                <option value=""></option>
+                                <option value="Ligeiro" {{ $tipoAtual === 'Ligeiro' ? 'selected' : '' }}>Ligeiro</option>
+                                <option value="Ligeiro Profissional" {{ $tipoAtual === 'Ligeiro Profissional' ? 'selected' : '' }}>Ligeiro Profissional</option>
+                                <option value="Pesado" {{ $tipoAtual === 'Pesado' ? 'selected' : '' }}>Pesado</option>
+                                <option value="Outro" {{ $tipoAtual === 'Outro' ? 'selected' : '' }}>Outro</option>
+                            </select>
                         </div>
 
                         <div class="row g-3 mb-4">
@@ -692,9 +743,21 @@
                                 </label>
                                 <!--end::Label-->
 
-                                <input type="text" class="form-control" name="ano_fabrico" placeholder="Altura da Caixa" aria-label="First name"
-                                value="{{ isset($veiculo->ano_fabrico) ? \Carbon\Carbon::parse($veiculo->ano_fabrico)->format('m/d/Y') : old('ano_fabrico') }}"
+                                <input type="number"
+                                    class="form-control @error('ano_fabrico') is-invalid @enderror"
+                                    name="ano_fabrico"
+                                    placeholder="Ano de fabrico"
+                                    aria-label="Ano de fabrico"
+                                    min="1900"
+                                    max="{{ date('Y') }}"
+                                    step="1"
+                                    value="{{ old('ano_fabrico', isset($veiculo->ano_fabrico) ? \Carbon\Carbon::parse($veiculo->ano_fabrico)->format('Y') : '') }}"
                                 >
+
+                                @error('ano_fabrico')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
                             </div>
 
                             <div class="col">
@@ -857,8 +920,15 @@
                                     <span class="text-danger">Sem ficheiro</span>
                                 @endif
                             </div>
-                        
-                            <input class="form-control" type="file" id="bilhete" name="documentos[]">
+                            <input
+                                class="form-control @error('documentos.bilhete') is-invalid @enderror"
+                                type="file"
+                                id="bilhete"
+                                name="documentos[bilhete]"
+                            >
+                            @error('documentos.bilhete')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         
 
@@ -887,7 +957,15 @@
                                     <span class="text-danger">Sem ficheiro</span>
                                 @endif
                             </div>
-                            <input class="form-control" type="file" id="modelo_o" name="documentos[]">
+                            <input
+                                class="form-control @error('documentos.modelo_o') is-invalid @enderror"
+                                type="file"
+                                id="modelo_o"
+                                name="documentos[modelo_o]"
+                            >
+                            @error('documentos.modelo_o')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -912,7 +990,15 @@
                                     <span class="text-danger">Sem ficheiro</span>
                                 @endif
                             </div>
-                            <input class="form-control" type="file" id="compra_venda" name="documentos[]">
+                            <input
+                                class="form-control @error('documentos.compra_venda') is-invalid @enderror"
+                                type="file"
+                                id="compra_venda"
+                                name="documentos[compra_venda]"
+                            >
+                            @error('documentos.compra_venda')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -924,7 +1010,7 @@
                         
                                 @foreach ($documentos as $documento)    
                                     @if ($documento->tipo_documento == 'recibo_pagamento' && isset($documento->url))
-                                        <strong>Registro Inicial ou Modelo O:</strong> 
+                                        <strong>Recibo de Pagamento:</strong> 
                                         <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                         @php
                                             $encontrado = true;
@@ -937,7 +1023,15 @@
                                     <span class="text-danger">Sem ficheiro</span>
                                 @endif
                             </div>
-                            <input class="form-control" type="file" id="recibo_pagamento" name="documentos[]">
+                            <input
+                                class="form-control @error('documentos.recibo_pagamento') is-invalid @enderror"
+                                type="file"
+                                id="recibo_pagamento"
+                                name="documentos[recibo_pagamento]"
+                            >
+                            @error('documentos.recibo_pagamento')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </fieldset> 
 

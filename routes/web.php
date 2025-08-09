@@ -15,7 +15,8 @@ use App\Http\Controllers\{
     NotificacaoController,
     AlertaController,
     User,
-    ConfirmacaoController
+    ConfirmacaoController,
+    DashboardController
 };
 
 /*
@@ -33,9 +34,14 @@ Route::get('/', function () {
     return view('index');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return view('/admin/dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('/admin/dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('auth');
+
 
 // Multas
 
@@ -79,6 +85,19 @@ Route::middleware('auth')->group(
         Route::get('/tiposdealerta/{id}', [AlertaController::class, 'alertaportipo'])->name('alertas.tipo');
 
         Route::get('/alertas/list/{id}', [AlertaController::class, 'list'])->name('alertas.list');
+
+        Route::get('/alertas/edit/{id}', [AlertaController::class, 'edit'])->name('alertas.edit');
+
+        Route::post('/alertas/fechar/{id}', [AlertaController::class, 'fechar'])->name('alertas.fechar');
+
+        Route::post('/alertas/abrir/{id}', [AlertaController::class, 'abrir'])->name('alertas.abrir');
+
+        Route::post('/alertas/update/{id}', [AlertaController::class, 'update'])->name('alertas.update');
+
+        Route::delete('alertas/delete/{id}', [AlertaController::class, 'destroy'])
+        ->name('alertas.destroy')
+        ->middleware('auth');
+
     }
 );
 
@@ -171,11 +190,13 @@ Route::middleware('auth')->group(
 
         
         Route::post('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'storeAlteracaoCaracteristicasDuplicados'])->middleware('can:registar_pedido')->name('pedido.acd.store');
+        
         Route::get('/pedido/create/acd/{id}/{tipoPedido}', [PedidoController::class, 'createAlteracaoCaracteristicasDuplicados'])->middleware('can:registar_pedido')->name('pedido.acd.create');
 
         // [Editar] Pedido
         
         Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->middleware('can:editar_pedido')->name('pedido.edit');
+        
         Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->middleware('can:editar_pedido')->name('pedido.update');
 
         // [Deletar] Pedido

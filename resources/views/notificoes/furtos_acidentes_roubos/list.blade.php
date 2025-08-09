@@ -30,10 +30,19 @@
                     <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Selecionar" data-kt-ecommerce-product-filter="status">
                         <option></option>
                         <option value="all">Todos</option>
-                        <option value="scheduled">Processando</option>
+                        <option value="aberto">Aberto</option>
+                        <option value="fechado">Fechado</option>
                     </select>
                     <!--end::Select2-->
                 </div>
+
+                <!--begin::Actions-->
+                <div class="d-flex align-items-center gap-3 gap-lg-5">
+                    <!--begin::Primary button-->
+                    <a href="#" class="btn btn-flex btn-center btn-dark btn-sm px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2">Alertar</a>
+                    <!--end::Primary button-->
+                </div>
+                <!--end::Actions-->
             </div>
         </div>
         <!--end::Card header-->
@@ -95,25 +104,53 @@
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--end::Menu item-->
+
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">
-                                            Editar
-                                        </a>
+                                        <a href="{{ route('alertas.show', $alerta->id) }}" class="menu-link px-3">Ver</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <form method="POST" action="#">
-                                            @csrf
-                                            @method('delete')
+                                        <a href="{{ route('alertas.edit', $alerta->id) }}" class="menu-link px-3">Editar</a>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        @switch($alerta->status)
+                                            @case('aberto')
+                                                <form action="{{ route('alertas.fechar', $alerta->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Tem certeza que deseja fechar este alerta?');">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <input type="hidden" name="status" value="fechado">
+                                                        <button type="submit" class=" btn menu-link px-3 bg-danger text-white">Fechar</button>
+                                                </form>
+                                                @break
+                                            @case('fechado')
+                                                <form action="{{ route('alertas.abrir', $alerta->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Tem certeza que deseja abrir este alerta?');">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <input type="hidden" name="status" value="aberto">
+                                                        <button type="submit" class=" btn menu-link px-3 bg-warning text-white">Abrir</button>
+                                                </form>
+                                                @break
+                                            @default
+                                                
+                                        @endswitch
+                                    </div>
 
-                                            {{-- <button type="submit" class="menu-link px-3">Delete</button> --}}
-
-                                            <a class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_stacked_1">
-                                                Apagar
-                                            </a>
-
+                                    <div class="menu-item px-3">
+                                        <form action="{{ route('alertas.destroy', $alerta->id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Tem certeza que deseja apagar este alerta?');">
+                                                @csrf
+                                                @method('DELETE')
+    
+                                                <button type="submit" class="menu-link px-3 bg-danger text-white" style="border: none;">Delete</button>
                                         </form>
                                     </div>
                                     <!--end::Menu item-->
@@ -152,14 +189,16 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Editar</a>
+                                        <a href="{{ route('alertas.edit', $alerta->id) }}" class="menu-link px-3">Editar</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <form method="POST" action="#">
-                                            @csrf
-                                            @method('delete')
+                                        <form action="{{ route('alertas.destroy', $alerta->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Tem certeza que deseja apagar este alerta?');">
+                                          @csrf
+                                          @method('DELETE')
 
                                             <button type="submit" class="menu-link px-3">Delete</button>
 
@@ -176,12 +215,141 @@
             <!--end::Table-->
         </div>
         <!--end::Card body-->
+
+        @include('notificoes.furtos_acidentes_roubos.create')
     </div>
     <!--end::Listagem de Veiculos-->
 
 @endsection
 
+@push('css_imagem')
+    <style>
+        #kt_header_search .custom-search {
+            display: none !important;
+        }
+    </style>
+@endpush
+
+@push('toaster')
+
+    <script>
+        // Captura os elementos
+        const toggle = document.getElementById('anonima');
+        const nomeContainer = document.getElementById('nomeContainer');
+
+        // Função que mostra ou esconde o input
+        function atualizaVisibilidade() {
+            // Se estiver marcado (anônimo), esconda o campo de nome
+            if (toggle.checked) {
+                nomeContainer.style.display = 'none';
+            } else {
+                nomeContainer.style.display = 'block';
+            }
+        }
+
+        // Atacha o listener ao change do checkbox
+        toggle.addEventListener('change', atualizaVisibilidade);
+
+        // Inicializa o estado ao carregar a página
+        atualizaVisibilidade();
+    </script>
+
+    {{-- Toaster de susseco --}}
+    <script>
+        @if(session('success'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('success') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>
+
+    {{-- Toaster de erro --}}
+    <script>
+        @if(session('error'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('error') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>    
+        
+@endpush
+
 @section('custom_js')
+
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var editModal = document.getElementById('modalEditAlerta');
+        
+            editModal.addEventListener('show.bs.modal', function (event) {
+                // 1) Quem clicou
+                var button = event.relatedTarget;
+            
+                // 2) Extrai os data-attributes
+                var id                 = button.getAttribute('data-id');
+                var anonima            = button.getAttribute('data-anonima');
+                var nome_denunciante   = button.getAttribute('data-nome_denunciante');
+                var titulo             = button.getAttribute('data-titulo');
+                var data               = button.getAttribute('data-data');
+                var hora               = button.getAttribute('data-hora');
+                var descricao          = button.getAttribute('data-descricao');
+                var tipo               = button.getAttribute('data-tipo');
+                var municipio          = button.getAttribute('data-municipio');
+                var imagem             = button.getAttribute('data-imagem');
+            
+                // 3) Preenche os campos do form
+                document.getElementById('titulo').value     = titulo;
+                document.getElementById('anonima').value     = anonima;
+                document.getElementById('nome_denunciante').value     = nome_denunciante;
+                document.getElementById('data_ocorrido').value       = data;
+                document.getElementById('descricao').value  = descricao;
+                document.getElementById('tipo_alerta').value       = tipo;
+                document.getElementById('municipio_id').value  = municipio;
+            
+                // 4) Ajusta a action do form para chamar a rota de update
+                var form = document.getElementById('formEditAlerta');
+                form.action = '/alertas/' + id; 
+                // ou, se quiser usar named route via Blade:
+                // form.action = "{{ url('alertas') }}/" + id;
+                // ou
+                // form.action = "{{ route('alertas.update', '') }}/" + id;
+            });
+        });
+    </script> --}}
+    
     <script src="{{ asset('admin/js/custom/apps/ecommerce/catalog/products.js') }}"></script>
     <script src="{{ asset('admin/js/custom/apps/chat/chat.js')}}"></script>
     <script src="{{ asset('admin/js/custom/utilities/modals/upgrade-plan.js') }}"></script>

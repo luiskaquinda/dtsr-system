@@ -33,7 +33,7 @@
 
                 @can('atribuir_matricula')
                     @if ($pedido->veiculo->matricula_id == null)
-                        <a href="../dist/account/settings.html" class="btn btn-sm btn-warning align-self-center text-center"
+                        <a href="#" class="btn btn-sm btn-warning align-self-center text-center"
                         type="button" data-bs-toggle="modal" data-bs-target="#atribuir_matricula"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-plus-fill" viewBox="0 0 16 16">

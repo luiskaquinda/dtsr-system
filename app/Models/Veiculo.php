@@ -72,6 +72,14 @@ class Veiculo extends Model
         );
     }
 
+    // protected static function booted()
+    // {
+    //     static::deleting(function ($veiculo) {
+    //         // deleta todos os pedidos antes de remover o veículo
+    //         $veiculo->pedidos_matriculas()->delete();
+    //     });
+    // }
+
     public function pesos_bruto() {
         return $this->belongsTo(
             PesoBruto::class,

@@ -82,7 +82,7 @@ class MatriculaController extends Controller
     public function gerarMatricula(Request $request, string $id)
     {
         
-        $pedido = PedidoMatricula::where('veiculo_id', $id)->first();
+        $pedido = PedidoMatricula::where('id', $id)->first();
         $classes = ClasseVeiculo::all();
         $combustiveis = Combustivel::all();
         $tipoCaixas = CaixaVeiculo::all();
@@ -94,15 +94,10 @@ class MatriculaController extends Controller
         $documentos = Documento::where('pedido_matricula_id', $pedido->id)->get();
 
         // Recuperar o veículo
-        $veiculo = Veiculo::find($id);
+        $veiculo = Veiculo::find($pedido->veiculo_id);
         $provincias = Provincia::all();
 
         $provinciaAbreviacao = $request->provincia;
-
-        // Busca a última matrícula da província especificada
-        // $ultimaMatricula = Matricula::whereRelation('provincia', 'abreviacao_provincia', $provinciaAbreviacao)
-        // ->orderByDesc('id')
-        // ->first();
 
         foreach($provincias as $provincia) {
             if($provinciaAbreviacao == $provincia->nome_provincia) {

@@ -246,6 +246,8 @@
 			});
 		</script>
 
+		@stack('toaster')
+
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

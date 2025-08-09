@@ -56,30 +56,23 @@ class MultaController extends Controller
         DB::beginTransaction();
             
             Multa::create([
+                'codigomulta' => Multa::gerarCodigoMulta(),
                 'importancia_pagar' => $importancia_pagar,
                 'infracao_artigo' => $request->infracao_artigo,
+                'descricao' => $mensagem,
                 'documento_apreendido' => $request->documento_apreendido,
                 'tipo_multa_id' => $request->tipo_de_multa,
                 'agente_id' => $agente->id, //Na verdade esse seria o user_id
-                'proprietario_id' => $veiculo->proprietario_id
+                'proprietario_id' => $veiculo->proprietario_id,
+                'veiculo_id' => $veiculo->id
             ]);
-
-            $notificacao = Notificacao::create([
-                'nome_notificando' => $proprietario->nome_completo,
-                'anonima' => 0,
-                'descricao' => $mensagem,
-                'tipo_notificacao_id' => 6
-            ]);
-
-            $veiculo->notificacoes()->attach(
-                $notificacao
-            );
 
         DB::commit();
 
-        session()->flash('success', 'Multa atribuida com sucesso');
-
-        return back()->with('success', 'Multa atribuida com sucesso');
+        return redirect()
+            ->route('pedido.show', $pedido->id)
+            ->with('success', 'Multa atribuída com sucesso.');
+            
     }
 
     /**

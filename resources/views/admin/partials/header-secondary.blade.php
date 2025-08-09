@@ -34,7 +34,7 @@
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                    <span class="menu-title">Veiculos</span>
+                                    <span class="menu-title">Meus Veiculos</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>

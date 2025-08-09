@@ -5,7 +5,6 @@ var __webpack_exports__ = {};
   !*** ../src/js/custom/apps/chat/chat.js ***!
   \******************************************/
 
-
 // Class definition
 var KTAppChat = function () {
 	// Private functions

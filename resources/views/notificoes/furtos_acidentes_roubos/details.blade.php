@@ -53,6 +53,40 @@
                                             @else
                                                 <span class="fs-5 fw-semibold text-gray-400">Publicado por: {{ $alerta->nome_denuciante }}</span>
                                             @endif
+                                            <div class="mt-auto pt-2">
+                                                <!-- data, botões e confirmações -->
+
+                                                <!--begin::Info-->
+                                                <div class="d-flex flex-wrap mb-5">
+                                                    <!--begin::Due-->
+                                                    @php
+                                                        // Data de criação como Carbon
+                                                        $created = $alerta->created_at;
+                                                        $days    = $created->diffInDays(now());
+                                                        $hours   = $created->diffInHours(now());
+                                                        $minutes = $created->diffInMinutes(now());
+                                                    @endphp
+
+                                                    <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
+                                                        <div class="fs-6 text-gray-800 fw-bold">
+                                                            Ocorrido em: {{ $alerta->data_ocorrido->format('d/m/Y') }} | {{ $alerta->hora_ocorrido->format('H:i') }}
+                                                        </div>
+                                                        <div class="fw-semibold text-gray-400">
+                                                            Alertado em: {{ $created->format('d/m/Y') }}
+                                                            &nbsp;•&nbsp;
+                                                            @if($days >= 1)
+                                                                {{ $days }} {{ Str::plural('dia', $days) }} atrás
+                                                            @elseif($hours >= 1)
+                                                                {{ $hours }} {{ Str::plural('hora', $hours) }} atrás
+                                                            @else
+                                                                {{ $minutes }} {{ Str::plural('minuto', $minutes) }} atrás
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Due-->                                 
+                                                </div>
+                                                <!--end::Info-->
+                                            </div>
                                         </div>
                                         <!--end::Title-->
                                         <!--begin::Wrapper-->
@@ -65,12 +99,7 @@
                                         <!--begin::Section-->
                                         <div class="fs-5 fw-semibold text-gray-600 mt-4">
                                             <!--begin::Text-->
-                                            <p class="mb-8">First, a disclaimer – the entire process of writing a blog post often takes more than a couple of hours, even if you can type eighty words per minute and your writing skills are sharp. From the seed of the idea to finally hitting “Publish,” you might spend several days or maybe even a week “writing” a blog post, but it’s important to spend those vital hours planning your post and even thinking about
-                                            <a href="#" class="link-primary pe-1">Your Post</a>(yes, thinking counts as working if you’re a blogger) before you actually write it.</p>
-                                            <!--end::Text-->
-                                            <!--begin::Text-->
-                                            <p class="m-0">Before you do any of the following steps, be sure to pick a topic that actually interests you. Nothing – and
-                                            <a href="../dist/pages/blog/home.html" class="link-primary pe-1">I mean NOTHING</a>– will kill a blog post more effectively than a lack of enthusiasm from the writer. You can tell when a writer is bored by their subject, and it’s so cringe-worthy it’s a little embarrassing.</p>
+                                            <p class="mb-8">{{ $alerta->descricao }}</p>
                                             <!--end::Text-->
                                         </div>
                                         <!--end::Section-->
@@ -118,7 +147,7 @@
                                                 <!--end::Symbol-->
                                                 <!--begin::Title-->
                                                 <div class="m-0">
-                                                    <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $alerta_item->titulo }}</a>
+                                                    <a href="{{ route('alertas.show', $alerta_item->id)}}" class="text-dark fw-bold text-hover-primary fs-6">{{ $alerta_item->titulo }}</a>
                                                     <span class="text-gray-600 fw-semibold d-block pt-1 fs-8">{{ $alerta_item->descricao }}...</span>
                                                 </div>
                                                 <!--end::Title-->

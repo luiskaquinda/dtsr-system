@@ -21,7 +21,7 @@ return new class extends Migration
                 ->constrained('tipos_pedido')
                 ->cascadeOnUpdate();
             $table->foreignId('veiculo_id')
-                ->constrained('veiculos')
+                ->references('id')->on('veiculos')
                 ->cascadeOnUpdate()
                 ->onDelete('cascade');
             $table->timestamps();

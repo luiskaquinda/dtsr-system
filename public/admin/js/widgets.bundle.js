@@ -9808,7 +9808,7 @@ var KTChartsWidget25 = (function () {
 			// https://www.amcharts.com/docs/v5/charts/radar-chart/#Setting_data
 			var data = [
 				{
-					name: "Openlane",
+					name: "Benguela",
 					value1: 160.2,
 					value2: 26.9,
 				},
@@ -10119,125 +10119,125 @@ var KTChartsWidget25 = (function () {
 			// https://www.amcharts.com/docs/v5/charts/radar-chart/#Setting_data
 			var data = [
 				{
-					name: "Openlane",
+					name: "Benguela",
 					value1: 160.2,
 					value2: 66.9,
 				},
 				{
-					name: "Yearin",
+					name: "Catumbela",
 					value1: 150.1,
 					value2: 50.5,
 				},
 				{
-					name: "Goodsilron",
+					name: "Lobito",
 					value1: 120.7,
 					value2: 32.3,
 				},
 				{
-					name: "Condax",
+					name: "Baia",
 					value1: 89.4,
 					value2: 74.5,
 				},
 				{
-					name: "Opentech",
+					name: "Cubal",
 					value1: 78.5,
 					value2: 29.7,
 				},
 				{
-					name: "Golddex",
+					name: "Ganda",
 					value1: 77.6,
 					value2: 102.2,
 				},
 				{
-					name: "Isdom",
+					name: "Caimbambo",
 					value1: 69.8,
 					value2: 22.6,
 				},
-				{
-					name: "Plusstrip",
-					value1: 63.6,
-					value2: 45.3,
-				},
-				{
-					name: "Kinnamplus",
-					value1: 59.7,
-					value2: 12.8,
-				},
-				{
-					name: "Zumgoity",
-					value1: 54.3,
-					value2: 19.6,
-				},
-				{
-					name: "Stanredtax",
-					value1: 52.9,
-					value2: 96.3,
-				},
-				{
-					name: "Conecom",
-					value1: 42.9,
-					value2: 11.9,
-				},
-				{
-					name: "Zencorporation",
-					value1: 40.9,
-					value2: 16.8,
-				},
-				{
-					name: "Iselectrics",
-					value1: 39.2,
-					value2: 9.9,
-				},
-				{
-					name: "Treequote",
-					value1: 36.6,
-					value2: 36.9,
-				},
-				{
-					name: "Sumace",
-					value1: 34.8,
-					value2: 14.6,
-				},
-				{
-					name: "Lexiqvolax",
-					value1: 32.1,
-					value2: 35.6,
-				},
-				{
-					name: "Sunnamplex",
-					value1: 31.8,
-					value2: 5.9,
-				},
-				{
-					name: "Faxquote",
-					value1: 29.3,
-					value2: 14.7,
-				},
-				{
-					name: "Donware",
-					value1: 23.0,
-					value2: 2.8,
-				},
-				{
-					name: "Warephase",
-					value1: 21.5,
-					value2: 12.1,
-				},
-				{
-					name: "Donquadtech",
-					value1: 19.7,
-					value2: 10.8,
-				},
-				{
-					name: "Nam-zim",
-					value1: 15.5,
-					value2: 4.1,
-				},
-				{
-					name: "Y-corporation",
-					value1: 14.2,
-					value2: 11.3,
-				},
+				// {
+				// 	name: "Plusstrip",
+				// 	value1: 63.6,
+				// 	value2: 45.3,
+				// },
+				// {
+				// 	name: "Kinnamplus",
+				// 	value1: 59.7,
+				// 	value2: 12.8,
+				// },
+				// {
+				// 	name: "Zumgoity",
+				// 	value1: 54.3,
+				// 	value2: 19.6,
+				// },
+				// {
+				// 	name: "Stanredtax",
+				// 	value1: 52.9,
+				// 	value2: 96.3,
+				// },
+				// {
+				// 	name: "Conecom",
+				// 	value1: 42.9,
+				// 	value2: 11.9,
+				// },
+				// {
+				// 	name: "Zencorporation",
+				// 	value1: 40.9,
+				// 	value2: 16.8,
+				// },
+				// {
+				// 	name: "Iselectrics",
+				// 	value1: 39.2,
+				// 	value2: 9.9,
+				// },
+				// {
+				// 	name: "Treequote",
+				// 	value1: 36.6,
+				// 	value2: 36.9,
+				// },
+				// {
+				// 	name: "Sumace",
+				// 	value1: 34.8,
+				// 	value2: 14.6,
+				// },
+				// {
+				// 	name: "Lexiqvolax",
+				// 	value1: 32.1,
+				// 	value2: 35.6,
+				// },
+				// {
+				// 	name: "Sunnamplex",
+				// 	value1: 31.8,
+				// 	value2: 5.9,
+				// },
+				// {
+				// 	name: "Faxquote",
+				// 	value1: 29.3,
+				// 	value2: 14.7,
+				// },
+				// {
+				// 	name: "Donware",
+				// 	value1: 23.0,
+				// 	value2: 2.8,
+				// },
+				// {
+				// 	name: "Warephase",
+				// 	value1: 21.5,
+				// 	value2: 12.1,
+				// },
+				// {
+				// 	name: "Donquadtech",
+				// 	value1: 19.7,
+				// 	value2: 10.8,
+				// },
+				// {
+				// 	name: "Nam-zim",
+				// 	value1: 15.5,
+				// 	value2: 4.1,
+				// },
+				// {
+				// 	name: "Y-corporation",
+				// 	value1: 14.2,
+				// 	value2: 11.3,
+				// },
 			];
 
 			series1.data.setAll(data);
@@ -10498,7 +10498,6 @@ KTUtil.onDOMContentLoaded(function() {
 
 "use strict";
 
-
 // Class definition
 var KTChartsWidget27 = function () {
     var chart = {
@@ -10519,7 +10518,7 @@ var KTChartsWidget27 = function () {
         
         var options = {
             series: [{
-                name: 'Sessions',
+                name: 'Viaturas Registradas',
                 data: [12.478, 7.546, 6.083, 5.041, 4.420]                                                                                                             
             }],           
             chart: {
@@ -10566,7 +10565,7 @@ var KTChartsWidget27 = function () {
             },                               
             colors: ['#3E97FF', '#F1416C', '#50CD89', '#FFC700', '#7239EA'],                                                                      
             xaxis: {
-                categories: ["USA", "India", 'Canada', 'Brasil', 'France'],
+                categories: ["Benguela", "Ganda", 'Cubal', 'Catumbela', 'Baia'],
                 labels: {
                     formatter: function (val) {
                         return val + "K"
@@ -10732,7 +10731,7 @@ var KTChartsWidget28 = function () {
                 colors: [baseColor]
             },
             xaxis: {
-                categories: ['May 04', 'May 05', 'May 06', 'May 09', 'May 10', 'May 12', 'May 14', 'May 17', 'May 18', 'May 20', 'May 22', 'May 24', 'May 26', 'May 28', 'May 30'],
+                categories: ['Ago 04', 'Ago 05', 'Ago 06', 'Ago 09', 'Ago 10', 'Ago 12', 'Ago 14', 'Ago 17', 'Ago 18', 'Ago 20', 'Ago 22', 'Ago 24', 'Ago 26', 'Ago 28', 'Ago 30'],
                 axisBorder: {
                     show: false,
                 },
@@ -11571,7 +11570,7 @@ var KTChartsWidget31 = (function () {
 			// https://www.amcharts.com/docs/v5/charts/radar-chart/#Setting_data
 			var data = [
 				{
-					name: "Openlane",
+					name: "Benguela",
 					value1: 160.2,
 					value2: 26.9,
 				},

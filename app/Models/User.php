@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\{
+    Proprietario,
+    Agente
+};
 
 class User extends Authenticatable
 {
@@ -52,12 +56,17 @@ class User extends Authenticatable
         );
     }
 
-    public function proprietario() {
-        return $this->hasOne(
-            Proprietario::class, 
-            'user_id', 
-            'id'
-        );
+    // public function proprietario() {
+    //     return $this->hasOne(
+    //         Proprietario::class, 
+    //         'user_id', 
+    //         'id'
+    //     );
+    // }
+
+    public function proprietario()
+    {
+        return $this->hasOne(Proprietario::class, 'user_id', 'id');
     }
 
     public function alertas() {

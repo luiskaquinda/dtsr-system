@@ -78,33 +78,6 @@
 
                 {{-- Campo Municipio --}}
 
-                {{-- <div class="fv-row mb-6 form-control">
-                    <!--begin::Label-->
-                    <label class="required fs-6 fw-semibold mb-2">Municipio</label>
-                    <!--end::Label-->
-                    <select
-                        name="municipio_id"
-                        data-control="select2"
-                        data-placeholder="Selecione o municipio..."
-                        class="form-select form-select-solid @error('municipio_id') is-ivalid @enderror"
-                    >
-                        <!-- opçāo vazia para placeholder -->
-                        <option value="">Selecione um municipio...</option>
-    
-                        <!-- as suas categorias -->
-                        @foreach ($municipios as $municipio)
-                            <option 
-                                value="{{ $tipo->id }}"
-                                {{ old('municipio_id') == $municipio->id ? 'selected' : '' }}
-                            >
-                                {{ $municipio->nome_municipio }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('municipio_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div> --}}
                 <div class="fv-row mb-6 form-control">
                     <label class="required fs-6 fw-semibold mb-2">Município</label>
                     <select

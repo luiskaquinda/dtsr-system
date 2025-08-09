@@ -35,7 +35,7 @@
                             </span>
 
                             <span class="ms-3 text-gray-700 parent-hover-primary fs-6 fw-bold">
-                                Notificações
+                                Alertas
                             </span>
                         </div>
                     </a>

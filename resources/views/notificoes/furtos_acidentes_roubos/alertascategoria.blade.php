@@ -76,39 +76,32 @@
                                     <!--begin::Card body-->
                                     <div class="card-body p-9">
                                         <!--begin::Heading-->
-                                        <div class="fs-2hx fw-bold">237</div>
+                                        <div class="fs-2hx fw-bold">{{ $alertasTodos }}</div>
                                         <div class="fs-4 fw-semibold text-gray-400 mb-7">Alertas</div>
                                         <!--end::Heading-->
                                         <!--begin::Wrapper-->
                                         <div class="d-flex flex-wrap">
-                                            <!--begin::Chart-->
-                                            <div class="d-flex flex-center h-100px w-100px me-9 mb-5">
-                                                <canvas id="kt_project_list_chart"></canvas>
-                                            </div>
-                                            <!--end::Chart-->
                                             <!--begin::Labels-->
                                             <div class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                    <div class="bullet bg-primary me-3"></div>
-                                                    <div class="text-gray-400">Activas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">30</div>
-                                                </div>
-                                                <!--end::Label-->
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                    <div class="bullet bg-success me-3"></div>
-                                                    <div class="text-gray-400">Fechadas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">45</div>
-                                                </div>
-                                                <!--end::Label-->
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center">
-                                                    <div class="bullet bg-gray-300 me-3"></div>
-                                                    <div class="text-gray-400">Falsas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">25</div>
-                                                </div>
-                                                <!--end::Label-->
+                                                @foreach ($alertasPorStatus as $item)  
+                                                    <!--begin::Label-->
+                                                    <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
+                                                        @switch($item['status'])
+                                                            @case('aberto')
+                                                                <div class="bullet bg-primary me-3"></div>
+                                                                <div class="text-gray-400">{{ ucfirst($item['status']) }}</div>
+                                                                @break
+                                                            @case('fechado')
+                                                                <div class="bullet bg-success me-3"></div>
+                                                                <div class="text-gray-400">{{ ucfirst($item['status']) }}</div>
+                                                                @break
+                                                            @default
+
+                                                        @endswitch
+                                                        <div class="ms-auto fw-bold text-gray-700">{{ $item['total_alertas'] }}</div>
+                                                    </div>
+                                                    <!--end::Label-->   
+                                                @endforeach
                                             </div>
                                             <!--end::Labels-->
                                         </div>
@@ -123,33 +116,24 @@
                                 <div class="card h-100">
                                     <div class="card-body p-9">
                                         <div class="fs-2hx fw-bold">Cidades</div>
-                                        <div class="fs-4 fw-semibold text-gray-400 mb-7">Top 3</div>
-                                        <div class="fs-6 d-flex justify-content-between mb-4">
-                                            <div class="fw-semibold">Benguela</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>1.234</div>
-                                        </div>
-                                        <div class="separator separator-dashed"></div>
-                                        <div class="fs-6 d-flex justify-content-between my-4">
-                                            <div class="fw-semibold">Catumbela</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-down-left fs-3 me-1 text-danger">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>408</div>
-                                        </div>
-                                        <div class="separator separator-dashed"></div>
-                                        <div class="fs-6 d-flex justify-content-between mt-4">
-                                            <div class="fw-semibold">Lobito</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>20</div>
-                                        </div>
+                                        <div class="fs-4 fw-semibold text-gray-400 mb-7">Top</div>
+                                        @if ($alertasPorMunicipio->isEmpty())
+                                            <div class="fs-6 d-flex justify-content-center mb-4">
+                                                <div class="fw-semibold">Sem alertas no momento!</div>
+                                            </div>
+                                        @else
+                                            @foreach($alertasPorMunicipio as $item)
+                                                <div class="fs-6 d-flex justify-content-between mb-4">
+                                                    <div class="fw-semibold">{{ $item['municipio'] }}</div>
+                                                    <div class="d-flex fw-bold">
+                                                    <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>{{ $item['total_alertas'] }}</div>
+                                                </div>
+                                                <div class="separator separator-dashed"></div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                                 <!--end::Budget-->

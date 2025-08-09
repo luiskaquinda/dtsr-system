@@ -84,39 +84,33 @@
                                     <!--begin::Card body-->
                                     <div class="card-body p-9">
                                         <!--begin::Heading-->
-                                        <div class="fs-2hx fw-bold">237</div>
+                                        <div class="fs-2hx fw-bold">{{ $alertasTodos }}</div>
                                         <div class="fs-4 fw-semibold text-gray-400 mb-7">Alertas</div>
                                         <!--end::Heading-->
                                         <!--begin::Wrapper-->
                                         <div class="d-flex flex-wrap">
-                                            <!--begin::Chart-->
-                                            <div class="d-flex flex-center h-100px w-100px me-9 mb-5">
-                                                <canvas id="kt_project_list_chart"></canvas>
-                                            </div>
-                                            <!--end::Chart-->
                                             <!--begin::Labels-->
                                             <div class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                    <div class="bullet bg-primary me-3"></div>
-                                                    <div class="text-gray-400">Activas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">30</div>
-                                                </div>
-                                                <!--end::Label-->
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                    <div class="bullet bg-success me-3"></div>
-                                                    <div class="text-gray-400">Fechadas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">45</div>
-                                                </div>
-                                                <!--end::Label-->
-                                                <!--begin::Label-->
-                                                <div class="d-flex fs-6 fw-semibold align-items-center">
-                                                    <div class="bullet bg-gray-300 me-3"></div>
-                                                    <div class="text-gray-400">Falsas</div>
-                                                    <div class="ms-auto fw-bold text-gray-700">25</div>
-                                                </div>
-                                                <!--end::Label-->
+                                                @foreach ($alertasPorStatus as $item)  
+                                                    <!--begin::Label-->
+                                                    <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
+                                                        @switch($item['status'])
+                                                            @case('aberto')
+                                                                <div class="bullet bg-primary me-3"></div>
+                                                                <div class="text-gray-400">{{ ucfirst($item['status']) }}</div>
+                                                                @break
+                                                            @case('fechado')
+                                                                <div class="bullet bg-success me-3"></div>
+                                                                <div class="text-gray-400">{{ ucfirst($item['status']) }}</div>
+                                                                @break
+                                                            @default
+
+                                                        @endswitch
+                                                        <div class="ms-auto fw-bold text-gray-700">{{ $item['total_alertas'] }}</div>
+                                                    </div>
+                                                    <!--end::Label-->   
+                                                @endforeach
+                                                
                                             </div>
                                             <!--end::Labels-->
                                         </div>
@@ -131,33 +125,25 @@
                                 <div class="card h-100">
                                     <div class="card-body p-9">
                                         <div class="fs-2hx fw-bold">Cidades</div>
-                                        <div class="fs-4 fw-semibold text-gray-400 mb-7">Top 3</div>
-                                        <div class="fs-6 d-flex justify-content-between mb-4">
-                                            <div class="fw-semibold">Benguela</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>1.234</div>
-                                        </div>
-                                        <div class="separator separator-dashed"></div>
-                                        <div class="fs-6 d-flex justify-content-between my-4">
-                                            <div class="fw-semibold">Catumbela</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-down-left fs-3 me-1 text-danger">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>408</div>
-                                        </div>
-                                        <div class="separator separator-dashed"></div>
-                                        <div class="fs-6 d-flex justify-content-between mt-4">
-                                            <div class="fw-semibold">Lobito</div>
-                                            <div class="d-flex fw-bold">
-                                            <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>20</div>
-                                        </div>
+                                        <div class="fs-4 fw-semibold text-gray-400 mb-7">Top</div>
+                                        @if ($alertasPorMunicipio->isEmpty())
+                                            <div class="fs-6 d-flex justify-content-center mb-4">
+                                                <div class="fw-semibold">Sem alertas no momento!</div>
+                                            </div>
+                                        @else
+                                            @foreach($alertasPorMunicipio as $item)
+                                                <div class="fs-6 d-flex justify-content-between mb-4">
+                                                    <div class="fw-semibold">{{ $item['municipio'] }}</div>
+                                                    <div class="d-flex fw-bold">
+                                                    <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>{{ $item['total_alertas'] }}</div>
+                                                </div>
+                                                <div class="separator separator-dashed"></div>
+                                            @endforeach
+                                        @endif
+
                                     </div>
                                 </div>
                                 <!--end::Budget-->
@@ -196,62 +182,104 @@
                         <div class="row g-6 g-xl-9">
                             <!--begin::Col-->
                             @forelse ($alertas as $alerta)
-                                    <div class="col-md-6 col-xl-4">
-                                        <!--begin::Card-->
-                                        <div class="card position-relative" class="card border-hover-primary">
-                                            <!--begin::Card header-->
-                                            <div class="card-header border-0 pt-9">
-                                                <!--begin::Card Title-->
-                                                <div class="card-title m-0">
-                                                    
-                                                    
-                                                    <!--begin::Avatar-->
-                                                    <div class="w-100 h-100 bg-light text-center">
-                                                        @if($alerta->imagem)
-                                                        {{-- <div class=" w-100 symbol symbol-200px">
-                                                            <div
-                                                            class="symbol-label"
-                                                            style="background-image: url('{{ asset('storage/' . $alerta->imagem) }}')"
-                                                            ></div>
-                                                        </div> --}}
+                                <div class="col-md-6 col-xl-4">
+                                    <!--begin::Card-->
+                                    <div class="card position-relative h-100 d-flex flex-column" class="card border-hover-primary">
+                                        <!--begin::Card header-->
+                                        <div class="card-header border-0 pt-9">
+                                            <!--begin::Card Title-->
+                                            <div class="card-title m-0">
+                                                
+                                                
+                                                <!--begin::Avatar-->
+                                                <div class="w-100 h-100 bg-light text-center">
+                                                    @if($alerta->imagem)
 
-                                                            <div class="symbol symbol-200px">
-                                                                <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
-                                                                    <img
-                                                                        src="{{ asset('storage/' . $alerta->imagem) }}"
-                                                                        class="img-fluid rounded"
-                                                                        alt="Imagem do alerta"
-                                                                    >
-                                                                </div>
+                                                        <div class="symbol symbol-200px">
+                                                            <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
+                                                                <img
+                                                                    src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                                    class="img-fluid rounded"
+                                                                    alt="Imagem do alerta"
+                                                                >
                                                             </div>
-                                                        @else
-                                                            <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
-                                                        @endif
-                                                    </div>
-                                                    <!--end::Avatar-->
+                                                        </div>
+                                                    @else
+                                                        <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
+                                                    @endif
                                                 </div>
-                                                <!--end::Car Title-->
-                                                <!--begin::Card toolbar-->
-                                                <div class="card-toolbar w-100">
-                                                    <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">Assalto</span>
-                                                </div>
-                                                <!--end::Card toolbar-->
+                                                <!--end::Avatar-->
                                             </div>
-                                            <!--end:: Card header-->
-                                            <!--begin:: Card body-->
-                                            <div class="card-body p-9">
-                                                <!--begin::Name-->
-                                                <div class="fs-3 fw-bold text-dark">{{ $alerta->titulo }}</div>
-                                                <!--end::Name-->
-                                                <!--begin::Description-->
-                                                <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">{{ $alerta->descricao }}</p>
-                                                <!--end::Description-->
+                                            <!--end::Car Title-->
+                                            <!--begin::Card toolbar-->
+                                            <div class="card-toolbar w-100">
+                                                @switch($alerta->tipos_notificacoes->tipo)
+                                                    @case('Furto')
+                                                        <span class="badge badge-info fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+                                                    @case('Acidente')
+                                                        <span class="badge badge-warning fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+
+                                                    @case('Assalto')
+                                                        <span class="badge badge-danger fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+                                                    @case('Roubo')
+                                                        <span class="badge badge-secondary fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+                                                    @case('Multa')
+                                                        <span class="badge badge-primary fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+                                                    @case('Outro')
+                                                        <span class="badge badge-dark fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                        @break
+                                                    @default
+                                                       <span class="badge badge-success fw-bold px-1 py-3 me-2">{{ $alerta->tipos_notificacoes->tipo }}</span>
+                                                @endswitch 
+                                                | <span class="badge ms-2 badge-light-success fw-bold me-auto px-4 py-3">{{ $alerta->municipio->nome_municipio }}</span>
+                                            </div>
+                                            <!--end::Card toolbar-->
+                                        </div>
+                                        <!--end:: Card header-->
+                                        <!--begin:: Card body-->
+                                        <div class="card-body p-9 flex-grow-1 d-flex flex-column">
+                                            <!--begin::Name-->
+                                            <div class="fs-3 fw-bold text-dark">{{ $alerta->titulo }}</div>
+                                            <!--end::Name-->
+                                            <!--begin::Description-->
+                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">{{ $alerta->descricao }}</p>
+                                            <!--end::Description-->
+
+                                            <div class="mt-auto">
+                                                <!-- data, botões e confirmações -->
+
+
                                                 <!--begin::Info-->
                                                 <div class="d-flex flex-wrap mb-5">
                                                     <!--begin::Due-->
+                                                    @php
+                                                        // Data de criação como Carbon
+                                                        $created = $alerta->created_at;
+                                                        $days    = $created->diffInDays(now());
+                                                        $hours   = $created->diffInHours(now());
+                                                        $minutes = $created->diffInMinutes(now());
+                                                    @endphp
+
                                                     <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                        <div class="fs-6 text-gray-800 fw-bold">{{ $alerta->data_ocorrido }}</div>
-                                                        <div class="fw-semibold text-gray-400">Criado em: {{ $alerta->created_at }}</div>
+                                                        <div class="fs-6 text-gray-800 fw-bold">
+                                                            Ocorrido em: {{ $alerta->data_ocorrido->format('d/m/Y') }} | {{ $alerta->hora_ocorrido->format('H:i') }}
+                                                        </div>
+                                                        <div class="fw-semibold text-gray-400">
+                                                            Alertado em: {{ $created->format('d/m/Y') }}
+                                                            &nbsp;•&nbsp;
+                                                            @if($days >= 1)
+                                                                {{ $days }} {{ Str::plural('dia', $days) }} atrás
+                                                            @elseif($hours >= 1)
+                                                                {{ $hours }} {{ Str::plural('hora', $hours) }} atrás
+                                                            @else
+                                                                {{ $minutes }} {{ Str::plural('minuto', $minutes) }} atrás
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                     <!--end::Due-->
 
@@ -285,12 +313,13 @@
                                                     </div>
                                                     <!--begin::User-->
                                                 </div>
-												<!--end::Users-->
+                                                <!--end::Users-->
                                             </div>
-                                            <!--end:: Card body-->
                                         </div>
-                                        <!--end::Card-->
+                                        <!--end:: Card body-->
                                     </div>
+                                    <!--end::Card-->
+                                </div>
                             @empty
                                 <!--begin::Alert-->
                                     <div class="alert alert-dismissible bg-light-danger d-flex flex-column flex-sm-row p-5 mb-10">
@@ -588,4 +617,27 @@
         });
     </script>
         
+@endpush
+
+@push('css_imagem')
+    <style>
+        /* Força todas as imagens de alerta a terem mesmo tamanho e recorte central */
+        .alerta-img {
+        width: 100%;
+        height: 180px;       /* ajuste a altura que achar melhor */
+        object-fit: cover;   /* corta qualquer excesso mantendo proporção */
+        display: block;
+        }
+
+        /* Opcional: garante que a área .symbol seja do mesmo tamanho */
+        .symbol-200px {
+        width: 100%;
+        height: 180px;       /* mesma altura da .alerta-img */
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+    </style>
 @endpush

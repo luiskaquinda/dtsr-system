@@ -64,7 +64,7 @@
                         <a href="{{ route('notificacao.index', ['id' => Auth::user()]) }}" class="menu-link px-5">
                             <span class="menu-text">Notificações</span>
                             <span class="menu-badge">
-                                <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ $quantidadeNotificacoes }}</span>
+                                <span class="badge badge-light-danger badge-circle fw-bold fs-7">{{ $totalMultasUsuario ?? 0 }}</span>
                             </span>
                         </a>
                     </div>

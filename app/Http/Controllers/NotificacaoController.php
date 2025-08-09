@@ -74,7 +74,7 @@ class NotificacaoController extends Controller
         $proprietario = Proprietario::findOrFail($user->id);
         $veiculos = Veiculo::where('proprietario_id', $proprietario->id)->get();
 
-        dd($veiculos);
+        // dd($veiculos);
 
         // Criar um array para armazenar os IDs das notificações para cada veículo
         $notificacoesPorVeiculo = [];

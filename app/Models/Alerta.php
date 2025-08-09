@@ -34,9 +34,9 @@ class Alerta extends Model
 
     public function tipos_notificacoes() {
         return $this->belongsTo(
-            TipoNotificacao::class,
-            'tipo_notificacao_id',
-            'id'
+        TipoNotificacao::class,
+    'tipo_alerta_id',
+        'id'
         );
     }
 

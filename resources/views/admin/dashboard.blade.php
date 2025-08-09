@@ -15,7 +15,7 @@
 							<!--begin::Heading-->
 							<div class="d-flex align-items-center mb-2">
 								<!--begin::Title-->
-								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">35,568</span>
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalVeiculos }}</span>
 								<!--end::Title-->
 								<!--begin::Label-->
 								<span class="badge badge-light-danger fs-base">
@@ -53,7 +53,7 @@
 							<!--begin::Heading-->
 							<div class="d-flex align-items-center mb-2">
 								<!--begin::Title-->
-								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">2,579</span>
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $alertasHoje }}</span>
 								<!--end::Title-->
 								<!--begin::Label-->
 								<span class="badge badge-light-success fs-base">
@@ -65,7 +65,7 @@
 							</div>
 							<!--end::Heading-->
 							<!--begin::Description-->
-							<span class="fs-6 fw-semibold text-gray-400">Acidentes</span>
+							<span class="fs-6 fw-semibold text-gray-400">Alertas Hoje</span>
 							<!--end::Description-->
 						</div>
 						<!--end::Statistics-->
@@ -93,7 +93,7 @@
 							<!--begin::Heading-->
 							<div class="d-flex align-items-center mb-2">
 								<!--begin::Title-->
-								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">5,037</span>
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalDeAlertas }}</span>
 								<!--end::Title-->
 								<!--begin::Label-->
 								<span class="badge badge-light-success fs-base">
@@ -113,213 +113,59 @@
 					<!--end::Header-->
 					<!--begin::Body-->
 					<div class="card-body card-body d-flex justify-content-between flex-column pt-3">
-						<!--begin::Item-->
-						<div class="d-flex flex-stack">
-							<!--begin::Flag-->
-							<img src="assets/media/svg/brand-logos/dribbble-icon-1.svg" class="me-4 w-30px" style="border-radius: 4px" alt="" />
-							<!--end::Flag-->
-							<!--begin::Section-->
-							<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
-								<!--begin::Content-->
-								<div class="me-5">
-									<!--begin::Title-->
-									<a href="#" class="text-gray-800 fw-bold text-hover-primary fs-6">Dribbble</a>
-									<!--end::Title-->
-									<!--begin::Desc-->
-									<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">Community</span>
-									<!--end::Desc-->
-								</div>
-								<!--end::Content-->
-								<!--begin::Wrapper-->
-								<div class="d-flex align-items-center">
-									<!--begin::Number-->
-									<span class="text-gray-800 fw-bold fs-4 me-3">579</span>
-									<!--end::Number-->
-									<!--begin::Info-->
-									<div class="m-0">
-										<!--begin::Label-->
-										<span class="badge badge-light-success fs-base">
-										<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</i>2.6%</span>
-										<!--end::Label-->
+						@forelse ($alertas as $alerta)
+							<!--begin::Item-->
+							<div class="d-flex flex-stack">
+								<!--begin::Flag-->
+								@php
+									// Ajusta os nomes das colunas conforme a tua BD:
+									$imgPath = $alerta->imagem ?? optional($alerta->tipos_notificacoes)->imagem ?? null;
+
+									// se a tua BD já guarda a URL completa, usa ela diretamente.
+									// Se guarda apenas o path dentro de storage/app/public, usa asset('storage/' . $imgPath)
+									$imgUrl = $imgPath ? asset('storage/' . ltrim($imgPath, '/')) : asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
+								@endphp
+
+								<img src="{{ $imgUrl }}"
+									class="me-4 w-30px"
+									style="border-radius: 4px"
+									alt="{{ $alerta->titulo ?? 'ícone' }}"
+									loading="lazy" />
+
+								<!--end::Flag-->
+								<!--begin::Section-->
+								<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
+									<!--begin::Content-->
+									<div class="me-5">
+										<!--begin::Title-->
+										<a href="{{ route('alertas.show', $alerta->id) }}" class="text-gray-800 fw-bold text-hover-primary fs-6">{{ $alerta->titulo }}</a>
+										<!--end::Title-->
+										<!--begin::Desc-->
+										<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">
+											{{ optional($alerta->tipos_notificacoes)->tipo }}
+										</span>
+										<!--end::Desc-->
 									</div>
-									<!--end::Info-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Section-->
-						</div>
-						<!--end::Item-->
-						<!--begin::Separator-->
-						<div class="separator separator-dashed my-3"></div>
-						<!--end::Separator-->
-						<!--begin::Item-->
-						<div class="d-flex flex-stack">
-							<!--begin::Flag-->
-							<img src="assets/media/svg/brand-logos/linkedin-1.svg" class="me-4 w-30px" style="border-radius: 4px" alt="" />
-							<!--end::Flag-->
-							<!--begin::Section-->
-							<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
-								<!--begin::Content-->
-								<div class="me-5">
-									<!--begin::Title-->
-									<a href="#" class="text-gray-800 fw-bold text-hover-primary fs-6">Linked In</a>
-									<!--end::Title-->
-									<!--begin::Desc-->
-									<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">Social Media</span>
-									<!--end::Desc-->
-								</div>
-								<!--end::Content-->
-								<!--begin::Wrapper-->
-								<div class="d-flex align-items-center">
-									<!--begin::Number-->
-									<span class="text-gray-800 fw-bold fs-4 me-3">1,088</span>
-									<!--end::Number-->
-									<!--begin::Info-->
-									<div class="m-0">
-										<!--begin::Label-->
-										<span class="badge badge-light-danger fs-base">
-										<i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</i>0.4%</span>
-										<!--end::Label-->
+									<!--end::Content-->
+									
+									<!--begin::Wrapper-->
+									<div class="d-flex align-items-center">
+										<!--begin::Number-->
+										<span class="text-gray-500 fw-bold fs-4 me-3">{{ $alerta->nome_denuciante ?? 'Anônimo' }}</span>
+										<!--end::Number-->
 									</div>
-									<!--end::Info-->
+									<!--end::Wrapper-->
 								</div>
-								<!--end::Wrapper-->
+								<!--end::Section-->
 							</div>
-							<!--end::Section-->
-						</div>
-						<!--end::Item-->
-						<!--begin::Separator-->
-						<div class="separator separator-dashed my-3"></div>
-						<!--end::Separator-->
-						<!--begin::Item-->
-						<div class="d-flex flex-stack">
-							<!--begin::Flag-->
-							<img src="assets/media/svg/brand-logos/slack-icon.svg" class="me-4 w-30px" style="border-radius: 4px" alt="" />
-							<!--end::Flag-->
-							<!--begin::Section-->
-							<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
-								<!--begin::Content-->
-								<div class="me-5">
-									<!--begin::Title-->
-									<a href="#" class="text-gray-800 fw-bold text-hover-primary fs-6">Slack</a>
-									<!--end::Title-->
-									<!--begin::Desc-->
-									<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">Messanger</span>
-									<!--end::Desc-->
-								</div>
-								<!--end::Content-->
-								<!--begin::Wrapper-->
-								<div class="d-flex align-items-center">
-									<!--begin::Number-->
-									<span class="text-gray-800 fw-bold fs-4 me-3">794</span>
-									<!--end::Number-->
-									<!--begin::Info-->
-									<div class="m-0">
-										<!--begin::Label-->
-										<span class="badge badge-light-success fs-base">
-										<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</i>0.2%</span>
-										<!--end::Label-->
-									</div>
-									<!--end::Info-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Section-->
-						</div>
-						<!--end::Item-->
-						<!--begin::Separator-->
-						<div class="separator separator-dashed my-3"></div>
-						<!--end::Separator-->
-						<!--begin::Item-->
-						<div class="d-flex flex-stack">
-							<!--begin::Flag-->
-							<img src="assets/media/svg/brand-logos/youtube-3.svg" class="me-4 w-30px" style="border-radius: 4px" alt="" />
-							<!--end::Flag-->
-							<!--begin::Section-->
-							<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
-								<!--begin::Content-->
-								<div class="me-5">
-									<!--begin::Title-->
-									<a href="#" class="text-gray-800 fw-bold text-hover-primary fs-6">YouTube</a>
-									<!--end::Title-->
-									<!--begin::Desc-->
-									<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">Video Channel</span>
-									<!--end::Desc-->
-								</div>
-								<!--end::Content-->
-								<!--begin::Wrapper-->
-								<div class="d-flex align-items-center">
-									<!--begin::Number-->
-									<span class="text-gray-800 fw-bold fs-4 me-3">978</span>
-									<!--end::Number-->
-									<!--begin::Info-->
-									<div class="m-0">
-										<!--begin::Label-->
-										<span class="badge badge-light-success fs-base">
-										<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</i>4.1%</span>
-										<!--end::Label-->
-									</div>
-									<!--end::Info-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Section-->
-						</div>
-						<!--end::Item-->
-						<!--begin::Separator-->
-						<div class="separator separator-dashed my-3"></div>
-						<!--end::Separator-->
-						<!--begin::Item-->
-						<div class="d-flex flex-stack">
-							<!--begin::Flag-->
-							<img src="assets/media/svg/brand-logos/instagram-2-1.svg" class="me-4 w-30px" style="border-radius: 4px" alt="" />
-							<!--end::Flag-->
-							<!--begin::Section-->
-							<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
-								<!--begin::Content-->
-								<div class="me-5">
-									<!--begin::Title-->
-									<a href="#" class="text-gray-800 fw-bold text-hover-primary fs-6">Instagram</a>
-									<!--end::Title-->
-									<!--begin::Desc-->
-									<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">Social Network</span>
-									<!--end::Desc-->
-								</div>
-								<!--end::Content-->
-								<!--begin::Wrapper-->
-								<div class="d-flex align-items-center">
-									<!--begin::Number-->
-									<span class="text-gray-800 fw-bold fs-4 me-3">1,458</span>
-									<!--end::Number-->
-									<!--begin::Info-->
-									<div class="m-0">
-										<!--begin::Label-->
-										<span class="badge badge-light-success fs-base">
-										<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-											<span class="path1"></span>
-											<span class="path2"></span>
-										</i>8.3%</span>
-										<!--end::Label-->
-									</div>
-									<!--end::Info-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Section-->
-						</div>
-						<!--end::Item-->
+							<!--end::Item-->
+							<!--begin::Separator-->
+							<div class="separator separator-dashed my-3"></div>
+							<!--end::Separator-->
+						@empty
+							<div>Sem alertas</div>
+						@endforelse
+
 					</div>
 					<!--end::Body-->
 				</div>
