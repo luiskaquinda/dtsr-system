@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\{
+    Proprietario,
+    Agente
+};
 
 class User extends Authenticatable
 {
@@ -21,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // 'tipo'
     ];
 
     /**
@@ -42,4 +47,58 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function agente() {
+        return $this->hasOne(
+            Agente::class, 
+            'user_id', 
+            'id'
+        );
+    }
+
+    // public function proprietario() {
+    //     return $this->hasOne(
+    //         Proprietario::class, 
+    //         'user_id', 
+    //         'id'
+    //     );
+    // }
+
+    public function proprietario()
+    {
+        return $this->hasOne(Proprietario::class, 'user_id', 'id');
+    }
+
+    public function alertas() {
+        return $this->hasMany(
+            Alerta::class,
+            'user_id',
+            'id'
+        );
+    }
+
+    public function confirmacoes() {
+        return $this->hasMany(
+            User::class,
+            'user_id',
+            'id'
+        );
+    }
+
+    public function alertasConfirmados()
+    {
+        return $this->belongsToMany(
+            Alerta::class,
+            'confirmacoes'
+        )->withTimestamps();
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function abilities() {
+        
+        return $this->roles->map->abilities->flatten()->pluck('name');
+    }
 }
