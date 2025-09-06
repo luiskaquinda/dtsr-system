@@ -54,6 +54,14 @@
                         class="form-control form-control-solid @error('nome_denuciante') is-ivalid @enderror"
                         placeholder="Insira seu nome"
                     />
+
+                    {{-- <div class="mb-3">
+                        <label for="imagens" class="form-label">Imagens (podes seleccionar várias)</label>
+                        <input class="form-control" type="file" name="imagens[]" id="imagens" multiple accept="image/*">
+                    </div>
+                
+                    <div id="previewImagens" class="d-flex gap-2 flex-wrap"></div> --}}
+
                     @error('nome_denuciante')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -167,10 +175,32 @@
 
                 <!--end::Input group-->
                 <div class="mb-3 form-control">
-                    <label for="formFile" class="form-label">Carregar imagem</label>
+                    <label for="formFile" class="form-label">Imagem primária</label>
                     <input class="form-control form-control-solid" type="file" id="imagem" name="imagem">
                 </div>
+
+                <!-- UPLOADER DINÂMICO DE IMAGENS -->
+                <div class="mb-3 form-control">
+                    <label class="form-label">Imagens secundárias</label>
+
+                    <!-- botão para abrir o file picker -->
+                    <div class="d-flex gap-2 mb-2">
+                        <button type="button" id="btnAdicionarImagens" class="btn btn-outline-secondary btn-sm">
+                            Adicionar
+                        </button>
+                        <small class="text-muted align-self-center">Máx 8 imagens.</small>
+                    </div>
+
+                    <!-- input file escondido (usado apenas para escolher ficheiros) -->
+                    <input type="file" id="imagensInput" name="imagens[]" accept="image/*" multiple style="display:none;" class="form-control form-control-solid">
+
+                    <!-- área de visualização das miniaturas -->
+                    <div id="previewImagens" class="d-flex gap-2 flex-wrap"></div>
+                </div>
             </div>
+
+            
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>

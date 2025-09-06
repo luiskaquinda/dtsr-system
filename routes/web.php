@@ -16,8 +16,27 @@ use App\Http\Controllers\{
     AlertaController,
     User,
     ConfirmacaoController,
-    DashboardController
+    DashboardController,
 };
+
+use App\Models\{
+    PedidoMatricula,
+    ClasseVeiculo,
+    Combustivel,
+    CaixaVeiculo,
+    Provincia,
+    PesoBruto,
+    Servico,
+    TipoMulta,
+    Dtsr,
+    Documento,
+    TipoPedido
+};
+
+use App\Http\Controllers\Sms\VerificationController;
+use App\Http\Controllers\Pdf\PdfController;
+use App\Http\Controllers\Excel\ExcelController;
+use App\Http\Controllers\Excel\SmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,10 +75,6 @@ Route::middleware('auth')->group(
 
 // Notificações
 
-// Route::get('/', function () {
-//     return view('index');
-// })->name('notificacao.home');
-
 Route::get('/notificar/detalhes', function() {
     return view('notificoes.furtos_acidentes_roubos.details');
 });
@@ -92,7 +107,7 @@ Route::middleware('auth')->group(
 
         Route::post('/alertas/abrir/{id}', [AlertaController::class, 'abrir'])->name('alertas.abrir');
 
-        Route::post('/alertas/update/{id}', [AlertaController::class, 'update'])->name('alertas.update');
+        Route::put('/alertas/{id}', [AlertaController::class, 'update'])->name('alertas.update');
 
         Route::delete('alertas/delete/{id}', [AlertaController::class, 'destroy'])
         ->name('alertas.destroy')
@@ -203,6 +218,36 @@ Route::middleware('auth')->group(
 
         Route::delete('/pedido/{id}', [PedidoController::class, 'destroy'])->middleware('can:deletar_pedido')->name('pedido.destroy');
 
+        Route::get('/relatorio/pdf/{id}', [PdfController::class, 'pdfStream'])->name('pedidos.pdf');
+
+        Route::get('/pedidos/lista/pdf', [PdfController::class, 'pdfStreamPedidos'])->name('pedidos.lista.pdf');
+
+        Route::get('/relatorio/excel/', [ExcelController::class, 'xlsxDownload'])->name('pedidos.excel');
+
+        Route::get('/relatorio/excel/relatorio/', function() { 
+
+            $pedidos = PedidoMatricula::all();
+            $tipoPedidos = TipoPedido::all();
+            
+            return view('admin.pedidos.veiculo.excel', compact('pedidos', 'tipoPedidos'));
+        });
+
+        Route::get('/relatorio/pdf/relatorio/{id}', function($id) { 
+
+            $pedido = PedidoMatricula::where('id', $id)->first();
+            $classes = ClasseVeiculo::all();
+            $combustiveis = Combustivel::all();
+            $tipoCaixas = CaixaVeiculo::all();
+            $provincias = Provincia::all();
+            $pesosBruto = PesoBruto::all();
+            $servicos = Servico::all();
+            $tipos_multa = TipoMulta::all();
+            $dtsrs = Dtsr::all();
+            $documentos = Documento::where('pedido_matricula_id', $pedido->id)->get();
+            
+            return view('admin.pedidos.veiculo.pdf', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'provincias', 'pesosBruto', 'servicos', 'tipos_multa', 'dtsrs', 'documentos'));
+        });
+
     }
 );
 
@@ -252,5 +297,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/sms/{id}', [SmsController::class, 'sendSms'])->name('sms');
 
 require __DIR__.'/auth.php';

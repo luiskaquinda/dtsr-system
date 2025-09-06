@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\{
     Alerta,
     TipoNotificacao,
-    Municipio
+    Municipio,
+    AlertaImagem
 };
 use Illuminate\Http\Request;
 use Str;
@@ -30,8 +31,7 @@ class AlertaController extends Controller
         // Carrega todos os alertas + relacionamento de quem confirmou
         $alertas = Alerta::with(['usuariosQueConfirmaram', 'tipos_notificacoes'])
             ->latest()
-            ->paginate(3)
-            ->take(3);
+            ->paginate(3);
 
         // Alertas por municipios
 
@@ -73,6 +73,8 @@ class AlertaController extends Controller
         //
         $data = $request->all();
 
+        // dd($data['imagens']);
+
         $data = $request->validate([
             'anonimo'           => 'nullable|boolean',
             'nome_denuciante'   => 'nullable|string|max:100',
@@ -95,7 +97,7 @@ class AlertaController extends Controller
                         ->storeAs('alertas', $filename, 'public');
         
             // salvar no banco
-            Alerta::create([
+            $alerta = Alerta::create([
                 'anonima'           => $request->boolean('anonima') ?? 0,
                 'titulo'            => $data['titulo'],
                 'data_ocorrido'     => $data['data_ocorrido'],
@@ -111,6 +113,18 @@ class AlertaController extends Controller
                 'user_id'           => Auth::id() ?? null,
                 'status'            => 'aberto'
             ]);
+
+            if ($request->hasFile('imagens')) {
+                foreach ($request->file('imagens') as $file) {
+                    $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('alertas', $filename, 'public');
+    
+                    AlertaImagem::create([
+                        'alerta_id' => $alerta->id,
+                        'path' => $path
+                    ]);
+                }
+            }
         
             return redirect()
                 ->route('notificacao.alertas.index')
@@ -236,66 +250,163 @@ class AlertaController extends Controller
     {
 
         $userId = auth()->id();
-        $data = $request->validate([
-            'anonimo'           => 'nullable|boolean',
-            'nome_denuciante'   => 'nullable|string|max:100',
-            'titulo'            => 'required|string|max:255',
-            'municipio_id'      => 'required|string|max:100',
-            'data_ocorrido'     => 'required|date|date_format:Y-m-d',
-            'hora_ocorrido'     => 'required|date_format:H:i',
-            'tipo_alerta'       => 'required|in:1,2,3,4,6',
-            'descricao'         => 'required|string',
-            'imagem'            => 'nullable|image|max:2048',
-        ]);
+        // $data = $request->validate([
+        //     'anonimo'           => 'nullable|boolean',
+        //     'nome_denuciante'   => 'nullable|string|max:100',
+        //     'titulo'            => 'required|string|max:255',
+        //     'municipio_id'      => 'required|string|max:100',
+        //     'data_ocorrido'     => 'required|date|date_format:Y-m-d',
+        //     'hora_ocorrido'     => 'required|date_format:H:i',
+        //     'tipo_alerta'       => 'required|in:1,2,3,4,6',
+        //     'descricao'         => 'required|string',
+        //     'imagem'            => 'nullable|image|max:2048',
+        // ]);
 
-        $alerta = Alerta::findOrFail($id);
+        // $alerta = Alerta::findOrFail($id);
 
-        try {
+        // try {
 
+        //     // dd($request->remover_imagens);
+
+        //     // 🔹 Remover imagens selecionadas
+        //     if ($request->filled('remover_imagens')) {
+        //         foreach ($request->remover_imagens as $imagemId) {
+        //             $img = AlertaImagem::find($imagemId);
+        //             if ($img && $img->path) {
+        //                 $image_path = $img->path;
+        //                 $img->delete(); // remove do banco
+        //                 Storage::disk('public')->delete($image_path); // remove do disco
+        //             }
+        //         }
+        //     }
+
+        //     dd($request->file('imagens'), $request->file('imagem'));
+
+        //     // 🔹 Se o user enviou novas imagens
+        //     if ($request->hasFile('imagem')) {
+        //         foreach ($request->file('imagem') as $imagem) {
+        //             $path = $imagem->store('alertas', 'public');
+        //             $alerta->imagens()->create([
+        //                 'path' => $path
+        //             ]);
+        //         }
+        //     }
+
+        //     // 2) Prepare o caminho da imagem: mantém o antigo por default
+        //     $path = $alerta->imagem;
+
+        //     // 3) Se veio arquivo novo, remove o antigo e armazena o novo
+        //     if ($request->hasFile('imagem')) {
+        //         // apaga antigo
+        //         if ($path && Storage::exists("public/{$path}")) {
+        //             Storage::delete("public/{$path}");
+        //         }
+        //         // guarda o novo e atualiza $path
+        //         $path = $request->file('imagem')->store('alertas', 'public');
+        //     }
             
-            // 2) Prepare o caminho da imagem: mantém o antigo por default
-            $path = $alerta->imagem;
+        //     $alerta->update([
+        //         'anonima'           => $request->boolean('anonima') ?? 0,
+        //         'titulo'            => $data['titulo'],
+        //         'data_ocorrido'     => $data['data_ocorrido'],
+        //         'hora_ocorrido'     => $data['hora_ocorrido'],
+        //         'nome_denuciante'   => (($data['nome_denuciante'] !== "") || ($data['nome_denuciante'] !== null)) ? $data['nome_denuciante'] : null,
 
-            // 3) Se veio arquivo novo, remove o antigo e armazena o novo
-            if ($request->hasFile('imagem')) {
-                // apaga antigo
-                if ($path && Storage::exists("public/{$path}")) {
-                    Storage::delete("public/{$path}");
-                }
-                // guarda o novo e atualiza $path
-                $path = $request->file('imagem')->store('alertas', 'public');
-            }
-            
-            $alerta->update([
-                'anonima'           => $request->boolean('anonima') ?? 0,
-                'titulo'            => $data['titulo'],
-                'data_ocorrido'     => $data['data_ocorrido'],
-                'hora_ocorrido'     => $data['hora_ocorrido'],
-                'nome_denuciante'   => (($data['nome_denuciante'] !== "") || ($data['nome_denuciante'] !== null)) ? $data['nome_denuciante'] : null,
+        //         'descricao'         => $data['descricao'],
+        //         'imagem'            => $path,
 
-                'descricao'         => $data['descricao'],
-                'imagem'            => $path,
-
-                'municipio_id'      => $data['municipio_id'],
-                'tipo_alerta_id'    => $data['tipo_alerta'],
-                'user_id'           => Auth::id() ?? null,
-            ]);
+        //         'municipio_id'      => $data['municipio_id'],
+        //         'tipo_alerta_id'    => $data['tipo_alerta'],
+        //         'user_id'           => Auth::id() ?? null,
+        //     ]);
         
-            return redirect()
-                ->route('alertas.list', $userId)
-                ->with('success', 'Alerta editado com sucesso!');  
+        //     return redirect()
+        //         ->route('alertas.list', $userId)
+        //         ->with('success', 'Alerta editado com sucesso!');  
 
-        } catch (QueryException $e) {
-            // 4) Falha no DB → log e retorna com erro
-            \Log::error('Erro ao salvar Alerta: '.$e->getMessage());
+        // } catch (QueryException $e) {
+        //     // 4) Falha no DB → log e retorna com erro
+        //     \Log::error('Erro ao salvar Alerta: '.$e->getMessage());
     
-            // return redirect()
-            //     ->intended()
-            //     ->with('error', 'Desculpe, ocorreu um erro ao editar o alerta. Tente novamente!');
-            return redirect()
-                ->back()
-                ->with('error', 'Falha ao atualizar: ' . $e->getMessage())
-                ->withInput();
+        //     // return redirect()
+        //     //     ->intended()
+        //     //     ->with('error', 'Desculpe, ocorreu um erro ao editar o alerta. Tente novamente!');
+        //     return redirect()
+        //         ->back()
+        //         ->with('error', 'Falha ao atualizar: ' . $e->getMessage())
+        //         ->withInput();
+        // }
+
+        $data = $request->validate([
+            'anonimo' => 'nullable|boolean',
+            'nome_denuciante' => 'nullable|string|max:100',
+            'titulo' => 'required|string|max:255',
+            'municipio_id' => 'required',
+            'data_ocorrido' => 'required|date',
+            'hora_ocorrido' => 'required',
+            'tipo_alerta' => 'required|in:1,2,3,4,6',
+            'descricao' => 'required|string',
+            'imagem' => 'nullable|image|max:2048',         // imagem principal
+            'imagens.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096' // secundárias
+        ]);
+    
+        $alerta = Alerta::findOrFail($id);
+    
+        DB::beginTransaction();
+        try {
+            // 1) Remove imagens marcadas para remoção
+            if ($request->filled('remover_imagens')) {
+                foreach ($request->remover_imagens as $imgId) {
+                    $img = AlertaImagem::find($imgId);
+                    if ($img) {
+                        // guarda path, deleta do DB e do disco
+                        $path = $img->path;
+                        $img->delete();
+                        if ($path) Storage::disk('public')->delete($path);
+                    }
+                }
+            }
+    
+            // 2) Processa novas imagens secundárias (imagens[])
+            if ($request->hasFile('imagens')) {
+                foreach ($request->file('imagens') as $file) {
+                    $path = $file->store('alertas', 'public');
+                    $alerta->imagens()->create([
+                        'path' => $path
+                    ]);
+                }
+            }
+    
+            // 3) Processa imagem principal (se houver)
+            if ($request->hasFile('imagem')) {
+                // apaga antiga se existir
+                if ($alerta->imagem) {
+                    Storage::disk('public')->delete($alerta->imagem);
+                }
+                $p = $request->file('imagem')->store('alertas', 'public');
+                $alerta->imagem = $p;
+            }
+    
+            // 4) Atualiza dados do alerta
+            $alerta->titulo = $data['titulo'];
+            $alerta->descricao = $data['descricao'];
+            $alerta->municipio_id = $data['municipio_id'];
+            $alerta->tipo_alerta_id = $data['tipo_alerta'];
+            $alerta->nome_denuciante = $data['nome_denuciante'] ?: null;
+            $alerta->anonima = $request->boolean('anonimo') ? 1 : 0;
+            $alerta->hora_ocorrido = $data['hora_ocorrido'];
+            $alerta->data_ocorrido = $data['data_ocorrido'];
+            $alerta->user_id = auth()->id();
+            $alerta->save();
+    
+            DB::commit();
+    
+            return redirect()->route('alertas.list', auth()->id())->with('success','Alerta editado com sucesso!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Erro update alerta: '.$e->getMessage());
+            return back()->with('error','Falha ao atualizar: '.$e->getMessage())->withInput();
         }
     }
 

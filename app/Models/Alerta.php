@@ -112,6 +112,9 @@ class Alerta extends Model
         return "{$userId}{$date}{$proximoSeq}";
     }
 
-
+    public function imagens()
+    {
+        return $this->hasMany(AlertaImagem::class);
+    }
 
 }

@@ -33,7 +33,13 @@
                     </select>
                     <!--end::Select2-->
                 </div>
-                
+
+                <!--begin::Add product-->
+                <a href="{{ route('pedidos.excel') }}" class="btn btn-warning"><i class="fa-solid fa-file-excel fs-2"></i></a>
+                <!--end::Add product-->
+                <!--begin::Add product-->
+                <a href="{{ route('pedidos.lista.pdf') }}" class="btn btn-warning"><i class="fa-solid fa-file-pdf fs-2"></i></a>
+                <!--end::Add product-->                   
                 <!--begin::Add product-->
                 <a href="{{ route('pedido.create', ['tipoPedido' => "Emissao"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
                 <!--end::Add product-->
@@ -133,7 +139,7 @@
 
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="{{ route('pedido.show', $pedido->veiculo_id) }}" class="menu-link px-3">Ver</a>
+                                            <a href="{{ route('pedido.show', $pedido->id) }}" class="menu-link px-3">Ver</a>
                                         </div>
                                         <!--end::Menu item-->
 

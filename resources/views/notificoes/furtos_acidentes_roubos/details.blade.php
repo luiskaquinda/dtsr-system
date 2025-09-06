@@ -90,11 +90,48 @@
                                         </div>
                                         <!--end::Title-->
                                         <!--begin::Wrapper-->
-                                        <div class="mb-11">
+                                        {{-- <div class="mb-11">
                                             <!--begin::Image-->
                                             <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/' . $alerta->imagem) }}" alt="">
                                             <!--end::Image-->
-                                        </div>
+                                        </div> --}}
+                                        @if($alerta->imagens->isNotEmpty())
+                                            <div class="alerta-gallery position-relative" id="alertaGallery{{ $alerta->id }}">
+                                                
+                                                {{-- Imagem principal dentro do wrapper --}}
+                                                <div class="main-alerta-wrapper">
+                                                    <img
+                                                        id="mainImage{{ $alerta->id }}"
+                                                        src="{{ asset('storage/'.$alerta->imagens->first()->path) }}"
+                                                        class="main-alerta-img"
+                                                        alt="Imagem principal do alerta"
+                                                    >
+                                                </div>
+
+                                                {{-- Miniaturas no canto inferior direito --}}
+                                                <div class="thumbs-container" aria-label="Miniaturas do alerta">
+                                                    @foreach($alerta->imagens as $i => $img)
+                                                        <button
+                                                            type="button"
+                                                            class="thumb-btn {{ $i === 0 ? 'active' : '' }}"
+                                                            data-target="#mainImage{{ $alerta->id }}"
+                                                            data-src="{{ asset('storage/'.$img->path) }}"
+                                                            aria-label="Ver imagem {{ $i + 1 }}"
+                                                            title="Ver imagem {{ $i + 1 }}"
+                                                        >
+                                                            <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
+                                                        </button>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="mb-11">
+                                                <!--begin::Image-->
+                                                <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/' . $alerta->imagem) }}" alt="">
+                                                <!--end::Image-->
+                                            </div>
+                                        @endif
+
                                         <!--end::Wrapper-->
                                         <!--begin::Section-->
                                         <div class="fs-5 fw-semibold text-gray-600 mt-4">
@@ -241,3 +278,159 @@
     </div>
     <!--end::Wrapper-->
 @endsection
+
+@push('anonimo')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // para cada galeria encontrada na página
+        document.querySelectorAll('.alerta-gallery').forEach(function(gallery) {
+            const thumbs = gallery.querySelectorAll('.thumb-btn');
+            thumbs.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const targetSelector = btn.getAttribute('data-target');
+                    const src = btn.getAttribute('data-src');
+                    if (!targetSelector || !src) return;
+    
+                    // troca a src da imagem principal
+                    const mainImg = document.querySelector(targetSelector);
+                    if (mainImg) {
+                        // animação simples: fade_out -> change -> fade_in
+                        mainImg.style.transition = 'opacity .18s ease';
+                        mainImg.style.opacity = '0';
+                        setTimeout(function() {
+                            mainImg.src = src;
+                            mainImg.style.opacity = '1';
+                        }, 180);
+                    }
+    
+                    // actualiza classe active nas miniaturas
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        });
+    });
+    </script>      
+@endpush
+@push('css_imagem')
+<style>
+    /* ----------------------------
+   Galeria: imagem principal fixa, responsiva
+   ---------------------------- */
+:root{
+  --main-aspect-ratio: 16 / 9;   /* altera para 4/3, 1/1 etc se preferires */
+  --main-max-height: 500px;      /* máxima altura em px (desktop) */
+  --main-max-width: 100%;        /* largura máxima do bloco */
+  --thumb-w: 72px;
+  --thumb-h: 54px;
+}
+
+/* wrapper que mantém a proporção */
+.alerta-gallery {
+  width: 100%;
+  max-width: var(--main-max-width);
+  position: relative;
+}
+
+/* método moderno: usa aspect-ratio se suportado */
+.main-alerta-wrapper {
+  width: 100%;
+  aspect-ratio: var(--main-aspect-ratio);
+  max-height: var(--main-max-height);
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f0f0f0; /* cor de fundo enquanto a imagem carrega */
+  display: block;
+  position: relative;
+}
+
+/* fallback para browsers que não suportam aspect-ratio:
+   usa o pseudo-elemento para fixar a altura (padding-top) */
+@supports not (aspect-ratio: 1/1) {
+  .main-alerta-wrapper {
+    height: 0;
+    padding-top: calc(100% / (var(--main-aspect-ratio)));
+  }
+  .main-alerta-wrapper img {
+    position: absolute;
+    top: 0; left: 0;
+  }
+}
+
+/* imagem principal: ocupa 100% da caixa e faz crop centrado */
+.main-alerta-wrapper img,
+.main-alerta-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+/* garante que não apareçam inline-styles a atrapalhar */
+.main-alerta-wrapper img[style] {
+  /* opcional: remove inline max-height/width via CSS override */
+  max-height: none !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* ----------------------------
+   Miniaturas
+   ---------------------------- */
+.alerta-gallery .thumbs-container {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 30;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.04);
+  max-height: calc(var(--main-max-height) - 24px);
+  overflow-y: auto;
+}
+
+/* thumbnail buttons */
+.thumb-btn {
+  width: var(--thumb-w);
+  height: var(--thumb-h);
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.35);
+  background: #fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.thumb-btn img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+/* active/hover state para destaque */
+.thumb-btn.active { box-shadow: 0 0 0 3px rgba(0,0,0,0.08) inset; border-color:#fff; }
+.thumb-btn:hover img { transform: scale(1.03); }
+
+/* responsivo: em ecrãs pequenos mostra miniaturas em linha em baixo */
+@media (max-width: 576px) {
+  .alerta-gallery .thumbs-container {
+    right: 8px;
+    bottom: 8px;
+    flex-direction: row;
+    gap: 6px;
+    max-height: 80px;
+  }
+  :root { --thumb-w: 56px; --thumb-h: 40px; --main-max-height: 300px; --main-aspect-ratio: 16 / 9; }
+}
+</style>
+@endpush

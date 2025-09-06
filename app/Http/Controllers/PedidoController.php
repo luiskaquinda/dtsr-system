@@ -670,7 +670,16 @@ class PedidoController extends Controller
     public function show(string $id)
     {
         //
-        $pedido = PedidoMatricula::where('veiculo_id', $id)->first();
+
+        // dd($id);
+
+        $pedido = PedidoMatricula::with([
+            'veiculo.proprietario.user',
+            'veiculo.matricula', 
+            'tipo_pedido',
+            // adiciona outras relações que uses na view
+        ])->findOrFail($id); 
+        
         $classes = ClasseVeiculo::all();
         $combustiveis = Combustivel::all();
         $tipoCaixas = CaixaVeiculo::all();

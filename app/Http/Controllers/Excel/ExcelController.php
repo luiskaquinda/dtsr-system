@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 
-class DtsrController extends Controller
+class ExcelController extends Controller
 {
     public function xlsxDownload()
     {
