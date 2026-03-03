@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <h1 class="text-black fw-semibold px-9 mt-10 mb-6">Lista de Veiculos</h1>
+    <h1 class="text-black fw-semibold px-9 mt-0 mb-2">Lista de Veiculos</h1>
 
     <!--begin::Listagem de Veiculos-->
     <div class="card card-flush">
@@ -34,10 +34,10 @@
                     <!--end::Select2-->
                 </div>
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "E"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E</a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "Emissao"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
                 <!--end::Add product-->
                 <!--begin::Add product-->
-                <a href="{{ route('pedido.create', ['tipoPedido' => "M"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
+                <a href="{{ route('pedido.create', ['tipoPedido' => "Matricula"]) }}" class="btn btn-primary"><i class="ki-duotone ki-plus fs-2"></i>M</a>
                 <!--end::Add product-->
             </div>
         <!--end::Card toolbar-->
@@ -64,122 +64,76 @@
                     </tr>
                 </thead>
                 <tbody class="fw-semibold text-gray-600">
-                    @forelse($veiculos as $veiculo)
-                        @if ($veiculo->proprietario->user->id == Auth::id())     
-                            <tr>
-                                <td>
-                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                        <input class="form-check-input" type="checkbox" value="1" />
-                                    </div>
-                                </td>
-                                <td class="text-start pe-0" data-order="15">
-                                    <span class="fw-bold ms-3">{{ $veiculo->created_at->format('d-m-y') }}</span>
-                                </td>
-                                <td class="text-start pe-0" data-order="15">
-                                    <span class="fw-bold ms-3">{{ $veiculo->marca }}</span>
-                                </td>
-                                <td class="text-start pe-0">{{ $veiculo->classe->classe }}</td>
-                                <td class="text-start pe-0" data-order="rating-4">
-                                    {{ $veiculo->quadro }}
-                                </td>
-                                <td class="text-start pe-0" data-order="rating-4">
-                                    {{ $veiculo->proprietario->nome_completo }}
-                                </td>
-                                <td class="text-start pe-0" data-order="Scheduled">
-                                    <!--begin::Badges-->
-                                    @if ($veiculo->pedido_matricula->status == "0")
+                        @forelse($veiculos as $veiculo)
+                            @php
+                                $user = Auth::user();
+                                $isOwner = $veiculo->proprietario->user->id == $user->id;
+                                $isAdminOrAgente = $user->hasRole('admin') || $user->hasRole('agente');
+                            @endphp
+                    
+                            @if ($isAdminOrAgente || $isOwner)
+                                <tr>
+                                    <td>
+                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                            <input class="form-check-input" type="checkbox" value="1" />
+                                        </div>
+                                    </td>
+                                    <td class="text-start pe-0">
+                                        <span class="fw-bold ms-3">{{ $veiculo->created_at->format('d-m-y') }}</span>
+                                    </td>
+                                    <td class="text-start pe-0">
+                                        <span class="fw-bold ms-3">{{ $veiculo->marca }}</span>
+                                    </td>
+                                    <td class="text-start pe-0">{{ $veiculo->classe->classe }}</td>
+                                    <td class="text-start pe-0">{{ $veiculo->quadro }}</td>
+                                    <td class="text-start pe-0">{{ $veiculo->proprietario->nome_completo }}</td>
+                                    <td class="text-start pe-0">
+                                        @if ($veiculo->pedido_matricula->status == "0")
                                             <div class="badge badge-danger">Em Processamento</div>
-                                    @else
+                                        @else
                                             <div class="badge badge-success">Processado</div>
-                                    @endif
-                                    <!--end::Badges-->
-                                </td>
-                                <td class="text-start">
-                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Acções
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                    <!--begin::Menu-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">Editar</a>
+                                        @endif
+                                    </td>
+                                    <td class="text-start">
+                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
+                                           data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                            Acções <i class="ki-duotone ki-down fs-5 ms-1"></i>
+                                        </a>
+                    
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600
+                                                    menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
+                                             data-kt-menu="true">
+                    
+                                            {{-- Só o dono pode editar/deletar --}}
+                                            @if ($isOwner && !$isAdminOrAgente)
+                                                <div class="menu-item px-3">
+                                                    <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">Editar</a>
+                                                </div>
+                                                <div class="menu-item px-3">
+                                                    <form method="POST" action="{{ route('veiculo.destroy', $veiculo->id) }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="menu-link px-3">Delete</button>
+                                                    </form>
+                                                </div>
+                                            @endif
+                    
+                                            {{-- Admin/Agente só consulta, não edita --}}
+                                            @if ($isAdminOrAgente)
+                                                <div class="menu-item px-3">
+                                                    <a href="{{ route('pedido.show', $veiculo->pedido_matricula->id) }}" class="menu-link px-3">Ver</a>
+                                                </div>
+                                            @endif
+                    
                                         </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">AC</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="{{ route('veiculo.edit', $veiculo->id) }}" class="menu-link px-3">D</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <form method="POST" action="{{ route('veiculo.destroy', $veiculo->id) }}">
-                                                @csrf
-                                                @method('delete')
-
-                                                <button type="submit" class="menu-link px-3">Delete</button>
-
-                                            </form>
-                                        </div>
-                                        <!--end::Menu item-->
-                                    </div>
-                                    <!--end::Menu-->
-                                </td>
+                                    </td>
+                                </tr>
+                            @endif
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center">Sem Veiculos cadastrados.</td>
                             </tr>
-                        @endif
-                    @empty
-                        <tr>
-                            <td>
-                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="1" />
-                                </div>
-                            </td>
-                            <td class="text-start pe-0" data-order="15">
-                                <span class="fw-bold ms-3">
-                                    Sem Veiculos cadastrados.
-                                </span>
-                            </td>
-                            <td class="text-start pe-0" data-order="15">
-                                <span class="fw-bold ms-3"></span>
-                            </td>
-                            <td class="text-start pe-0"></td>
-                            <td class="text-start pe-0" data-order="rating-4">
-                                
-                            </td>
-                            <td class="text-start pe-0" data-order="rating-4">
-                            </td>
-                            <td class="text-start pe-0" data-order="Scheduled">
-                            </td>
-                            <td class="text-start">
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Acções
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="" class="menu-link px-3">Editar</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-
-                                    <form method="POST" action="">
-                                        @csrf
-                                        @method('delete')
-
-                                        <button type="submit" class="menu-link px-3">Delete</button>
-
-                                    </form>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu-->
-                            </td>
-                        </tr>
-                    @endforelse
+                        @endforelse
                 </tbody>
             </table>
             <!--end::Table-->

@@ -24,6 +24,40 @@
             <!--end::Card title-->
             <!--begin::Card toolbar-->
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                <!--begin::Menu 1-->
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                    <!--begin::Header-->
+                    <div class="px-7 py-5">
+                        <div class="fs-5 text-dark fw-bold">Filtrar</div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Separator-->
+                    <div class="separator border-gray-200"></div>
+                    <!--end::Separator-->
+                    <!--begin::Content-->
+                    <div class="px-7 py-5" data-kt-user-table-filter="form">
+                        <!--begin::Input group-->
+                        <div class="mb-10">
+                            <label class="form-label fs-6 fw-semibold">Matricula:</label>
+                            <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
+                                <option></option>
+                                <option value="Administrator">Benguela</option>
+                                <option value="Analyst">Luanda</option>
+                                <option value="Developer">Huambo</option>
+                            </select>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="d-flex justify-content-end">
+                            <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+                            <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Buscar</button>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Menu 1-->
+
                 <div class="w-100 mw-150px">
                     <!--begin::Select2-->
                     <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Selecionar" data-kt-ecommerce-product-filter="status">
@@ -33,7 +67,10 @@
                     </select>
                     <!--end::Select2-->
                 </div>
-                
+
+                <!--begin::Add product-->
+                <a href="{{ route('pedidos.excel') }}" class="btn btn-warning"><i class="fa-solid fa-file-excel fs-2"></i></a>
+                <!--end::Add product-->                 
                 <!--begin::Add product-->
                 <a href="{{ route('pedido.create', ['tipoPedido' => "Emissao"]) }}" class="btn btn-warning"><i class="ki-duotone ki-plus fs-2"></i>E </a>
                 <!--end::Add product-->
@@ -56,7 +93,7 @@
                                 <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_products_table .form-check-input" value="1" />
                             </div>
                         </th>
-                        <th class="text-start min-w-100px">Data</th>
+                        <th class="text-start min-w-100px">Proprietário</th>
                         <th class="text-start min-w-100px">Marca</th>
                         <th class="text-start min-w-70px">Pedido</th>
                         <th class="text-start min-w-100px">Nº Quadro</th>
@@ -75,8 +112,26 @@
                                         <input class="form-check-input" type="checkbox" value="1" />
                                     </div>
                                 </td>
-                                <td class="text-start pe-0" data-order="15">
-                                    <span class="fw-bold ms-3">{{ $pedido->created_at->format('d-m-y') }}</span>
+                                <td class="text-start d-flex align-items-center pe-0" data-order="15">
+                                    <!--begin:: Avatar -->
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                        <a href="#">
+                                            <div class="symbol-label">
+                                                @if($pedido->veiculo->imagens->first())
+                                                    <img src="{{ asset('storage/' . $pedido->veiculo->imagens->first()->path) }}" 
+                                                        alt="Imagem do veículo" 
+                                                        class="w-100" />
+                                                @else
+                                                    <!-- Caso não tenha imagem, coloca um avatar padrão -->
+                                                    <img src="{{ asset('images/no-image.png') }}" 
+                                                        alt="Sem imagem" 
+                                                        class="w-100" />
+                                                @endif
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <span class="fw-bold ms-3">{{ $pedido->veiculo->proprietario->nome_completo }}</span>
                                 </td>
                                 <td class="text-start pe-0" data-order="15">
                                     <span class="fw-bold ms-3">{{ $pedido->veiculo->marca }}</span>
@@ -133,7 +188,7 @@
 
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="{{ route('pedido.show', $pedido->veiculo_id) }}" class="menu-link px-3">Ver</a>
+                                            <a href="{{ route('pedido.show', $pedido->id) }}" class="menu-link px-3">Ver</a>
                                         </div>
                                         <!--end::Menu item-->
 

@@ -24,7 +24,7 @@
                                     <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Alertas</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
-                                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                    {{-- <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
                                             <a href="../dist/index.html" class="text-gray-500">
@@ -48,12 +48,15 @@
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item text-gray-500">Home</li>
                                         <!--end::Item-->
-                                    </ul>
+                                    </ul> --}}
                                     <!--end::Breadcrumb-->
                                 </div>
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-3 gap-lg-5">
+                                    <!--begin::Primary button-->
+                                    <a href="{{ route('servicos.home') }}" class="btn btn-flex btn-center btn-primary btn-sm px-4">Serviços</a>
+                                    <!--end::Primary button-->
                                     <!--begin::Primary button-->
                                     <a href="#" class="btn btn-flex btn-center btn-dark btn-sm px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2">Alertar</a>
                                     <!--end::Primary button-->
@@ -193,7 +196,7 @@
                                                 
                                                 <!--begin::Avatar-->
                                                 <div class="w-100 h-100 bg-light text-center">
-                                                    @if($alerta->imagem)
+                                                    {{-- @if($alerta->imagem)
 
                                                         <div class="symbol symbol-200px">
                                                             <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
@@ -206,7 +209,45 @@
                                                         </div>
                                                     @else
                                                         <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
-                                                    @endif
+                                                    @endif --}}
+                                                    @if($alerta->imagens->isNotEmpty())
+                                                    <div class="alerta-gallery position-relative">
+                                                        <!-- Imagem principal -->
+                                                        <div class="main-alerta-wrapper">
+                                                            <img
+                                                                id="mainImage{{ $alerta->id }}"
+                                                                src="{{ asset('storage/'.$alerta->imagens->first()->path) }}"
+                                                                class="main-alerta-img rounded"
+                                                                alt="Imagem principal do alerta"
+                                                            >
+                                                        </div>
+                                                
+                                                        <!-- Miniaturas -->
+                                                        <div class="thumbs-container">
+                                                            @foreach($alerta->imagens as $i => $img)
+                                                                <button
+                                                                    type="button"
+                                                                    class="thumb-btn {{ $i === 0 ? 'active' : '' }}"
+                                                                    data-target="#mainImage{{ $alerta->id }}"
+                                                                    data-src="{{ asset('storage/'.$img->path) }}"
+                                                                >
+                                                                    <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i+1 }}">
+                                                                </button>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="symbol symbol-200px">
+                                                        <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
+                                                            <img
+                                                                src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                                class="img-fluid rounded"
+                                                                alt="Imagem do alerta"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
                                                 </div>
                                                 <!--end::Avatar-->
                                             </div>
@@ -372,7 +413,154 @@
     
 @endsection
 @push('anonimo')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.thumb-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const target = document.querySelector(this.dataset.target);
+                    if (target) {
+                        target.src = this.dataset.src;
+                        this.closest('.thumbs-container')
+                            .querySelectorAll('.thumb-btn')
+                            .forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 
+    {{-- Inserir imagens --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnAdicionar = document.getElementById('btnAdicionarImagens');
+            const fileInput = document.getElementById('imagensInput');
+            const previewContainer = document.getElementById('previewImagens');
+            const form = document.getElementById('alerta'); // o teu form tem id="alerta"
+        
+            // limite máximo de imagens (ajusta se quiseres)
+            const MAX_IMAGES = 8;
+        
+            // array onde guardamos os File seleccionados
+            let selectedFiles = [];
+        
+            // abre o file picker
+            btnAdicionar?.addEventListener('click', () => fileInput.click());
+        
+            // quando o utilizador selecciona ficheiros
+            fileInput?.addEventListener('change', (e) => {
+                const files = Array.from(e.target.files || []);
+        
+                // evita exceder MAX_IMAGES
+                if (selectedFiles.length + files.length > MAX_IMAGES) {
+                    alert('Limite de ' + MAX_IMAGES + ' imagens.');
+                    fileInput.value = '';
+                    return;
+                }
+        
+                // junta ao array (filtra duplicados simples por name+size)
+                files.forEach(f => {
+                    const duplicate = selectedFiles.some(s => s.name === f.name && s.size === f.size && s.lastModified === f.lastModified);
+                    if (!duplicate) selectedFiles.push(f);
+                });
+        
+                renderPreviews();
+                // limpa o input para permitir seleccionar os mesmos ficheiros novamente
+                fileInput.value = '';
+            });
+        
+            // renderiza as miniaturas
+            function renderPreviews() {
+                // limpa container
+                previewContainer.innerHTML = '';
+        
+                selectedFiles.forEach((file, index) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'preview-thumb';
+        
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = file.name;
+        
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'preview-remove';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.title = 'Remover imagem';
+                    removeBtn.addEventListener('click', () => {
+                        // revoke URL
+                        URL.revokeObjectURL(img.src);
+                        // remove do array
+                        selectedFiles.splice(index, 1);
+                        // re-render
+                        renderPreviews();
+                    });
+        
+                    const fname = document.createElement('div');
+                    fname.className = 'preview-filename';
+                    fname.textContent = file.name.length > 28 ? file.name.slice(0,25) + '...' : file.name;
+        
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    wrapper.appendChild(fname);
+                    previewContainer.appendChild(wrapper);
+                });
+            }
+        
+            // Antes do submit, colocamos os Files no input real usando DataTransfer (browser moderno)
+            form?.addEventListener('submit', function (e) {
+                // se não há ficheiros seleccionados, deixa submeter normalmente
+                if (selectedFiles.length === 0) {
+                    return true;
+                }
+        
+                // tenta usar DataTransfer
+                try {
+                    const dt = new DataTransfer(); // moderno; não disponível em browsers antigos
+                    selectedFiles.forEach(f => dt.items.add(f));
+                    fileInput.files = dt.files;
+                    // permite que o form submeta normalmente (enctype multipart/form-data)
+                    return true;
+                } catch (err) {
+                    // Fallback: faz upload via fetch com FormData (AJAX)
+                    e.preventDefault();
+                    const fd = new FormData(form); // já recolhe os inputs do form
+                    selectedFiles.forEach(f => fd.append('imagens[]', f));
+        
+                    // CSRF token se existir meta tag
+                    const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+                    const headers = tokenMeta ? { 'X-CSRF-TOKEN': tokenMeta.getAttribute('content') } : {};
+        
+                    fetch(form.action, {
+                        method: form.method || 'POST',
+                        headers: headers,
+                        body: fd,
+                        credentials: 'same-origin'
+                    })
+                    .then(async response => {
+                        if (!response.ok) {
+                            const text = await response.text();
+                            console.error('Upload falhou', text);
+                            alert('Falha no upload. Ver console para detalhes.');
+                            return;
+                        }
+                        // sucesso — redireciona ou recarrega página
+                        window.location.reload();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Erro ao enviar (ver console).');
+                    });
+        
+                    return false;
+                }
+            });
+        
+            // Opcional: limita o total a MAX_IMAGES no caso de quereres evitar selecções muito grandes via drag&drop
+            // Poderias também adicionar suporte a drag & drop aqui.
+        });
+    </script>
+        
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         $('#kt_modal_scrollable_2').on('shown.bs.modal', function () {
@@ -405,7 +593,7 @@
         // Captura os elementos
         const toggle = document.getElementById('anonima');
         const nomeContainer = document.getElementById('nomeContainer');
-    
+
         // Função que mostra ou esconde o input
         function atualizaVisibilidade() {
             // Se estiver marcado (anônimo), esconda o campo de nome
@@ -415,14 +603,14 @@
                 nomeContainer.style.display = 'block';
             }
         }
-    
+
         // Atacha o listener ao change do checkbox
         toggle.addEventListener('change', atualizaVisibilidade);
-    
+
         // Inicializa o estado ao carregar a página
         atualizaVisibilidade();
     </script>
-    
+
     {{-- Toaster de susseco --}}
     <script>
         @if(session('success'))
@@ -476,150 +664,126 @@
     </script>
 
     {{-- Validação na criação do alert --}}
-
-    {{-- <script>
-
-        // Define form element
-        document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById('alerta');
-
-        modal.addEventListener('shown.bs.modal', function () {
-            // Se já existir uma instância anterior, destrua-a:
-            if (modal.fv) {
-            modal.fv.dispose();
-            }
-
-            // Cria nova instância de validação
-            modal.fv = FormValidation.formValidation(
-            document.getElementById('formCreateAlerta'),
-            {
-                fields: {
-                    'titulo': {
-                        validators: {
-                        notEmpty: {
-                            message: 'O título é obrigatório entendeu!'
-                        },
-                        stringLength: {
-                            max: 255,
-                            message: 'Máximo de 255 caracteres'
-                        }
-                        }
-                    },
-                    'data_ocorrido': {
-                        validators: {
-                        notEmpty: { message: 'A data é obrigatória' },
-                        date: {
-                            format: 'YYYY-MM-DD',
-                            message: 'Use o formato YYYY-MM-DD'
-                        }
-                        }
-                    },
-                    'tipo_alerta': {
-                        validators: {
-                        notEmpty: { message: 'Selecione um tipo de alerta' }
-                        }
-                    },
-
-                    // adicione regras para os demais campos…
-                },
-
-                plugins: {
-
-                    
-                    trigger: new FormValidation.plugins.Trigger(),
-                    trigger: new FormValidation.plugins.Trigger({
-                        // aqui você mapeia campos → eventos
-                        event: {
-                        // para o campo “titulo”, dispare também em `input`
-                            titulo: ['input', 'blur']
-                        }
-                    }),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: '.fv-row',
-                        eleInvalidClass: '',
-                        eleValidClass: ''
-                    }),
-
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    // opcional: impedir dupla submissão
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                },
-            }
-            );
-        });
-        });
-
-    </script> --}}
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-          // Ajuste: pegue o modal pelo ID da DIV, não do form
-          var modal = document.getElementById('kt_modal_scrollable_2');
+            // Ajuste: pegue o modal pelo ID da DIV, não do form
+            var modal = document.getElementById('kt_modal_scrollable_2');
         
-          modal.addEventListener('shown.bs.modal', function () {
+            modal.addEventListener('shown.bs.modal', function () {
             // Se já existir uma instância anterior, destrua-a
             if (modal.fv) {
-              modal.fv.dispose();
+                modal.fv.dispose();
             }
         
             // Ajuste: use o ID “formCreateAlerta” que deve existir no seu <form>
             modal.fv = FormValidation.formValidation(
-              document.getElementById('formCreateAlerta'),
-              {
+                document.getElementById('formCreateAlerta'),
+                {
                 fields: {
-                  titulo: {
+                    titulo: {
                     validators: {
-                      notEmpty: {
+                        notEmpty: {
                         message: 'O título é obrigatório entendeu!'
-                      },
-                      stringLength: {
+                        },
+                        stringLength: {
                         max: 255,
                         message: 'Máximo de 255 caracteres'
-                      }
+                        }
                     }
-                  },
-                  data_ocorrido: {
+                    },
+                    data_ocorrido: {
                     validators: {
-                      notEmpty: { message: 'A data é obrigatória' },
-                      date: {
+                        notEmpty: { message: 'A data é obrigatória' },
+                        date: {
                         format: 'YYYY-MM-DD',
                         message: 'Use o formato YYYY-MM-DD'
-                      }
+                        }
                     }
-                  },
-                  tipo_alerta: {
+                    },
+                    tipo_alerta: {
                     validators: {
-                      notEmpty: { message: 'Selecione um tipo de alerta' }
+                        notEmpty: { message: 'Selecione um tipo de alerta' }
                     }
-                  }
-                  // … outros campos
+                    }
+                    // … outros campos
                 },
                 plugins: {
-                  // Declara o Trigger apenas uma vez, com os eventos que deseja
-                  trigger: new FormValidation.plugins.Trigger({
+                    // Declara o Trigger apenas uma vez, com os eventos que deseja
+                    trigger: new FormValidation.plugins.Trigger({
                     event: {
-                      titulo:        ['input', 'blur'],   // valida ao digitar e ao sair
-                      data_ocorrido: ['change', 'blur'],  // datepicker → change
-                      tipo_alerta:   ['change']           // select → change
+                        titulo:        ['input', 'blur'],   // valida ao digitar e ao sair
+                        data_ocorrido: ['change', 'blur'],  // datepicker → change
+                        tipo_alerta:   ['change']           // select → change
                     }
-                  }),
-                  bootstrap: new FormValidation.plugins.Bootstrap5({
+                    }),
+                    bootstrap: new FormValidation.plugins.Bootstrap5({
                     rowSelector: '.fv-row',
                     eleInvalidClass: '',
                     eleValidClass: ''
-                  }),
-                  submitButton: new FormValidation.plugins.SubmitButton(),
-                  defaultSubmit: new FormValidation.plugins.DefaultSubmit()
+                    }),
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    defaultSubmit: new FormValidation.plugins.DefaultSubmit()
                 }
-              }
+                }
             );
-          });
+            });
         });
-    </script>
-        
+    </script> 
 @endpush
 
 @push('css_imagem')
+    <style>
+        /* wrapper da imagem principal */
+        .main-alerta-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9; /* mantém proporção fixa e responsiva */
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        /* imagem principal */
+        .main-alerta-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* container das miniaturas */
+        .thumbs-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        /* cada miniatura */
+        .thumb-btn {
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            width: 60px;
+            height: 45px;
+            overflow: hidden;
+        }
+
+        .thumb-btn.active {
+            border-color: #0d6efd; /* destaque na imagem ativa */
+        }
+
+        .thumb-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+        }
+    </style>
+
     <style>
         /* Força todas as imagens de alerta a terem mesmo tamanho e recorte central */
         .alerta-img {
@@ -638,6 +802,62 @@
         align-items: center;
         justify-content: center;
         }
+
+    </style>
+    <style>
+        .preview-thumb {
+            width: 140px;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            }
+
+            .preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            }
+
+            /* botão X no canto */
+            .preview-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor: pointer;
+            z-index: 5;
+            }
+
+            .preview-filename {
+            position: absolute;
+            left: 6px;
+            bottom: 4px;
+            right: 6px;
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.35);
+            padding: 2px 4px;
+            border-radius: 3px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            }
 
     </style>
 @endpush

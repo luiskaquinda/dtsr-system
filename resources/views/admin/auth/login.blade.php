@@ -12,9 +12,9 @@
                     <!--begin::Header-->
                     <div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
                         <!--begin::Logo-->
-                        {{-- <a href="#" class="py-2 py-lg-20">
-                            <img alt="Logo" src="{{ asset('admin/media/logos/default.svg') }}" class="h-40px h-lg-50px" />
-                        </a> --}}
+                        <a href="{{ route('home') }}" class="py-2 py-lg-20">
+                            <img alt="Logo" src="{{ asset('admin/media/logos/sicva_mobile.png') }}" class="h-40px h-lg-50px" />
+                        </a>
                         <!--end::Logo-->
                         <!--begin::Title-->
                         <h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">DTSR-System</h1>

@@ -14,9 +14,9 @@
                 </button>
                 <!--end::Header toggle-->
                 <!--begin::Logo-->
-                <a href="../dist/index.html" class="d-flex align-items-center mb-1 mb-lg-0 pt-lg-1">
-                    {{-- <img alt="Logo" src="{{ asset('admin/media/logos/default-small.svg') }}" class="d-block d-sm-none" />
-                    <img alt="Logo" src="{{ asset('admin/media/logos/default.svg') }}" class="d-none d-sm-block" /> --}}
+                <a href="{{ route('home') }}" class="d-flex align-items-center mb-1 mb-lg-0 pt-lg-1">
+                    <img alt="Logo" src="{{ asset('admin/media/logos/sicva_mobile.png') }}" class="d-block d-sm-none" />
+                    <img alt="Logo" src="{{ asset('admin/media/logos/sicva_default.png') }}" class="d-none d-sm-block" />
                 </a>
                 <!--end::Logo-->
             </div>
