@@ -5,7 +5,7 @@
 		<title>@yield('title', 'Veiculo')</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{{-- <link rel="shortcut icon" href="assets/media/logos/favicon.ico" /> --}}
+		<link rel="shortcut icon" href="{{ asset('admin.media.logos.sicva_icon.ico') }}" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -16,7 +16,9 @@
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<link href="{{ asset('admin/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('admin/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+
 		<!--end::Global Stylesheets Bundle-->
+		@stack('css_imagem')
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -86,7 +88,7 @@
 											<!--begin::Page title-->
 											<div class="page-title d-flex flex-column gap-3 me-3">
 												<!--begin::Title-->
-												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Dashboard</h1>
+												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Pedidos</h1>
 												<!--end::Title-->
 												<!--begin::Breadcrumb-->
 												<ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -247,7 +249,7 @@
 		</script>
 
 		@stack('toaster')
-
+		@stack('anonimo')
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

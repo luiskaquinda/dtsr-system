@@ -20,42 +20,65 @@ class AlertaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
         $user = auth()->user();
         $tipos_notificacao = TipoNotificacao::all();
         $municipios = Municipio::all();
-        $alertasTodos = Alerta::all()->count();
+        $alertasTodos = Alerta::count();
 
-        // Carrega todos os alertas + relacionamento de quem confirmou
-        $alertas = Alerta::with(['usuariosQueConfirmaram', 'tipos_notificacoes'])
-            ->latest()
-            ->paginate(3);
+        // pega o termo de pesquisa
+        $search = $request->input('search');
 
-        // Alertas por municipios
+        // query base
+        $query = Alerta::with(['usuariosQueConfirmaram', 'tipos_notificacoes'])
+            ->latest();
 
-        $alertasPorMunicipio =  Alerta::select('municipio_id', DB::raw('COUNT(*) AS total_alertas'))
-        ->with('municipio:id,nome_municipio')// já traz apenas id e nome do município
-        ->groupBy('municipio_id')
-        ->orderBy('total_alertas', 'desc')
-        ->get()
-        ->map(function($row) {
-            return [
-                'municipio'      => $row->municipio->nome_municipio,
-                'total_alertas'  => $row->total_alertas,
-            ];
-        });
+        // se tiver pesquisa, aplica filtro
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('titulo', 'like', "%{$search}%")
+                ->orWhere('descricao', 'like', "%{$search}%")
+                ->orWhere('nome_denuciante', 'like', "%{$search}%")
+                ->orWhereHas('municipio', function($q) use ($search) {
+                    $q->where('nome_municipio', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $alertas = $query->paginate(3)->appends(['search' => $search]);
+
+        // Alertas por municípios
+        $alertasPorMunicipio = Alerta::select('municipio_id', DB::raw('COUNT(*) AS total_alertas'))
+            ->with('municipio:id,nome_municipio')
+            ->groupBy('municipio_id')
+            ->orderBy('total_alertas', 'desc')
+            ->get()
+            ->map(function($row) {
+                return [
+                    'municipio'      => $row->municipio->nome_municipio,
+                    'total_alertas'  => $row->total_alertas,
+                ];
+            });
 
         // Alertas por status
-
         $alertasPorStatus = Alerta::select('status', DB::raw('COUNT(*) AS total_alertas'))
             ->groupBy('status')
             ->orderBy('total_alertas', 'desc')
             ->get();
 
-        return view('notificoes.furtos_acidentes_roubos.index', compact('alertas', 'tipos_notificacao', 'municipios', 'user', 'alertasPorMunicipio', 'alertasPorStatus', 'alertasTodos'));
+        return view('notificoes.furtos_acidentes_roubos.index', compact(
+            'alertas',
+            'tipos_notificacao',
+            'municipios',
+            'user',
+            'alertasPorMunicipio',
+            'alertasPorStatus',
+            'alertasTodos',
+            'search' // envia o termo para a view
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -77,7 +100,9 @@ class AlertaController extends Controller
 
         $data = $request->validate([
             'anonimo'           => 'nullable|boolean',
+            'publico'           => 'nullable|boolean',
             'nome_denuciante'   => 'nullable|string|max:100',
+            'telefone'          => 'nullable|string|max:100',
             'titulo'            => 'required|string|max:255',
             'municipio_id'      => 'required|string|max:100',
             'data_ocorrido'     => 'required|date|date_format:Y-m-d',
@@ -89,24 +114,30 @@ class AlertaController extends Controller
 
         try {
 
-            $filename = Str::slug(pathinfo($request->file('imagem')->getClientOriginalName(), PATHINFO_FILENAME))
-              . '-' . time()
-              . '.' . $request->file('imagem')->extension();
+            if ($request->hasFile('imagem')) {
 
-            $path = $request->file('imagem')
-                        ->storeAs('alertas', $filename, 'public');
+                $filename = Str::slug(pathinfo($request->file('imagem')->getClientOriginalName(), PATHINFO_FILENAME))
+                  . '-' . time()
+                  . '.' . $request->file('imagem')->extension();
+    
+                $path = $request->file('imagem')
+                            ->storeAs('alertas', $filename, 'public');
+            }
+
         
             // salvar no banco
             $alerta = Alerta::create([
                 'anonima'           => $request->boolean('anonima') ?? 0,
+                'publico'           => $request->boolean('publico') ?? 0,
                 'titulo'            => $data['titulo'],
                 'data_ocorrido'     => $data['data_ocorrido'],
                 'hora_ocorrido'     => $data['hora_ocorrido'],
                 'codigoalerta'      => Alerta::gerarCodigoAlerta(),
                 'nome_denuciante'   => (($data['nome_denuciante'] !== "") || ($data['nome_denuciante'] !== null)) ? $data['nome_denuciante'] : null,
+                'telefone'   => (($data['telefone'] !== "") || ($data['telefone'] !== null)) ? $data['telefone'] : null,
 
                 'descricao'         => $data['descricao'],
-                'imagem'            => $path,
+                'imagem'            => $path ?? null,
 
                 'municipio_id'      => $data['municipio_id'],
                 'tipo_alerta_id'    => $data['tipo_alerta'],
@@ -250,92 +281,6 @@ class AlertaController extends Controller
     {
 
         $userId = auth()->id();
-        // $data = $request->validate([
-        //     'anonimo'           => 'nullable|boolean',
-        //     'nome_denuciante'   => 'nullable|string|max:100',
-        //     'titulo'            => 'required|string|max:255',
-        //     'municipio_id'      => 'required|string|max:100',
-        //     'data_ocorrido'     => 'required|date|date_format:Y-m-d',
-        //     'hora_ocorrido'     => 'required|date_format:H:i',
-        //     'tipo_alerta'       => 'required|in:1,2,3,4,6',
-        //     'descricao'         => 'required|string',
-        //     'imagem'            => 'nullable|image|max:2048',
-        // ]);
-
-        // $alerta = Alerta::findOrFail($id);
-
-        // try {
-
-        //     // dd($request->remover_imagens);
-
-        //     // 🔹 Remover imagens selecionadas
-        //     if ($request->filled('remover_imagens')) {
-        //         foreach ($request->remover_imagens as $imagemId) {
-        //             $img = AlertaImagem::find($imagemId);
-        //             if ($img && $img->path) {
-        //                 $image_path = $img->path;
-        //                 $img->delete(); // remove do banco
-        //                 Storage::disk('public')->delete($image_path); // remove do disco
-        //             }
-        //         }
-        //     }
-
-        //     dd($request->file('imagens'), $request->file('imagem'));
-
-        //     // 🔹 Se o user enviou novas imagens
-        //     if ($request->hasFile('imagem')) {
-        //         foreach ($request->file('imagem') as $imagem) {
-        //             $path = $imagem->store('alertas', 'public');
-        //             $alerta->imagens()->create([
-        //                 'path' => $path
-        //             ]);
-        //         }
-        //     }
-
-        //     // 2) Prepare o caminho da imagem: mantém o antigo por default
-        //     $path = $alerta->imagem;
-
-        //     // 3) Se veio arquivo novo, remove o antigo e armazena o novo
-        //     if ($request->hasFile('imagem')) {
-        //         // apaga antigo
-        //         if ($path && Storage::exists("public/{$path}")) {
-        //             Storage::delete("public/{$path}");
-        //         }
-        //         // guarda o novo e atualiza $path
-        //         $path = $request->file('imagem')->store('alertas', 'public');
-        //     }
-            
-        //     $alerta->update([
-        //         'anonima'           => $request->boolean('anonima') ?? 0,
-        //         'titulo'            => $data['titulo'],
-        //         'data_ocorrido'     => $data['data_ocorrido'],
-        //         'hora_ocorrido'     => $data['hora_ocorrido'],
-        //         'nome_denuciante'   => (($data['nome_denuciante'] !== "") || ($data['nome_denuciante'] !== null)) ? $data['nome_denuciante'] : null,
-
-        //         'descricao'         => $data['descricao'],
-        //         'imagem'            => $path,
-
-        //         'municipio_id'      => $data['municipio_id'],
-        //         'tipo_alerta_id'    => $data['tipo_alerta'],
-        //         'user_id'           => Auth::id() ?? null,
-        //     ]);
-        
-        //     return redirect()
-        //         ->route('alertas.list', $userId)
-        //         ->with('success', 'Alerta editado com sucesso!');  
-
-        // } catch (QueryException $e) {
-        //     // 4) Falha no DB → log e retorna com erro
-        //     \Log::error('Erro ao salvar Alerta: '.$e->getMessage());
-    
-        //     // return redirect()
-        //     //     ->intended()
-        //     //     ->with('error', 'Desculpe, ocorreu um erro ao editar o alerta. Tente novamente!');
-        //     return redirect()
-        //         ->back()
-        //         ->with('error', 'Falha ao atualizar: ' . $e->getMessage())
-        //         ->withInput();
-        // }
 
         $data = $request->validate([
             'anonimo' => 'nullable|boolean',

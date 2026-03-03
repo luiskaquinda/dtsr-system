@@ -122,6 +122,6 @@ class Veiculo extends Model
 
     public function imagens()
     {
-        return $this->hasMany(AlertaImagem::class);
+        return $this->hasMany(AlertaImagem::class, 'veiculo_id');
     }
 }

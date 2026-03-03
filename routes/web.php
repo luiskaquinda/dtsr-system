@@ -50,12 +50,17 @@ use App\Http\Controllers\Excel\SmsController;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return redirect()->route('notificacao.alertas.index');
 })->name('home');
 
-// Route::get('/dashboard', function () {
-//     return view('/admin/dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/servicos', function() {
+    return view('index');
+})->name('servicos.home');
+
+Route::get('/teste', function () {
+    return view('admin.pedidos.veiculo.index');
+});
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard')
@@ -192,7 +197,7 @@ Route::middleware('auth')->group(
 
         // [Mostrar ou Ler] Pedido
 
-        Route::get('/pedido/{id}', [PedidoController::class, 'show'])->middleware('can:ver_pedido')->name('pedido.show');
+        Route::get('/pedido/{id}', [PedidoController::class, 'show'])->name('pedido.show');
 
         // [Criar] Pedido de Matricula e Emissão(?)
 
@@ -210,9 +215,9 @@ Route::middleware('auth')->group(
 
         // [Editar] Pedido
         
-        Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->middleware('can:editar_pedido')->name('pedido.edit');
+        Route::get('/pedido/{id}/edit', [PedidoController::class, 'edit'])->name('pedido.edit');
         
-        Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->middleware('can:editar_pedido')->name('pedido.update');
+        Route::put('/pedido/{id}/', [PedidoController::class, 'update'])->name('pedido.update');
 
         // [Deletar] Pedido
 

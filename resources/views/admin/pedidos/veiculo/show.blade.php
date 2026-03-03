@@ -770,6 +770,8 @@
             </div>
             <!--end::Input group-->
 
+            {{-- Documentos --}}
+
             <div class="row mb-7">
 
                 <div class="col-lg-12">
@@ -873,6 +875,42 @@
                 </div>
                 </fieldset> 
             </div>
+
+            {{-- Imagens --}}
+            @if($pedido->veiculo->imagens->isNotEmpty())
+            <div class="vehicle-gallery" id="vehicleGallery{{ $pedido->veiculo->id }}">
+                <!-- Preview grande -->
+                <div class="vg-main">
+                    <img
+                        id="mainImage{{ $pedido->veiculo->id }}"
+                        src="{{ asset('storage/'.$pedido->veiculo->imagens->first()->path) }}"
+                        alt="Imagem principal do veículo"
+                        loading="lazy"
+                    />
+                </div>
+
+                <!-- Miniaturas -->
+                <div class="vg-thumbs" role="list" aria-label="Miniaturas do veículo">
+                    @foreach($pedido->veiculo->imagens as $i => $img)
+                        <button
+                            type="button"
+                            class="vg-thumb {{ $i === 0 ? 'active' : '' }}"
+                            data-src="{{ asset('storage/'.$img->path) }}"
+                            aria-label="Ver imagem {{ $i + 1 }}"
+                            title="Ver imagem {{ $i + 1 }}"
+                        >
+                            <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+            @else
+            <div class="mb-11">
+                <img class="card-rounded min-h-325px w-100" alt="Sem imagens do veiculo">
+            </div>
+            @endif
+
+            
         </div>
         <!--end::Card body-->
     </div>
@@ -1376,8 +1414,149 @@
         </div>
 
     </form>
-
 @endsection
+
+@push('css_imagem')
+    <style>
+        /* Vehicle gallery */
+        .vehicle-gallery {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        width: 100%;
+        position: relative;
+        margin-bottom: 1rem;
+        }
+
+        /* Main preview: mantém proporção e crop central */
+        .vg-main {
+        flex: 1 1 60%;
+        max-width: calc(100% - 100px);
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        .vg-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        transition: opacity .18s ease;
+        }
+
+        /* Thumbs column */
+        .vg-thumbs {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        min-width: 72px;
+        }
+
+        /* Thumbnail button */
+        .vg-thumb {
+        width: 72px;
+        height: 54px;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        overflow: hidden;
+        background: #fff;
+        display: inline-block;
+        cursor: pointer;
+        }
+        .vg-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        }
+        .vg-thumb:hover,
+        .vg-thumb:focus {
+        transform: scale(1.03);
+        outline: none;
+        }
+        .vg-thumb.active {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.08) inset;
+        }
+
+        /* Mobile: thumbs em linha por baixo */
+        @media (max-width: 768px) {
+        .vehicle-gallery {
+            flex-direction: column;
+        }
+        .vg-main { max-width: 100%; aspect-ratio: 4 / 3; }
+        .vg-thumbs {
+            flex-direction: row;
+            gap: 8px;
+            margin-top: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+        .vg-thumb { width: 88px; height: 66px; flex: 0 0 auto; }
+        }
+
+    </style>
+@endpush
+
+@push('anonimo')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        // encontra todas as galerias de veículos na página
+        document.querySelectorAll('.vehicle-gallery').forEach(function(gallery) {
+            const galleryId = gallery.id; // ex: vehicleGallery12
+            const mainImg = gallery.querySelector('.vg-main img');
+            const thumbs = Array.from(gallery.querySelectorAll('.vg-thumb'));
+        
+            if (!mainImg || thumbs.length === 0) return;
+        
+            // função para ativar thumb e atualizar main
+            function activateThumb(btn) {
+            // destiva as outras
+            thumbs.forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+        
+            const src = btn.dataset.src;
+            if (src) {
+                // suaviza troca
+                mainImg.style.opacity = '0';
+                setTimeout(() => {
+                mainImg.src = src;
+                mainImg.style.opacity = '1';
+                }, 140);
+            }
+            }
+        
+            // comportamento: hover / focus / click
+            thumbs.forEach(btn => {
+            // hover (desktop)
+            btn.addEventListener('mouseenter', function(e) {
+                activateThumb(btn);
+            });
+            // focus (keyboard)
+            btn.addEventListener('focus', function() {
+                activateThumb(btn);
+            });
+            // click (touch devices)
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                activateThumb(btn);
+            });
+            });
+        
+            // opcional: mantem a primeira activa ao carregar (já tratado pela blade com class active)
+            const firstActive = thumbs.find(t => t.classList.contains('active')) || thumbs[0];
+            if (firstActive) activateThumb(firstActive);
+        });
+        });
+    </script>
+@endpush
 
 @section('custom_js')
     <script src="{{ asset('admin/js/custom/apps/ecommerce/catalog/products.js') }}"></script>

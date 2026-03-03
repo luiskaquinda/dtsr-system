@@ -17,17 +17,10 @@
 								<!--begin::Title-->
 								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalVeiculos }}</span>
 								<!--end::Title-->
-								<!--begin::Label-->
-								<span class="badge badge-light-danger fs-base">
-								<i class="ki-duotone ki-arrow-up fs-5 text-danger ms-n1">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>8.02%</span>
-								<!--end::Label-->
 							</div>
 							<!--end::Heading-->
 							<!--begin::Description-->
-							<span class="fs-6 fw-semibold text-gray-400">Viaturas</span>
+							<span class="fs-6 fw-semibold text-gray-400">Viaturas cadastradas</span>
 							<!--end::Description-->
 						</div>
 						<!--end::Statistics-->
@@ -55,13 +48,6 @@
 								<!--begin::Title-->
 								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $alertasHoje }}</span>
 								<!--end::Title-->
-								<!--begin::Label-->
-								<span class="badge badge-light-success fs-base">
-								<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>2.2%</span>
-								<!--end::Label-->
 							</div>
 							<!--end::Heading-->
 							<!--begin::Description-->
@@ -95,13 +81,6 @@
 								<!--begin::Title-->
 								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalDeAlertas }}</span>
 								<!--end::Title-->
-								<!--begin::Label-->
-								<span class="badge badge-light-success fs-base">
-								<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>2.2%</span>
-								<!--end::Label-->
 							</div>
 							<!--end::Heading-->
 							<!--begin::Description-->
@@ -111,6 +90,10 @@
 						<!--end::Statistics-->
 					</div>
 					<!--end::Header-->
+					@php
+						use Illuminate\Support\Str;
+					@endphp
+
 					<!--begin::Body-->
 					<div class="card-body card-body d-flex justify-content-between flex-column pt-3">
 						@forelse ($alertas as $alerta)
@@ -118,12 +101,41 @@
 							<div class="d-flex flex-stack">
 								<!--begin::Flag-->
 								@php
-									// Ajusta os nomes das colunas conforme a tua BD:
-									$imgPath = $alerta->imagem ?? optional($alerta->tipos_notificacoes)->imagem ?? null;
+									// 1) tenta imagem primária (string)
+									$imgPath = null;
 
-									// se a tua BD já guarda a URL completa, usa ela diretamente.
-									// Se guarda apenas o path dentro de storage/app/public, usa asset('storage/' . $imgPath)
-									$imgUrl = $imgPath ? asset('storage/' . ltrim($imgPath, '/')) : asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
+									if (!empty($alerta->imagem)) {
+										$imgPath = $alerta->imagem;
+									} elseif ($alerta->relationLoaded('imagens') && $alerta->imagens->isNotEmpty()) {
+										// 2) se relação carregada e tem imagens, tenta campos comuns no model de imagem
+										$first = $alerta->imagens->first();
+										$imgPath = $first->path ?? $first->url ?? $first->imagem ?? null;
+									} elseif (method_exists($alerta, 'imagens') && $alerta->imagens()->exists()) {
+										// 3) caso não esteja eager-loaded, pega a primeira do BD (lazy)
+										$first = $alerta->imagens()->first();
+										if ($first) {
+											$imgPath = $first->path ?? $first->url ?? $first->imagem ?? null;
+										}
+									}
+
+									// 4) normaliza o URL para usar em <img src="">
+									if ($imgPath) {
+										// se já for URL absoluta (http, https, or data URI) usa direto
+										if (Str::startsWith($imgPath, ['http://', 'https://', 'data:'])) {
+											$imgUrl = $imgPath;
+										} else {
+											// se já contém "storage/" ou começa com "/" assume caminho relativo
+											if (Str::startsWith($imgPath, ['storage/', '/storage/'])) {
+												$imgUrl = asset($imgPath);
+											} else {
+												// path guardado no storage/app/public (mais comum)
+												$imgUrl = asset('storage/' . ltrim($imgPath, '/'));
+											}
+										}
+									} else {
+										// fallback — ícone padrão
+										$imgUrl = asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
+									}
 								@endphp
 
 								<img src="{{ $imgUrl }}"
@@ -147,7 +159,7 @@
 										<!--end::Desc-->
 									</div>
 									<!--end::Content-->
-									
+													
 									<!--begin::Wrapper-->
 									<div class="d-flex align-items-center">
 										<!--begin::Number-->
@@ -165,9 +177,9 @@
 						@empty
 							<div>Sem alertas</div>
 						@endforelse
-
 					</div>
 					<!--end::Body-->
+
 				</div>
 				<!--end::List widget 9-->
 			</div>

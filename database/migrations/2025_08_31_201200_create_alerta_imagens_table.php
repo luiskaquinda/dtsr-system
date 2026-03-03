@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('alerta_imagens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('alerta_id')->constrained('alertas')->onDelete('cascade');
-            $table->foreignId('veiculo_id')->constrained('veiculos')->onDelete('cascade');
+            $table->unsignedBigInteger('alerta_id')->nullable();
+            $table->unsignedBigInteger('veiculo_id')->nullable();
             $table->string('path'); // caminho relativo no disco (ex: alertas/arquivo.jpg)
             $table->timestamps();
         });
@@ -25,6 +25,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alerta_imagens');
+        Schema::table('alerta_imagens', function (Blueprint $table) {
+            $table->unsignedBigInteger('alerta_id')->nullable(false)->change();
+            $table->unsignedBigInteger('veiculo_id')->nullable(false)->change();
+            $table->dropIndex(['alerta_id']);
+            $table->dropIndex(['veiculo_id']);
+        });
     }
 };

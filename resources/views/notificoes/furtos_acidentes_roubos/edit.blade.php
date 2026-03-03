@@ -227,28 +227,7 @@
                                             <img src="{{ asset('storage/' . $alerta->imagem) }}" alt="Imagem atual" class="img-fluid" style="max-height: 150px;">
                                         </div>
                                     @endif
-                                    {{-- <input 
-                                        class="form-control form-control-solid" 
-                                        type="file" 
-                                        id="imagem" 
-                                        name="imagem"
-                                    > --}}
                                 </div>
-
-                                {{-- lista das imagens já gravadas (do BD) --}}
-                                {{-- <div id="listaImagens" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
-                                    @foreach($alerta->imagens as $img)
-                                        <div class="imagem-item" style="position:relative;">
-                                            <input type="checkbox" name="remover_imagens[]" value="{{ $img->id }}" style="position:absolute; top:6px; left:6px; z-index:2;">
-                                            <img src="{{ asset('storage/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <h3>Adicionar novas imagens</h3>
-                                <input type="file" id="inputImagens" name="imagens[]" multiple accept="image/*">
-
-                                <div id="previewImagens" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div> --}}
 
                                 <!-- imagens já guardadas no BD -->
                                 <div id="listaImagens" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">

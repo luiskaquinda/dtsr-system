@@ -20,7 +20,8 @@ use App\Models\{
     PedidoMatricula,
     Documento,
     TipoMulta,
-    Dtsr
+    Dtsr,
+    AlertaImagem
 };
 
 use Str;
@@ -377,6 +378,8 @@ class PedidoController extends Controller
             'documentos.modelo_o'          => '|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'documentos.compra_venda'      => '|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'documentos.recibo_pagamento'  => '|file|mimes:jpg,jpeg,png,pdf|max:2048',
+
+            'imagens.*'                    => 'required|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         // 2) Converter datas de m/d/Y → Y-m-d
@@ -471,6 +474,23 @@ class PedidoController extends Controller
                                     'servico_id'              => $validated['servico'],
                                     'proprietario_id'         => $proprietario->id
                                 ]);
+
+                                //Imagens do Veiculo
+
+                                // dd($request->file('imagens'));
+
+                                if ($request->hasFile('imagens')) {
+                                    foreach ($request->file('imagens') as $file) {
+                                        $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                                        $path = $file->storeAs('alertas', $filename, 'public');
+                        
+                                        AlertaImagem::create([
+                                            'veiculo_id' => $veiculo->id,
+                                            'path' => $path
+                                        ]);
+                                    }
+                                }
+                            
 
                             // 8 - Pedido de Matricula
 
@@ -603,6 +623,19 @@ class PedidoController extends Controller
                                     'proprietario_id'         => $proprietario->id
                                 ]);
 
+                                if ($request->hasFile('imagens')) {
+                                    foreach ($request->file('imagens') as $file) {
+                                        $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                                        $path = $file->storeAs('alertas', $filename, 'public');
+                        
+                                        AlertaImagem::create([
+                                            'veiculo_id' => $veiculo->id,
+                                            'path' => $path
+                                        ]);
+                                    }
+                                }
+                            
+
                             // 8 - Pedido de Matricula
 
                                 $pedidoMatricula = PedidoMatricula::create([
@@ -677,8 +710,11 @@ class PedidoController extends Controller
             'veiculo.proprietario.user',
             'veiculo.matricula', 
             'tipo_pedido',
-            // adiciona outras relações que uses na view
-        ])->findOrFail($id); 
+        ])->where('veiculo_id', $id)->get();
+        
+        $documentos = Documento::whereIn('pedido_matricula_id', $pedido->pluck('id'))->get();
+        
+        
         
         $classes = ClasseVeiculo::all();
         $combustiveis = Combustivel::all();
@@ -688,7 +724,7 @@ class PedidoController extends Controller
         $servicos = Servico::all();
         $tipos_multa = TipoMulta::all();
         $dtsrs = Dtsr::all();
-        $documentos = Documento::where('pedido_matricula_id', $pedido->id)->get();
+        $documentos = Documento::whereIn('pedido_matricula_id', $pedido->pluck('id'))->get();
 
         return view('admin.pedidos.veiculo.show', compact('pedido', 'classes', 'combustiveis', 'tipoCaixas', 'pesosBruto', 'servicos', 'documentos', 'provincias', 'tipos_multa', 'dtsrs'));
     }
@@ -907,6 +943,32 @@ class PedidoController extends Controller
                 ]);
             }
 
+            // Imagens
+            // dd($request->filled('remover_imagens'), $request->hasFile('imagens'));
+
+            // 1) Remove imagens marcadas para remoção
+            if ($request->filled('remover_imagens')) {
+                foreach ($request->remover_imagens as $imgId) {
+                    $img = AlertaImagem::find($imgId);
+                    if ($img) {
+                        // guarda path, deleta do DB e do disco
+                        $path = $img->path;
+                        $img->delete();
+                        if ($path) Storage::disk('public')->delete($path);
+                    }
+                }
+            }
+    
+            // 2) Processa novas imagens secundárias (imagens[])
+            if ($request->hasFile('imagens')) {
+                foreach ($request->file('imagens') as $file) {
+                    $path = $file->store('alertas', 'public');
+                    $veiculo->imagens()->create([
+                        'path' => $path
+                    ]);
+                }
+            }
+
             // 9 - Documentos associados ao pedido
 
                                 
@@ -915,7 +977,7 @@ class PedidoController extends Controller
 
                     // gera um nome seguro
                     $baseName   = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $slugName   = \Str::slug($baseName, '_');
+                    $slugName   = Str::slug($baseName, '_');
                     $ext        = $file->getClientOriginalExtension();
                     $timestamp  = now()->format('YmdHis');
                     $userId     = auth()->id();
@@ -932,11 +994,6 @@ class PedidoController extends Controller
                     ]);
                 }
 
-            } else {
-
-                return redirect()
-                    ->back()->with('error', 'Infelizmente não conseguimos carregar os ficheiros.')
-                    ->withInput();
             }
             
         DB::commit();

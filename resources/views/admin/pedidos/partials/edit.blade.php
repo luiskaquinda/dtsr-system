@@ -895,6 +895,8 @@
                         </div>
                     </fieldset>
 
+                    {{-- Documentos --}}
+
                     <fieldset class="my-2">
                         <legend>Editar Documentos</legend>
 
@@ -1035,6 +1037,28 @@
                         </div>
                     </fieldset> 
 
+                    {{-- Imagens --}}
+
+                    <fieldset>
+                        <legend>Editar Imagens</legend>
+
+                        <!-- imagens já guardadas no BD -->
+                        <div id="listaImagens" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+                            @foreach($veiculo->imagens as $img)
+                                <div class="imagem-item-bd" data-id="{{ $img->id }}" style="position:relative;">
+                                    <input type="checkbox" name="remover_imagens[]" value="{{ $img->id }}" style="position:absolute; top:6px; left:6px; z-index:2;">
+                                    <img src="{{ asset('storage/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <h3>Adicionar novas imagens</h3>
+                        <input type="file" id="inputImagens" name="imagens[]" multiple accept="image/*">
+
+                        <div id="previewImagens" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+
+                    </fieldset>
+
                     {{-- Butões --}}
                                         
                     <div class="d-flex flex-end mt-4">
@@ -1050,3 +1074,440 @@
         </div>
     </form>
 @endsection
+
+@push('css_imagem')
+    <style>
+        #kt_header_search .custom-search {
+            display: none !important;
+        }
+    </style>
+
+    <style>
+        .preview-thumb {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            border: none;
+            color: white;
+            font-size: 16px;
+            line-height: 1;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .preview-filename {
+            font-size: 11px;
+            text-align: center;
+            margin-top: 4px;
+            word-break: break-all;
+        }
+
+    </style>
+@endpush
+@push('anonimo')
+
+{{-- <script>
+    document.getElementById('inputImagens').addEventListener('change', function(e) {
+        const preview = document.getElementById('previewImagens');
+        
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const container = document.createElement('div');
+                container.classList.add('imagem-item');
+                container.style.position = 'relative';
+                container.style.display = 'inline-block';
+
+                // botão "x" para remover
+                const btn = document.createElement('button');
+                btn.innerHTML = '×';
+                btn.type = 'button';
+                btn.style.position = 'absolute';
+                btn.style.top = '5px';
+                btn.style.right = '5px';
+                btn.style.background = 'rgba(0,0,0,0.6)';
+                btn.style.color = 'white';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '50%';
+                btn.style.width = '20px';
+                btn.style.height = '20px';
+                btn.style.cursor = 'pointer';
+                btn.style.fontSize = '14px';
+                btn.style.lineHeight = '18px';
+                btn.onclick = () => container.remove();
+
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.style.width = '120px';
+                img.style.height = '120px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '8px';
+                img.style.border = '1px solid #ddd';
+
+                container.appendChild(img);
+                container.appendChild(btn);
+                preview.appendChild(container);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Permite adicionar mais imagens depois sem sobrescrever as anteriores
+        e.target.value = "";
+    });
+</script> --}}
+
+{{-- <script>
+    document.getElementById('inputImagens').addEventListener('change', function(event) {
+        let preview = document.getElementById('previewImagens');
+        preview.innerHTML = ""; // limpa antes de exibir
+    
+        for (let file of event.target.files) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = "120px";
+                img.style.height = "120px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "8px";
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script> --}}
+
+{{-- Script para inserir várias imagens --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const input = document.getElementById('inputImagens');
+      const preview = document.getElementById('previewImagens');
+    
+      if (!input || !preview) return;
+    
+      // Array com os File selecionados (apenas os novos, não as imagens do BD)
+      let selectedFiles = [];
+    
+      // Helper: identifica um ficheiro por name|size|lastModified
+      function fileKey(f) {
+        return `${f.name}_${f.size}_${f.lastModified}`;
+      }
+    
+      // Adiciona novos ficheiros evitando duplicados
+      function addFiles(files) {
+        const seen = new Set(selectedFiles.map(f => fileKey(f)));
+        Array.from(files).forEach(f => {
+          const key = fileKey(f);
+          if (!seen.has(key)) {
+            selectedFiles.push(f);
+            seen.add(key);
+          }
+        });
+        syncInputFiles();
+        renderPreviews();
+      }
+    
+      // Remove ficheiro por índice
+      function removeFileAt(index) {
+        if (index < 0 || index >= selectedFiles.length) return;
+        selectedFiles.splice(index, 1);
+        syncInputFiles();
+        renderPreviews();
+      }
+    
+      // Recria FileList no input a partir do selectedFiles
+      function syncInputFiles() {
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        input.files = dt.files;
+      }
+    
+      // Renderiza as previews de selectedFiles
+      function renderPreviews() {
+        preview.innerHTML = '';
+        selectedFiles.forEach((file, i) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'preview-thumb';
+          wrapper.style.position = 'relative';
+          wrapper.style.width = '120px';
+          wrapper.style.height = '120px';
+          wrapper.style.borderRadius = '8px';
+          wrapper.style.overflow = 'hidden';
+          wrapper.style.border = '1px solid #ddd';
+          wrapper.style.background = '#fff';
+    
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.alt = file.name;
+    
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.innerHTML = '&times;';
+          btn.title = 'Remover';
+          btn.style.position = 'absolute';
+          btn.style.top = '6px';
+          btn.style.right = '6px';
+          btn.style.width = '22px';
+          btn.style.height = '22px';
+          btn.style.borderRadius = '50%';
+          btn.style.background = 'rgba(0,0,0,0.6)';
+          btn.style.color = '#fff';
+          btn.style.border = 'none';
+          btn.style.cursor = 'pointer';
+    
+          btn.addEventListener('click', function () {
+            // remove file i
+            removeFileAt(i);
+          });
+    
+          wrapper.appendChild(img);
+          wrapper.appendChild(btn);
+          preview.appendChild(wrapper);
+    
+          // revoked objectURL após imagem carregar para liberar memória
+          img.onload = () => URL.revokeObjectURL(img.src);
+        });
+      }
+    
+      // Listener principal
+      input.addEventListener('change', function (e) {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        addFiles(files);
+    
+        // NÃO limpar e.target.value (isso remove os files do input)
+        // e.target.value = '';
+      });
+    
+      // Caso precises de limpar tudo por exemplo num reset:
+      const form = input.closest('form');
+      if (form) {
+        form.addEventListener('reset', function () {
+          selectedFiles = [];
+          syncInputFiles();
+          renderPreviews();
+          // Desmarca checkboxes de remover imagens do BD se quiseres:
+          // document.querySelectorAll('input[name="remover_imagens[]"]').forEach(cb => cb.checked = false);
+        });
+      }
+    
+      // Opcional: se queres permitir arrastar & soltar para o preview
+      preview.addEventListener('dragover', function(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = 'copy';
+      });
+      preview.addEventListener('drop', function(ev) {
+        ev.preventDefault();
+        if (ev.dataTransfer && ev.dataTransfer.files) {
+          addFiles(ev.dataTransfer.files);
+        }
+      });
+    
+    });
+</script>
+        
+{{-- End Script para inserir várias imagens --}}
+    <script>
+        document.getElementById('anonima').addEventListener('change', function() {
+            const nomeContainer = document.getElementById('nomeContainer');
+            nomeContainer.style.display = this.checked ? 'none' : 'block';
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        $('#kt_modal_scrollable_2').on('shown.bs.modal', function () {
+            $('#selectTipoAlertaModal')   // <<< este id deve existir no <select>
+            .select2({
+                placeholder: 'Selecione um tipo de alerta...',
+                allowClear:  true,
+                minimumResultsForSearch: 0,   // 0 = sempre mostrar a caixa de busca
+                dropdownParent: $('#kt_modal_scrollable_2')
+            });
+        });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        $('#kt_modal_scrollable_2').on('shown.bs.modal', function () {
+            $('#selectMunicipio')   // <<< este id deve existir no <select>
+            .select2({
+                placeholder: 'Selecione o municipio...',
+                allowClear:  true,
+                minimumResultsForSearch: 0,   // 0 = sempre mostrar a caixa de busca
+                dropdownParent: $('#kt_modal_scrollable_2')
+            });
+        });
+        });
+    </script>
+
+    <script>
+        // Captura os elementos
+        const toggle = document.getElementById('anonima');
+        const nomeContainer = document.getElementById('nomeContainer');
+    
+        // Função que mostra ou esconde o input
+        function atualizaVisibilidade() {
+            // Se estiver marcado (anônimo), esconda o campo de nome
+            if (toggle.checked) {
+                nomeContainer.style.display = 'none';
+            } else {
+                nomeContainer.style.display = 'block';
+            }
+        }
+    
+        // Atacha o listener ao change do checkbox
+        toggle.addEventListener('change', atualizaVisibilidade);
+    
+        // Inicializa o estado ao carregar a página
+        atualizaVisibilidade();
+    </script>
+    
+    {{-- Toaster de susseco --}}
+    <script>
+        @if(session('success'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('success') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>
+
+    {{-- Toaster de erro --}}
+    <script>
+        @if(session('error'))
+            // Você pode configurar opções adicionais aqui, se quiser
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("{{ session('error') }}");
+            // toastr.success("Logado", "Login efetuado com sucesso!");
+        @endif
+    </script>    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Ajuste: pegue o modal pelo ID da DIV, não do form
+          var modal = document.getElementById('kt_modal_scrollable_2');
+        
+          modal.addEventListener('shown.bs.modal', function () {
+            // Se já existir uma instância anterior, destrua-a
+            if (modal.fv) {
+              modal.fv.dispose();
+            }
+        
+            // Ajuste: use o ID “formCreateAlerta” que deve existir no seu <form>
+            modal.fv = FormValidation.formValidation(
+              document.getElementById('formCreateAlerta'),
+              {
+                fields: {
+                  titulo: {
+                    validators: {
+                      notEmpty: {
+                        message: 'O título é obrigatório entendeu!'
+                      },
+                      stringLength: {
+                        max: 255,
+                        message: 'Máximo de 255 caracteres'
+                      }
+                    }
+                  },
+                  data_ocorrido: {
+                    validators: {
+                      notEmpty: { message: 'A data é obrigatória' },
+                      date: {
+                        format: 'YYYY-MM-DD',
+                        message: 'Use o formato YYYY-MM-DD'
+                      }
+                    }
+                  },
+                  tipo_alerta: {
+                    validators: {
+                      notEmpty: { message: 'Selecione um tipo de alerta' }
+                    }
+                  }
+                  // … outros campos
+                },
+                plugins: {
+                  // Declara o Trigger apenas uma vez, com os eventos que deseja
+                  trigger: new FormValidation.plugins.Trigger({
+                    event: {
+                      titulo:        ['input', 'blur'],   // valida ao digitar e ao sair
+                      data_ocorrido: ['change', 'blur'],  // datepicker → change
+                      tipo_alerta:   ['change']           // select → change
+                    }
+                  }),
+                  bootstrap: new FormValidation.plugins.Bootstrap5({
+                    rowSelector: '.fv-row',
+                    eleInvalidClass: '',
+                    eleValidClass: ''
+                  }),
+                  submitButton: new FormValidation.plugins.SubmitButton(),
+                  defaultSubmit: new FormValidation.plugins.DefaultSubmit()
+                }
+              }
+            );
+          });
+        });
+    </script>
+        
+@endpush
+
+
+
+

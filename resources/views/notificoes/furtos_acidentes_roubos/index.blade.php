@@ -24,7 +24,7 @@
                                     <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Alertas</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
-                                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                    {{-- <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
                                             <a href="../dist/index.html" class="text-gray-500">
@@ -48,12 +48,15 @@
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item text-gray-500">Home</li>
                                         <!--end::Item-->
-                                    </ul>
+                                    </ul> --}}
                                     <!--end::Breadcrumb-->
                                 </div>
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-3 gap-lg-5">
+                                    <!--begin::Primary button-->
+                                    <a href="{{ route('servicos.home') }}" class="btn btn-flex btn-center btn-primary btn-sm px-4">Serviços</a>
+                                    <!--end::Primary button-->
                                     <!--begin::Primary button-->
                                     <a href="#" class="btn btn-flex btn-center btn-dark btn-sm px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2">Alertar</a>
                                     <!--end::Primary button-->

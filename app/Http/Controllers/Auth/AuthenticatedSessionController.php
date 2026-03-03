@@ -29,7 +29,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended()->with('toast_success', 'Login efetuado com sucesso!');
+        $user = Auth::user();
+
+        // Admin, agente e root -> dashboard
+        if ($user->isAdmin() || $user->isAgente()) {
+            return redirect()->route('dashboard')->with('toast_success', 'Login efetuado com sucesso!');
+        }
+
+        // Guest -> alertas
+        if ($user->isGuestRole()) {
+            return redirect()->route('notificacao.alertas.index')->with('toast_success', 'Login efetuado com sucesso!');
+        }
+
+        // Qualquer outro caso: respeita intended ou redireciona para alerts
+        return redirect()->intended(route('notificacao.alertas.index'))->with('toast_success', 'Login efetuado com sucesso!');
     }
 
     /**

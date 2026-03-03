@@ -18,7 +18,9 @@ return new class extends Migration
             $table->time('hora_ocorrido');
             $table->string('codigoalerta')->unique();
             $table->boolean('anonima')->nullable();
+            $table->boolean('publico')->nullable();
             $table->string('nome_denuciante')->nullable();
+            $table->string('telefone')->nullable();
             $table->text('descricao');
             $table->string('imagem')
                 ->nullable();

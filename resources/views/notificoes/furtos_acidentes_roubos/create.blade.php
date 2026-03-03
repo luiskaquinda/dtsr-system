@@ -44,6 +44,14 @@
                     </label>
                 </div>
 
+                <div class="form-check form-switch form-check-custom form-check-solid mb-6">
+                    <input class="form-check-input fv-row" type="checkbox" value="1"
+                    {{ old('publico') ? 'checked' : '' }}  id="publico" name="publico"/>
+                    <label class="form-check-label" for="publico">
+                        Publico
+                    </label>
+                </div>
+
                 <div class="mb-6 form-control" id="nomeContainer" style="display: none; margin-top: 0.5rem;">
                     <label for="nome_denuciante" class="form-label">Nome:</label>
                     <input
@@ -55,14 +63,23 @@
                         placeholder="Insira seu nome"
                     />
 
-                    {{-- <div class="mb-3">
-                        <label for="imagens" class="form-label">Imagens (podes seleccionar várias)</label>
-                        <input class="form-control" type="file" name="imagens[]" id="imagens" multiple accept="image/*">
-                    </div>
-                
-                    <div id="previewImagens" class="d-flex gap-2 flex-wrap"></div> --}}
-
                     @error('nome_denuciante')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-6 form-control" id="telefone">
+                    <label for="telefone" class="form-label">Telefone:</label>
+                    <input
+                        id="telefone"
+                        name="telefone"
+                        type="text"
+                        value="{{ old('telefone') }}"
+                        class="form-control form-control-solid @error('telefone') is-ivalid @enderror"
+                        placeholder="Insira seu contacto"
+                    />
+
+                    @error('telefone')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

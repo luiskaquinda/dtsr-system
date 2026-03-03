@@ -2,6 +2,9 @@
 @section('title', 'Sentinel - Benguela')
 
 @section('content')
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     <!--begin::Wrapper-->
     <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
         <!--begin::Wrapper container-->
@@ -136,7 +139,7 @@
                                         <!--begin::Section-->
                                         <div class="fs-5 fw-semibold text-gray-600 mt-4">
                                             <!--begin::Text-->
-                                            <p class="mb-8">{{ $alerta->descricao }}</p>
+                                            <p class="mb-8">{{ Str::limit($alerta->descricao, 20, '...') }}</p>
                                             <!--end::Text-->
                                         </div>
                                         <!--end::Section-->
@@ -179,7 +182,7 @@
                                             <div class="d-flex align-items-center mb-7">
                                                 <!--begin::Symbol-->
                                                 <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                    <div class="symbol-label" style="background-image: url({{ asset('storage/' . $alerta_item->imagem)}})"></div>
+                                                    <div class="symbol-label" style="background-image: url({{ asset('storage/'.$alerta_item->imagem)}})"></div>
                                                 </div>
                                                 <!--end::Symbol-->
                                                 <!--begin::Title-->

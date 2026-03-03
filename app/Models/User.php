@@ -101,4 +101,39 @@ class User extends Authenticatable
         
         return $this->roles->map->abilities->flatten()->pluck('name');
     }
+
+
+    public function hasRole($roles): bool
+    {
+        $roles = is_array($roles) ? $roles : [$roles];
+
+        // Assumimos que a coluna 'name' existe na tabela roles
+        return $this->roles()->whereIn('name', $roles)->exists();
+    }
+
+    /**
+     * Retorna os nomes das roles do user como array.
+     */
+    public function roleNames(): array
+    {
+        return $this->roles->pluck('name')->toArray();
+    }
+
+    /**
+     * Helpers específicos (opcionais mas úteis).
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(['admin', 'root']); // trata 'root' como admin
+    }
+
+    public function isAgente(): bool
+    {
+        return $this->hasRole('agente');
+    }
+
+    public function isGuestRole(): bool
+    {
+        return $this->hasRole('guest');
+    }
 }

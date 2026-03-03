@@ -21,4 +21,9 @@ class AlertaImagem extends Model
     {
         return $this->belongsTo(Alerta::class);
     }
+
+    public function veiculo()
+    {
+        return $this->belongsTo(Veiculo::class);
+    }
 }
