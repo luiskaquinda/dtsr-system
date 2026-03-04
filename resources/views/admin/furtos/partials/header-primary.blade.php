@@ -15,8 +15,8 @@
                 <!--end::Header toggle-->
                 <!--begin::Logo-->
                 <a href="../dist/index.html" class="d-flex align-items-center mb-1 mb-lg-0 pt-lg-1">
-                    {{-- <img alt="Logo" src="{{ asset('admin/media/logos/default-small.svg') }}" class="d-block d-sm-none" />
-                    <img alt="Logo" src="{{ asset('admin/media/logos/default.svg') }}" class="d-none d-sm-block" /> --}}
+                    {{-- <img alt="Logo" src="{{ asset('media/logos/default-small.svg') }}" class="d-block d-sm-none" />
+                    <img alt="Logo" src="{{ asset('media/logos/default.svg') }}" class="d-none d-sm-block" /> --}}
                 </a>
                 <!--end::Logo-->
             </div>
@@ -29,7 +29,7 @@
             <div class="app-navbar-item ms-3 me-6" id="kt_header_user_menu_toggle">
                 <!--begin::Menu wrapper-->
                 <div class="cursor-pointer symbol symbol-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                    <img class="symbol symbol-35px" src="{{ asset('admin/media/avatars/300-3.jpg') }}" alt="user" />
+                    <img class="symbol symbol-35px" src="{{ asset('media/avatars/300-3.jpg') }}" alt="user" />
                 </div>
                 <!--begin::User account menu-->
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -38,7 +38,7 @@
                         <div class="menu-content d-flex align-items-center px-3">
                             <!--begin::Avatar-->
                             <div class="symbol symbol-50px me-5">
-                                <img alt="Logo" src="{{ asset('admin/media/avatars/300-3.jpg') }}" />
+                                <img alt="Logo" src="{{ asset('media/avatars/300-3.jpg') }}" />
                             </div>
                             <!--end::Avatar-->
                             <!--begin::Username-->

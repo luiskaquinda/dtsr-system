@@ -5,18 +5,20 @@
 		<title>@yield('title', 'Veiculo')</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		{{-- <link rel="shortcut icon" href="assets/media/logos/favicon.ico" /> --}}
+		<link rel="shortcut icon" href="{{ asset('admin.media.logos.sicva_icon.ico') }}" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="{{ asset('admin/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('admin/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="{{ asset('admin/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('admin/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+
 		<!--end::Global Stylesheets Bundle-->
+		@stack('css_imagem')
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -86,7 +88,7 @@
 											<!--begin::Page title-->
 											<div class="page-title d-flex flex-column gap-3 me-3">
 												<!--begin::Title-->
-												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Dashboard</h1>
+												<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Pedidos</h1>
 												<!--end::Title-->
 												<!--begin::Breadcrumb-->
 												<ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -147,11 +149,11 @@
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="{{ asset('admin/plugins/global/plugins.bundle.js') }}"></script>
-		<script src="{{ asset('admin/js/scripts.bundle.js') }}"></script>
+		<script src="{{ asset('plugins/global/plugins.bundle.js') }}"></script>
+		<script src="{{ asset('js/scripts.bundle.js') }}"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="{{ asset('admin/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+		<script src="{{ asset('plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
 		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
@@ -163,23 +165,23 @@
 		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
-		<script src="{{ asset('admin/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{ asset('admin/js/custom/apps/ecommerce/catalog/products.js') }}"></script>
-		<script src="{{ asset('admin/js/widgets.bundle.js') }}"></script>
+		<script src="{{ asset('js/custom/apps/ecommerce/catalog/products.js') }}"></script>
+		<script src="{{ asset('js/widgets.bundle.js') }}"></script>
 
-		<script src="{{ asset('admin/js/custom/apps/chat/chat.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/type.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/budget.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/settings.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/team.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/targets.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/files.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/complete.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/create-project/main.js') }}"></script>
-		<script src="{{ asset('admin/js/custom/utilities/modals/users-search.js')}}"></script>
+		<script src="{{ asset('js/custom/apps/chat/chat.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/type.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/budget.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/settings.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/team.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/targets.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/files.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/complete.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/create-project/main.js') }}"></script>
+		<script src="{{ asset('js/custom/utilities/modals/users-search.js')}}"></script>
 
 		<script>
 			$("#kt_daterangepicker_1").daterangepicker({
@@ -247,7 +249,7 @@
 		</script>
 
 		@stack('toaster')
-
+		@stack('anonimo')
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

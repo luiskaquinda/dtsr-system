@@ -189,12 +189,12 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="{{ route('alertas.edit', $alerta->id) }}" class="menu-link px-3">Editar</a>
+                                        <a href="#" class="menu-link px-3">Editar</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <form action="{{ route('alertas.destroy', $alerta->id) }}"
+                                        <form action="#"
                                         method="POST"
                                         onsubmit="return confirm('Tem certeza que deseja apagar este alerta?');">
                                           @csrf
@@ -350,16 +350,16 @@
         });
     </script> --}}
     
-    <script src="{{ asset('admin/js/custom/apps/ecommerce/catalog/products.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/apps/chat/chat.js')}}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/type.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/budget.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/settings.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/team.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/targets.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/files.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/complete.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/create-project/main.js') }}"></script>
-    <script src="{{ asset('admin/js/custom/utilities/modals/users-search.js') }}"></script>
+    <script src="{{ asset('js/custom/apps/ecommerce/catalog/products.js') }}"></script>
+    <script src="{{ asset('js/custom/apps/chat/chat.js')}}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/type.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/budget.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/settings.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/team.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/targets.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/files.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/complete.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/create-project/main.js') }}"></script>
+    <script src="{{ asset('js/custom/utilities/modals/users-search.js') }}"></script>
 @endsection

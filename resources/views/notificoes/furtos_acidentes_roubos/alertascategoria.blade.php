@@ -198,7 +198,7 @@
                                                                 </div>
                                                             </div>
                                                         @else
-                                                            <img src="{{ asset('admin/media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
+                                                            <img src="{{ asset('media/avatars/300-1.jpg') }}" alt="image" class="p-3 max-w-100" />
                                                         @endif
                                                     </div>
                                                     <!--end::Avatar-->

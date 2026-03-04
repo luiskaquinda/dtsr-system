@@ -44,6 +44,14 @@
                     </label>
                 </div>
 
+                <div class="form-check form-switch form-check-custom form-check-solid mb-6">
+                    <input class="form-check-input fv-row" type="checkbox" value="1"
+                    {{ old('publico') ? 'checked' : '' }}  id="publico" name="publico"/>
+                    <label class="form-check-label" for="publico">
+                        Publico
+                    </label>
+                </div>
+
                 <div class="mb-6 form-control" id="nomeContainer" style="display: none; margin-top: 0.5rem;">
                     <label for="nome_denuciante" class="form-label">Nome:</label>
                     <input
@@ -54,7 +62,24 @@
                         class="form-control form-control-solid @error('nome_denuciante') is-ivalid @enderror"
                         placeholder="Insira seu nome"
                     />
+
                     @error('nome_denuciante')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-6 form-control" id="telefone">
+                    <label for="telefone" class="form-label">Telefone:</label>
+                    <input
+                        id="telefone"
+                        name="telefone"
+                        type="text"
+                        value="{{ old('telefone') }}"
+                        class="form-control form-control-solid @error('telefone') is-ivalid @enderror"
+                        placeholder="Insira seu contacto"
+                    />
+
+                    @error('telefone')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -167,10 +192,32 @@
 
                 <!--end::Input group-->
                 <div class="mb-3 form-control">
-                    <label for="formFile" class="form-label">Carregar imagem</label>
+                    <label for="formFile" class="form-label">Imagem primária</label>
                     <input class="form-control form-control-solid" type="file" id="imagem" name="imagem">
                 </div>
+
+                <!-- UPLOADER DINÂMICO DE IMAGENS -->
+                <div class="mb-3 form-control">
+                    <label class="form-label">Imagens secundárias</label>
+
+                    <!-- botão para abrir o file picker -->
+                    <div class="d-flex gap-2 mb-2">
+                        <button type="button" id="btnAdicionarImagens" class="btn btn-outline-secondary btn-sm">
+                            Adicionar
+                        </button>
+                        <small class="text-muted align-self-center">Máx 8 imagens.</small>
+                    </div>
+
+                    <!-- input file escondido (usado apenas para escolher ficheiros) -->
+                    <input type="file" id="imagensInput" name="imagens[]" accept="image/*" multiple style="display:none;" class="form-control form-control-solid">
+
+                    <!-- área de visualização das miniaturas -->
+                    <div id="previewImagens" class="d-flex gap-2 flex-wrap"></div>
+                </div>
             </div>
+
+            
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>

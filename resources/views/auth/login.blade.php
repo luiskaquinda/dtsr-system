@@ -56,7 +56,10 @@
                             <!--begin::Heading-->
                             <div class="text-center mb-10">
                                 <!--begin::Title-->
-                                <h1 class="text-dark mb-3">Bem Vindo ao DTSR-System</h1>
+                                <a href="{{ route('home') }}" class="py-2 py-lg-20">
+                                    <img alt="Logo" src="{{ asset('media/logos/sicva_mobile_1.png') }}" class="h-300px h-lg-310px" />
+                                </a>
+                                {{-- <h1 class="text-dark mb-3">Bem Vindo ao DTSR-System</h1> --}}
                             </div>
                             <!--begin::Heading-->
                             <!--begin::Input group-->

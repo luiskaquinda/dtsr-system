@@ -119,4 +119,9 @@ class Veiculo extends Model
             'id'
         );
     }
+
+    public function imagens()
+    {
+        return $this->hasMany(AlertaImagem::class, 'veiculo_id');
+    }
 }

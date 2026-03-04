@@ -2,111 +2,178 @@
 @section('title', 'Dashboard')
 
 @section('content')
-	<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
-		<!--begin::Page-->
-		<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-			<!--begin::Header-->
-			<div id="kt_app_header" class="app-header">
-				<!--begin::Header primary-->
-				@include('admin.partials.header-primary')
-				<!--end::Header primary-->
-
-				<!--begin::Header secondary-->
-				@include('admin.partials.header-secondary')
-				<!--end::Header secondary-->
-			</div>
-			<!--end::Header-->
-
-
-			<!--begin::Wrapper-->
-			<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-				<!--begin::Wrapper container-->
-				<div class="app-container container-xxl d-flex flex-row flex-column-fluid">
-					<!--begin::Main-->
-					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-						<!--begin::Content wrapper-->
-						<div class="d-flex flex-column flex-column-fluid">
-							<!--begin::Toolbar-->
-							<div id="kt_app_toolbar" class="app-toolbar pt-lg-9 pt-6">
-								<!--begin::Toolbar container-->
-								<div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
-									<!--begin::Toolbar wrapper-->
-									<div class="d-flex flex-stack flex-wrap gap-4 w-100">
-										<!--begin::Page title-->
-										<div class="page-title d-flex flex-column gap-3 me-3">
-											<!--begin::Title-->
-											<h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Dashboard</h1>
-											<!--end::Title-->
-											<!--begin::Breadcrumb-->
-											<ul class="breadcrumb breadcrumb-separatorless fw-semibold">
-												<!--begin::Item-->
-												<li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-													<a href="../dist/index.html" class="text-gray-500">
-														<i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
-													</a>
-												</li>
-												<!--end::Item-->
-												<!--begin::Item-->
-												<li class="breadcrumb-item">
-													<i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-												</li>
-												<!--end::Item-->
-												<!--begin::Item-->
-												<li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboards</li>
-												<!--end::Item-->
-												<!--begin::Item-->
-												<li class="breadcrumb-item">
-													<i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-												</li>
-												<!--end::Item-->
-												<!--begin::Item-->
-												<li class="breadcrumb-item text-gray-500">Default</li>
-												<!--end::Item-->
-											</ul>
-											<!--end::Breadcrumb-->
-										</div>
-										<!--end::Page title-->
-									</div>
-									<!--end::Toolbar wrapper-->
-								</div>
-								<!--end::Toolbar container-->
+	<!--begin::Row-->
+		<div class="row gx-5 gx-xl-10 mb-5 mb-xl-10 mb-15">
+			<!--begin::Col-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<!--begin::Chart widget 27-->
+				<div class="card card-flush h-lg-100">
+					<!--begin::Header-->
+					<div class="card-header py-7">
+						<!--begin::Statistics-->
+						<div class="m-0">
+							<!--begin::Heading-->
+							<div class="d-flex align-items-center mb-2">
+								<!--begin::Title-->
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalVeiculos }}</span>
+								<!--end::Title-->
+								<!--begin::Label-->
+								<span class="badge badge-light-danger fs-base">
+								<i class="ki-duotone ki-arrow-up fs-5 text-danger ms-n1">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>8.02%</span>
+								<!--end::Label-->
 							</div>
-							<!--end::Toolbar-->
+							<!--end::Heading-->
+							<!--begin::Description-->
+							<span class="fs-6 fw-semibold text-gray-400">Viaturas</span>
+							<!--end::Description-->
 						</div>
-						<!--end::Content wrapper-->
-
-						<!--begin::Footer-->
-						<div id="kt_app_footer" class="app-footer align-items-center justify-content-center justify-content-md-between flex-column flex-md-row py-3 py-lg-6">
-							<!--begin::Copyright-->
-							<div class="text-dark order-2 order-md-1">
-								<span class="text-muted fw-semibold me-1">2023&copy;</span>
-								<a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Keenthemes</a>
-							</div>
-							<!--end::Copyright-->
-							<!--begin::Menu-->
-							<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-								<li class="menu-item">
-									<a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-								</li>
-								<li class="menu-item">
-									<a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-								</li>
-								<li class="menu-item">
-									<a href="https://keenthemes.com/products/oswald-html-pro" target="_blank" class="menu-link px-2">Purchase</a>
-								</li>
-							</ul>
-							<!--end::Menu-->
-						</div>
-						<!--end::Footer-->
+						<!--end::Statistics-->
 					</div>
-					<!--end:::Main-->
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body pt-0 pb-1">
+						<div id="kt_charts_widget_27" class="min-h-auto"></div>
+					</div>
+					<!--end::Body-->
 				</div>
-				<!--end::Wrapper container-->
+				<!--end::Chart widget 27-->
 			</div>
-			<!--end::Wrapper-->
+			<!--end::Col-->
+			<!--begin::Col-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<!--begin::Chart widget 28-->
+				<div class="card card-flush h-lg-100">
+					<!--begin::Header-->
+					<div class="card-header py-7">
+						<!--begin::Statistics-->
+						<div class="m-0">
+							<!--begin::Heading-->
+							<div class="d-flex align-items-center mb-2">
+								<!--begin::Title-->
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $alertasHoje }}</span>
+								<!--end::Title-->
+								<!--begin::Label-->
+								<span class="badge badge-light-success fs-base">
+								<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>2.2%</span>
+								<!--end::Label-->
+							</div>
+							<!--end::Heading-->
+							<!--begin::Description-->
+							<span class="fs-6 fw-semibold text-gray-400">Alertas Hoje</span>
+							<!--end::Description-->
+						</div>
+						<!--end::Statistics-->
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body d-flex align-items-end ps-4 pe-0 pb-4">
+						<!--begin::Chart-->
+						<div id="kt_charts_widget_28" class="h-300px w-100 min-h-auto"></div>
+						<!--end::Chart-->
+					</div>
+					<!--end::Body-->
+				</div>
+				<!--end::Chart widget 28-->
+			</div>
+			<!--end::Col-->
+			<!--begin::Col-->
+			<div class="col-lg-4">
+				<!--begin::List widget 9-->
+				<div class="card card-flush h-lg-100">
+					<!--begin::Header-->
+					<div class="card-header py-7">
+						<!--begin::Statistics-->
+						<div class="m-0">
+							<!--begin::Heading-->
+							<div class="d-flex align-items-center mb-2">
+								<!--begin::Title-->
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ $totalDeAlertas }}</span>
+								<!--end::Title-->
+								<!--begin::Label-->
+								<span class="badge badge-light-success fs-base">
+								<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>2.2%</span>
+								<!--end::Label-->
+							</div>
+							<!--end::Heading-->
+							<!--begin::Description-->
+							<span class="fs-6 fw-semibold text-gray-400">Furtos</span>
+							<!--end::Description-->
+						</div>
+						<!--end::Statistics-->
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body card-body d-flex justify-content-between flex-column pt-3">
+						@forelse ($alertas as $alerta)
+							<!--begin::Item-->
+							<div class="d-flex flex-stack">
+								<!--begin::Flag-->
+								@php
+									// Ajusta os nomes das colunas conforme a tua BD:
+									$imgPath = $alerta->imagem ?? optional($alerta->tipos_notificacoes)->imagem ?? null;
+
+									// se a tua BD já guarda a URL completa, usa ela diretamente.
+									// Se guarda apenas o path dentro de storage/app/public, usa asset('storage/' . $imgPath)
+									$imgUrl = $imgPath ? asset('storage/' . ltrim($imgPath, '/')) : asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
+								@endphp
+
+								<img src="{{ $imgUrl }}"
+									class="me-4 w-30px"
+									style="border-radius: 4px"
+									alt="{{ $alerta->titulo ?? 'ícone' }}"
+									loading="lazy" />
+
+								<!--end::Flag-->
+								<!--begin::Section-->
+								<div class="d-flex align-items-center flex-stack flex-wrap flex-row-fluid d-grid gap-2">
+									<!--begin::Content-->
+									<div class="me-5">
+										<!--begin::Title-->
+										<a href="{{ route('alertas.show', $alerta->id) }}" class="text-gray-800 fw-bold text-hover-primary fs-6">{{ $alerta->titulo }}</a>
+										<!--end::Title-->
+										<!--begin::Desc-->
+										<span class="text-gray-400 fw-semibold fs-7 d-block text-start ps-0">
+											{{ optional($alerta->tipos_notificacoes)->tipo }}
+										</span>
+										<!--end::Desc-->
+									</div>
+									<!--end::Content-->
+									
+									<!--begin::Wrapper-->
+									<div class="d-flex align-items-center">
+										<!--begin::Number-->
+										<span class="text-gray-500 fw-bold fs-4 me-3">{{ $alerta->nome_denuciante ?? 'Anônimo' }}</span>
+										<!--end::Number-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Section-->
+							</div>
+							<!--end::Item-->
+							<!--begin::Separator-->
+							<div class="separator separator-dashed my-3"></div>
+							<!--end::Separator-->
+						@empty
+							<div>Sem alertas</div>
+						@endforelse
+
+					</div>
+					<!--end::Body-->
+				</div>
+				<!--end::List widget 9-->
+			</div>
+			<!--end::Col-->
 		</div>
-		<!--end::Page-->
-	</div>
+	<!--end::Row-->
 @endsection
 
 @section('custom_js_pre')

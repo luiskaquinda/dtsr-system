@@ -10,8 +10,8 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="{{ asset('admin/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('admin/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 	</head>
 	<!--end::Head-->
@@ -66,11 +66,11 @@
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="{{ asset('admin/plugins/global/plugins.bundle.js') }}"></script>
-		<script src="{{ asset('admin/js/scripts.bundle.js') }}"></script>
+		<script src="{{ asset('plugins/global/plugins.bundle.js') }}"></script>
+		<script src="{{ asset('js/scripts.bundle.js') }}"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{ asset('admin/js/custom/authentication/sign-up/general.js') }}"></script>
+		<script src="{{ asset('js/custom/authentication/sign-up/general.js') }}"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

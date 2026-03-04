@@ -12,9 +12,9 @@
                     <!--begin::Header-->
                     <div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
                         <!--begin::Logo-->
-                        {{-- <a href="#" class="py-2 py-lg-20">
-                            <img alt="Logo" src="{{ asset('admin/media/logos/default.svg') }}" class="h-40px h-lg-50px" />
-                        </a> --}}
+                        <a href="{{ route('home') }}" class="py-2 py-lg-20">
+                            <img alt="Logo" src="{{ asset('media/logos/sicva_mobile.png') }}" class="h-40px h-lg-50px" />
+                        </a>
                         <!--end::Logo-->
                         <!--begin::Title-->
                         <h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">DTSR-System</h1>
@@ -26,7 +26,7 @@
                     </div>
                     <!--end::Header-->
                     <!--begin::Illustration-->
-                    <div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({{ asset('admin/media/illustrations/sketchy-1/17.png') }})"></div>
+                    <div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({{ asset('media/illustrations/sketchy-1/17.png') }})"></div>
                     <!--end::Illustration-->
                 </div>
                 <!--end::Wrapper-->

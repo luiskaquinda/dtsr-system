@@ -18,7 +18,9 @@ class Alerta extends Model
         'hora_ocorrido',
         'codigoalerta',
         'anonima',
+        'publico',
         'nome_denuciante',
+        'telefone',
         'descricao',
         'imagem',
         'municipio_id',
@@ -112,6 +114,9 @@ class Alerta extends Model
         return "{$userId}{$date}{$proximoSeq}";
     }
 
-
+    public function imagens()
+    {
+        return $this->hasMany(AlertaImagem::class);
+    }
 
 }
