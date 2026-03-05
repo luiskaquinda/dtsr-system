@@ -129,7 +129,7 @@
 												$imgUrl = asset($imgPath);
 											} else {
 												// path guardado no storage/app/public (mais comum)
-												$imgUrl = asset('storage/' . ltrim($imgPath, '/'));
+												$imgUrl = asset('storage/public/' . ltrim($imgPath, '/'));
 											}
 										}
 									} else {
