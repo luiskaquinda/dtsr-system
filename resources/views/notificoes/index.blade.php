@@ -80,6 +80,7 @@
                                     @endif
                                 @endforeach
                             </td>
+
                             <td class="text-start pe-0" data-order="rating-4">
                                 -
                             </td>

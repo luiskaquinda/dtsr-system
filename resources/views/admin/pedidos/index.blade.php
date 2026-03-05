@@ -118,7 +118,7 @@
                                         <a href="#">
                                             <div class="symbol-label">
                                                 @if($pedido->veiculo->imagens->first())
-                                                    <img src="{{ asset('storage/' . $pedido->veiculo->imagens->first()->path) }}" 
+                                                    <img src="{{ asset('storage/public/' . $pedido->veiculo->imagens->first()->path) }}" 
                                                         alt="Imagem do veículo" 
                                                         class="w-100" />
                                                 @else

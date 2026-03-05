@@ -122,8 +122,8 @@
 									$imgPath = $alerta->imagem ?? optional($alerta->tipos_notificacoes)->imagem ?? null;
 
 									// se a tua BD já guarda a URL completa, usa ela diretamente.
-									// Se guarda apenas o path dentro de storage/app/public, usa asset('storage/' . $imgPath)
-									$imgUrl = $imgPath ? asset('storage/' . ltrim($imgPath, '/')) : asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
+									// Se guarda apenas o path dentro de storage/app/public, usa asset('storage/public/' . $imgPath)
+									$imgUrl = $imgPath ? asset('storage/public/' . ltrim($imgPath, '/')) : asset('assets/media/svg/brand-logos/dribbble-icon-1.svg');
 								@endphp
 
 								<img src="{{ $imgUrl }}"

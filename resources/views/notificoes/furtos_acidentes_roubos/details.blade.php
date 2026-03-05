@@ -95,7 +95,7 @@
                                         <!--begin::Wrapper-->
                                         {{-- <div class="mb-11">
                                             <!--begin::Image-->
-                                            <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/' . $alerta->imagem) }}" alt="">
+                                            <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/public/' . $alerta->imagem) }}" alt="">
                                             <!--end::Image-->
                                         </div> --}}
                                         @if($alerta->imagens->isNotEmpty())
@@ -105,7 +105,7 @@
                                                 <div class="main-alerta-wrapper">
                                                     <img
                                                         id="mainImage{{ $alerta->id }}"
-                                                        src="{{ asset('storage/'.$alerta->imagens->first()->path) }}"
+                                                        src="{{ asset('storage/public/'.$alerta->imagens->first()->path) }}"
                                                         class="main-alerta-img"
                                                         alt="Imagem principal do alerta"
                                                     >
@@ -118,11 +118,11 @@
                                                             type="button"
                                                             class="thumb-btn {{ $i === 0 ? 'active' : '' }}"
                                                             data-target="#mainImage{{ $alerta->id }}"
-                                                            data-src="{{ asset('storage/'.$img->path) }}"
+                                                            data-src="{{ asset('storage/public/'.$img->path) }}"
                                                             aria-label="Ver imagem {{ $i + 1 }}"
                                                             title="Ver imagem {{ $i + 1 }}"
                                                         >
-                                                            <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
+                                                            <img src="{{ asset('storage/public/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
                                                         </button>
                                                     @endforeach
                                                 </div>
@@ -130,7 +130,7 @@
                                         @else
                                             <div class="mb-11">
                                                 <!--begin::Image-->
-                                                <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/' . $alerta->imagem) }}" alt="">
+                                                <img class="card-rounded min-h-325px w-100" src="{{ asset('storage/public/' . $alerta->imagem) }}" alt="">
                                                 <!--end::Image-->
                                             </div>
                                         @endif
@@ -182,7 +182,7 @@
                                             <div class="d-flex align-items-center mb-7">
                                                 <!--begin::Symbol-->
                                                 <div class="symbol symbol-60px symbol-2by3 me-4">
-                                                    <div class="symbol-label" style="background-image: url({{ asset('storage/'.$alerta_item->imagem)}})"></div>
+                                                    <div class="symbol-label" style="background-image: url({{ asset('storage/public/'.$alerta_item->imagem)}})"></div>
                                                 </div>
                                                 <!--end::Symbol-->
                                                 <!--begin::Title-->

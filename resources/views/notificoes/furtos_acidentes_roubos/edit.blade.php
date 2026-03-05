@@ -224,7 +224,7 @@
                                     <label for="imagem" class="form-label">Carregar imagem</label>
                                     @if($alerta->imagem)
                                         <div class="mb-2">
-                                            <img src="{{ asset('storage/' . $alerta->imagem) }}" alt="Imagem atual" class="img-fluid" style="max-height: 150px;">
+                                            <img src="{{ asset('storage/public/' . $alerta->imagem) }}" alt="Imagem atual" class="img-fluid" style="max-height: 150px;">
                                         </div>
                                     @endif
                                 </div>
@@ -234,7 +234,7 @@
                                     @foreach($alerta->imagens as $img)
                                         <div class="imagem-item-bd" data-id="{{ $img->id }}" style="position:relative;">
                                             <input type="checkbox" name="remover_imagens[]" value="{{ $img->id }}" style="position:absolute; top:6px; left:6px; z-index:2;">
-                                            <img src="{{ asset('storage/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                            <img src="{{ asset('storage/public/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
                                         </div>
                                     @endforeach
                                 </div>

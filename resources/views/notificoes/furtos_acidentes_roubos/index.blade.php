@@ -201,7 +201,7 @@
                                                         <div class="symbol symbol-200px">
                                                             <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
                                                                 <img
-                                                                    src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                                    src="{{ asset('storage/public/' . $alerta->imagem) }}"
                                                                     class="img-fluid rounded"
                                                                     alt="Imagem do alerta"
                                                                 >
@@ -216,7 +216,7 @@
                                                         <div class="main-alerta-wrapper">
                                                             <img
                                                                 id="mainImage{{ $alerta->id }}"
-                                                                src="{{ asset('storage/'.$alerta->imagens->first()->path) }}"
+                                                                src="{{ asset('storage/public/'.$alerta->imagens->first()->path) }}"
                                                                 class="main-alerta-img rounded"
                                                                 alt="Imagem principal do alerta"
                                                             >
@@ -229,9 +229,9 @@
                                                                     type="button"
                                                                     class="thumb-btn {{ $i === 0 ? 'active' : '' }}"
                                                                     data-target="#mainImage{{ $alerta->id }}"
-                                                                    data-src="{{ asset('storage/'.$img->path) }}"
+                                                                    data-src="{{ asset('storage/public/'.$img->path) }}"
                                                                 >
-                                                                    <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i+1 }}">
+                                                                    <img src="{{ asset('storage/public/'.$img->path) }}" alt="Miniatura {{ $i+1 }}">
                                                                 </button>
                                                             @endforeach
                                                         </div>
@@ -240,7 +240,7 @@
                                                     <div class="symbol symbol-200px">
                                                         <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
                                                             <img
-                                                                src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                                src="{{ asset('storage/public/' . $alerta->imagem) }}"
                                                                 class="img-fluid rounded"
                                                                 alt="Imagem do alerta"
                                                             >

@@ -784,7 +784,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'bilhete' && isset($documento->url))
                                 <strong>Bilhete:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp
@@ -810,7 +810,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'modelo_o' && isset($documento->url))
                                 <strong>Registro Inicial ou Modelo O:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">
                                     {{ basename($documento->url) }}
                                 </a>
                                 @php
@@ -836,7 +836,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'compra_venda' && isset($documento->url))
                                 <strong>Registro de Compra e Venda:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp
@@ -860,7 +860,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'recibo_pagamento' && isset($documento->url))
                                 <strong>Registro Inicial ou Modelo O:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp
@@ -883,7 +883,7 @@
                 <div class="vg-main">
                     <img
                         id="mainImage{{ $pedido->veiculo->id }}"
-                        src="{{ asset('storage/'.$pedido->veiculo->imagens->first()->path) }}"
+                        src="{{ asset('storage/public/'.$pedido->veiculo->imagens->first()->path) }}"
                         alt="Imagem principal do veículo"
                         loading="lazy"
                     />
@@ -895,11 +895,11 @@
                         <button
                             type="button"
                             class="vg-thumb {{ $i === 0 ? 'active' : '' }}"
-                            data-src="{{ asset('storage/'.$img->path) }}"
+                            data-src="{{ asset('storage/public/'.$img->path) }}"
                             aria-label="Ver imagem {{ $i + 1 }}"
                             title="Ver imagem {{ $i + 1 }}"
                         >
-                            <img src="{{ asset('storage/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
+                            <img src="{{ asset('storage/public/'.$img->path) }}" alt="Miniatura {{ $i + 1 }}" loading="lazy">
                         </button>
                     @endforeach
                 </div>

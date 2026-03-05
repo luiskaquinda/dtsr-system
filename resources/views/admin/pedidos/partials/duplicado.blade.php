@@ -712,7 +712,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'bilhete' && isset($documento->url))
                                 <strong>Bilhete:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp
@@ -738,7 +738,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'modelo_o' && isset($documento->url))
                                 <strong>Registro Inicial ou Modelo O:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">
                                     {{ basename($documento->url) }}
                                 </a>
                                 @php
@@ -764,7 +764,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'compra_venda' && isset($documento->url))
                                 <strong>Registro de Compra e Venda:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp
@@ -788,7 +788,7 @@
                         @foreach ($documentos as $documento)    
                             @if ($documento->tipo_documento == 'recibo_pagamento' && isset($documento->url))
                                 <strong>Registro Inicial ou Modelo O:</strong> 
-                                <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                 @php
                                     $encontrado = true;
                                 @endphp

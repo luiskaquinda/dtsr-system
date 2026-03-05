@@ -910,7 +910,7 @@
                                 @foreach ($documentos as $documento)    
                                     @if ($documento->tipo_documento == 'bilhete' && isset($documento->url))
                                         <strong>Bilhete:</strong> 
-                                        <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                        <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                         @php
                                             $encontrado = true;
                                         @endphp
@@ -945,7 +945,7 @@
                                 @foreach ($documentos as $documento)    
                                     @if ($documento->tipo_documento == 'modelo_o' && isset($documento->url))
                                         <strong>Registro Inicial ou Modelo O:</strong> 
-                                        <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">
+                                        <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">
                                             {{ basename($documento->url) }}
                                         </a>
                                         @php
@@ -980,7 +980,7 @@
                                 @foreach ($documentos as $documento)    
                                     @if ($documento->tipo_documento == 'compra_venda' && isset($documento->url))
                                         <strong>Registro de Compra e Venda:</strong> 
-                                        <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                        <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                         @php
                                             $encontrado = true;
                                         @endphp
@@ -1013,7 +1013,7 @@
                                 @foreach ($documentos as $documento)    
                                     @if ($documento->tipo_documento == 'recibo_pagamento' && isset($documento->url))
                                         <strong>Recibo de Pagamento:</strong> 
-                                        <a href="{{ asset('storage/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
+                                        <a href="{{ asset('storage/public/' . $documento->url) }}" target="_blank">{{ basename($documento->url) }}</a>
                                         @php
                                             $encontrado = true;
                                         @endphp
@@ -1047,7 +1047,7 @@
                             @foreach($veiculo->imagens as $img)
                                 <div class="imagem-item-bd" data-id="{{ $img->id }}" style="position:relative;">
                                     <input type="checkbox" name="remover_imagens[]" value="{{ $img->id }}" style="position:absolute; top:6px; left:6px; z-index:2;">
-                                    <img src="{{ asset('storage/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                    <img src="{{ asset('storage/public/' . $img->path) }}" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
                                 </div>
                             @endforeach
                         </div>

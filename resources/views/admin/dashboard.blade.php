@@ -128,8 +128,8 @@
 											if (Str::startsWith($imgPath, ['storage/', '/storage/'])) {
 												$imgUrl = asset($imgPath);
 											} else {
-												// path guardado no storage/app/public (mais comum)
-												$imgUrl = asset('storage/public/' . ltrim($imgPath, '/'));
+												// path guardado no storage/app/public (mais comum) tem que colocar pub
+												$imgUrl = asset('storage/public/public/' . ltrim($imgPath, '/'));
 											}
 										}
 									} else {

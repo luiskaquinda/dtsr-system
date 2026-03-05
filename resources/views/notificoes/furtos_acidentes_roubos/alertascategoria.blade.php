@@ -191,7 +191,7 @@
                                                             <div class="symbol symbol-200px">
                                                                 <div class="symbol-label fs-2 fw-semibold text-success w-100 h-100">
                                                                     <img
-                                                                        src="{{ asset('storage/' . $alerta->imagem) }}"
+                                                                        src="{{ asset('storage/public/' . $alerta->imagem) }}"
                                                                         class="img-fluid rounded"
                                                                         alt="Imagem do alerta"
                                                                     >
