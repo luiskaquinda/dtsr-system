@@ -84,8 +84,7 @@ Route::get('/notificar/detalhes', function() {
     return view('notificoes.furtos_acidentes_roubos.details');
 });
 
-
-
+Route::get('/alertas', [AlertaController::class, 'index'])->name('notificacao.alertas.index');
 
 Route::middleware('auth')->group(
     function() {
@@ -95,8 +94,6 @@ Route::middleware('auth')->group(
         Route::get('/notificacao/{id}', [NotificacaoController::class, 'show'])->name('notificacao.show');
 
         Route::get('/notificacao/create', [NotificacaoController::class, 'create'])->name('notificacao.create');
-
-        Route::get('/alertas', [AlertaController::class, 'index'])->name('notificacao.alertas.index');
 
         Route::post('/alertas/store', [AlertaController::class, 'store'])->name('notificacao.alertas.store');
 
